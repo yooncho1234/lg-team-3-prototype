@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>일정표 - 2026년 6월 26일</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+      background: #f0f4f8;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .header h1 {
+      font-size: 2rem;
+      color: #1a202c;
+      font-weight: 700;
+    }
+
+    .header .date {
+      font-size: 1.1rem;
+      color: #764ba2;
+      font-weight: 600;
+      margin-top: 0.4rem;
+    }
+
+    .header .day {
+      font-size: 0.95rem;
+      color: #718096;
+      margin-top: 0.2rem;
+    }
+
+    .section {
+      background: #fff;
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+    }
+
+    .section-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #764ba2;
+      border-bottom: 2px solid #e9d8fd;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* 오늘의 목표 */
+    .goals-list {
+      list-style: none;
+    }
+
+    .goals-list li {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.55rem 0;
+      border-bottom: 1px dashed #e2e8f0;
+      font-size: 0.97rem;
+      color: #2d3748;
+    }
+
+    .goals-list li:last-child {
+      border-bottom: none;
+    }
+
+    .goals-list li input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: #764ba2;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    /* 시간표 */
+    .schedule-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .schedule-table th {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: #fff;
+      padding: 0.6rem 1rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-align: left;
+    }
+
+    .schedule-table th:first-child {
+      border-radius: 8px 0 0 0;
+      width: 110px;
+    }
+
+    .schedule-table th:last-child {
+      border-radius: 0 8px 0 0;
+    }
+
+    .schedule-table td {
+      padding: 0.65rem 1rem;
+      border-bottom: 1px solid #e2e8f0;
+      font-size: 0.93rem;
+      color: #2d3748;
+      vertical-align: middle;
+    }
+
+    .schedule-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .schedule-table tr:hover td {
+      background: #f7f3ff;
+    }
+
+    .schedule-table td:first-child {
+      font-weight: 600;
+      color: #667eea;
+      white-space: nowrap;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      padding: 0.15rem 0.55rem;
+      border-radius: 999px;
+      font-weight: 600;
+      margin-left: 0.4rem;
+    }
+
+    .badge-work   { background: #e9d8fd; color: #553c9a; }
+    .badge-break  { background: #c6f6d5; color: #276749; }
+    .badge-meet   { background: #bee3f8; color: #2b6cb0; }
+    .badge-study  { background: #feebc8; color: #c05621; }
+
+    /* 메모 */
+    .memo-area {
+      width: 100%;
+      min-height: 120px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 0.75rem 1rem;
+      font-family: inherit;
+      font-size: 0.95rem;
+      color: #2d3748;
+      resize: vertical;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .memo-area:focus {
+      border-color: #764ba2;
+    }
+
+    /* 우선순위 */
+    .priority-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .priority-box {
+      border-radius: 10px;
+      padding: 0.9rem 1rem;
+    }
+
+    .priority-box.high   { background: #fff5f5; border-left: 4px solid #fc8181; }
+    .priority-box.mid    { background: #fffaf0; border-left: 4px solid #f6ad55; }
+    .priority-box.low    { background: #f0fff4; border-left: 4px solid #68d391; }
+
+    .priority-box .label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+    }
+
+    .priority-box.high .label { color: #c53030; }
+    .priority-box.mid  .label { color: #c05621; }
+    .priority-box.low  .label { color: #276749; }
+
+    .priority-box textarea {
+      width: 100%;
+      border: none;
+      background: transparent;
+      font-family: inherit;
+      font-size: 0.88rem;
+      color: #2d3748;
+      resize: none;
+      outline: none;
+      min-height: 60px;
+    }
+
+    /* 회고 */
+    .reflection-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .reflection-item label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #553c9a;
+      margin-bottom: 0.4rem;
+    }
+
+    .reflection-item textarea {
+      width: 100%;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 0.6rem 0.8rem;
+      font-family: inherit;
+      font-size: 0.88rem;
+      color: #2d3748;
+      resize: vertical;
+      min-height: 70px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .reflection-item textarea:focus {
+      border-color: #764ba2;
+    }
+
+    /* 출력 최적화 */
+    @media print {
+      body { background: #fff; padding: 0; }
+      .section { box-shadow: none; border: 1px solid #e2e8f0; }
+      .memo-area, textarea { border: 1px solid #ccc !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- 헤더 -->
+    <div class="header">
+      <h1>📋 오늘의 일정표</h1>
+      <div class="date">2026년 6월 26일</div>
+      <div class="day">금요일</div>
+    </div>
+
+    <!-- 오늘의 목표 -->
+    <div class="section">
+      <div class="section-title">🎯 오늘의 목표</div>
+      <ul class="goals-list">
+        <li><input type="checkbox"> <span contenteditable="true" style="outline:none; flex:1;">목표 1을 입력하세요</span></li>
+        <li><input type="checkbox"> <span contenteditable="true" style="outline:none; flex:1;">목표 2를 입력하세요</span></li>
+        <li><input type="checkbox"> <span contenteditable="true" style="outline:none; flex:1;">목표 3을 입력하세요</span></li>
+      </ul>
+    </div>
+
+    <!-- 우선순위 -->
+    <div class="section">
+      <div class="section-title">⚡ 우선순위</div>
+      <div class="priority-grid">
+        <div class="priority-box high">
+          <div class="label">🔴 높음 (Must Do)</div>
+          <textarea placeholder="꼭 해야 할 일"></textarea>
+        </div>
+        <div class="priority-box mid">
+          <div class="label">🟡 중간 (Should Do)</div>
+          <textarea placeholder="하면 좋은 일"></textarea>
+        </div>
+        <div class="priority-box low">
+          <div class="label">🟢 낮음 (Nice to Do)</div>
+          <textarea placeholder="여유 있을 때 할 일"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- 시간 일정 -->
+    <div class="section">
+      <div class="section-title">🕐 시간별 일정</div>
+      <table class="schedule-table">
+        <thead>
+          <tr>
+            <th>시간</th>
+            <th>내용</th>
+            <th>비고</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>09:00 – 09:30</td>
+            <td contenteditable="true"></td>
+            <td><span class="badge badge-work">업무</span></td>
+          </tr>
+          <tr>
+            <td>09:30 – 10:30</td>
+            <td contenteditable="true"></td>
+            <td><span class="badge badge-work">업무</span></td>
+          </tr>
+          <tr>
+            <td>10:30 – 12:00</td>
+            <td contenteditable="true"></td>
+            <td><span class="badge badge-work">업무</span></td>
+          </tr>
+          <tr>
+            <td>12:00 – 13:00</td>
+            <td contenteditable="true">점심 식사</td>
+            <td><span class="badge badge-break">휴식</span></td>
+          </tr>
+          <tr>
+            <td>13:00 – 14:30</td>
+            <td contenteditable="true"></td>
+            <td><span class="badge badge-work">업무</span></td>
+          </tr>
+          <tr>
+            <td>14:30 – 15:30</td>
+            <td contenteditable="true"></td>
+            <td><span class="badge badge-meet">회의</span></td>
+          </tr>
+          <tr>
+            <td>15:30 – 17:00</td>
+            <td contenteditable="true"></td>
+            <td><span class="badge badge-study">학습</span></td>
+          </tr>
+          <tr>
+            <td>17:00 – 18:00</td>
+            <td contenteditable="true"></td>
+            <td><span class="badge badge-work">업무</span></td>
+          </tr>
+          <tr>
+            <td>18:00 –</td>
+            <td contenteditable="true">퇴근</td>
+            <td><span class="badge badge-break">휴식</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 메모 -->
+    <div class="section">
+      <div class="section-title">📝 메모 / 아이디어</div>
+      <textarea class="memo-area" placeholder="오늘 떠오른 아이디어, 전달 사항, 참고 링크 등을 자유롭게 적어보세요."></textarea>
+    </div>
+
+    <!-- 하루 회고 -->
+    <div class="section">
+      <div class="section-title">🌙 하루 회고</div>
+      <div class="reflection-grid">
+        <div class="reflection-item">
+          <label>✅ 잘한 점</label>
+          <textarea placeholder="오늘 잘한 점을 적어보세요"></textarea>
+        </div>
+        <div class="reflection-item">
+          <label>💡 개선할 점</label>
+          <textarea placeholder="내일 더 잘하려면?"></textarea>
+        </div>
+        <div class="reflection-item">
+          <label>😊 오늘의 감정</label>
+          <textarea placeholder="오늘 하루 어떤 감정이었나요?"></textarea>
+        </div>
+        <div class="reflection-item">
+          <label>📌 내일 준비할 것</label>
+          <textarea placeholder="내일을 위해 준비할 것들"></textarea>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>
