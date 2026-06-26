@@ -334,7 +334,7 @@
     <button class="toggle-tab right-tab" id="rightToggle" onclick="togglePanel('right')" title="Toggle right panel">▶</button>
 
     <div class="tree-svg-wrap">
-      <svg class="tree" viewBox="0 0 750 760" xmlns="http://www.w3.org/2000/svg">
+      <svg class="tree" viewBox="0 0 750 980" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <!-- Sky-to-ground background gradient (top=night sky, bottom=earth) -->
           <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
@@ -363,7 +363,8 @@
         </defs>
 
         <!-- BACKGROUND -->
-        <rect x="-5000" y="0" width="10750" height="760" fill="url(#bgGrad)"/>
+        <filter id="txtShadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="1" stdDeviation="2.5" flood-color="#000" flood-opacity="0.88"/></filter>
+        <rect x="-5000" y="0" width="10750" height="980" fill="url(#bgGrad)"/>
 
         <!-- ── STARS IN NIGHT SKY (top area, y < 290) ── -->
         <!-- Large sparkle stars -->
@@ -415,248 +416,334 @@
         <circle cx="714" cy="44" r="21" fill="#0d0520" opacity="0.95"/>
 
         <!-- GROUND at bottom -->
-        <rect x="-5000" y="728" width="10750" height="32" fill="#1a0c02"/>
-        <path d="M0,722 Q80,715 160,722 Q240,730 320,720 Q400,712 480,722 Q560,730 640,718 Q700,710 750,720 L750,728 L0,728 Z" fill="#2d1606" opacity="0.95"/>
-        <!-- Small ground detail -->
-        <path d="M0,726 Q40,721 80,726 Q120,730 160,724" stroke="#3d2006" stroke-width="1" fill="none" opacity="0.6"/>
-        <!-- Tiny grass tufts -->
-        <text x="38"  y="728" font-size="11" opacity="0.45">🌿</text>
-        <text x="130" y="726" font-size="9"  opacity="0.35">🌱</text>
-        <text x="580" y="728" font-size="11" opacity="0.4">🌿</text>
-        <text x="680" y="726" font-size="9"  opacity="0.35">🌱</text>
+        <rect x="-5000" y="948" width="10750" height="32" fill="#1a0c02"/>
+        <path d="M0,942 Q80,935 160,942 Q240,950 320,940 Q400,932 480,942 Q560,950 640,938 Q700,930 750,940 L750,948 L0,948 Z" fill="#2d1606" opacity="0.95"/>
+        <text x="38"  y="948" font-size="11" opacity="0.45">🌿</text>
+        <text x="130" y="946" font-size="9"  opacity="0.35">🌱</text>
+        <text x="580" y="948" font-size="11" opacity="0.4">🌿</text>
+        <text x="680" y="946" font-size="9"  opacity="0.35">🌱</text>
 
-        <!-- ── SHARED TRUNK LINES ── -->
-        <line x1="375" y1="646" x2="375" y2="527" stroke="rgba(196,160,255,0.45)" stroke-width="2"/>
-        <line x1="375" y1="467" x2="375" y2="416" stroke="rgba(244,114,182,0.5)" stroke-width="2.2" stroke-dasharray="7,5"/>
+        <!-- ── SHARED TRUNK LINES (6 shared stages) ── -->
+        <line x1="375" y1="900" x2="375" y2="848" stroke="rgba(196,160,255,0.4)" stroke-width="1.6"/>
+        <line x1="375" y1="822" x2="375" y2="760" stroke="rgba(196,160,255,0.38)" stroke-width="1.6"/>
+        <line x1="375" y1="734" x2="375" y2="662" stroke="rgba(196,160,255,0.42)" stroke-width="1.6"/>
+        <line x1="375" y1="636" x2="375" y2="572" stroke="rgba(196,160,255,0.42)" stroke-width="1.6"/>
+        <line x1="375" y1="546" x2="375" y2="487" stroke="rgba(244,114,182,0.5)" stroke-width="1.8" stroke-dasharray="7,5"/>
 
-        <!-- ── BRANCH DIVERGE LINES (from Research Focus cy=370) ── -->
-        <!-- → Professor branch (left) -->
-        <line data-route="prof" x1="375" y1="330" x2="135" y2="268" stroke="rgba(196,160,255,0.5)" stroke-width="1.8" stroke-dasharray="6,4"/>
-        <line data-route="prof" x1="135" y1="228" x2="135" y2="162" stroke="rgba(196,160,255,0.45)" stroke-width="1.8" stroke-dasharray="6,4"/>
-        <line data-route="prof" x1="135" y1="113" x2="135" y2="92"  stroke="rgba(253,230,138,0.55)" stroke-width="2" stroke-dasharray="5,4"/>
-        <!-- → Industry branch (center) -->
-        <line data-route="tech" x1="375" y1="324" x2="375" y2="268" stroke="rgba(100,220,170,0.5)" stroke-width="1.8" stroke-dasharray="6,4"/>
-        <line data-route="tech" x1="375" y1="228" x2="375" y2="162" stroke="rgba(100,220,170,0.45)" stroke-width="1.8" stroke-dasharray="6,4"/>
-        <line data-route="tech" x1="375" y1="113" x2="375" y2="92"  stroke="rgba(253,230,138,0.55)" stroke-width="2" stroke-dasharray="5,4"/>
-        <!-- → Startup branch (right) -->
-        <line data-route="startup" x1="375" y1="330" x2="615" y2="268" stroke="rgba(245,180,60,0.5)" stroke-width="1.8" stroke-dasharray="6,4"/>
-        <line data-route="startup" x1="615" y1="228" x2="615" y2="162" stroke="rgba(245,180,60,0.45)" stroke-width="1.8" stroke-dasharray="6,4"/>
-        <line data-route="startup" x1="615" y1="113" x2="615" y2="92"  stroke="rgba(253,230,138,0.55)" stroke-width="2" stroke-dasharray="5,4"/>
+        <!-- ── BRANCH DIVERGE from Research Focus cy=460 ── -->
+        <line data-route="prof"    x1="375" y1="423" x2="130" y2="368" stroke="rgba(196,160,255,0.5)" stroke-width="1.6" stroke-dasharray="6,4"/>
+        <line data-route="prof"    x1="130" y1="342" x2="130" y2="278" stroke="rgba(196,160,255,0.45)" stroke-width="1.6" stroke-dasharray="6,4"/>
+        <line data-route="prof"    x1="130" y1="252" x2="130" y2="188" stroke="rgba(196,160,255,0.42)" stroke-width="1.6" stroke-dasharray="6,4"/>
+        <line data-route="prof"    x1="130" y1="162" x2="130" y2="100" stroke="rgba(253,230,138,0.55)" stroke-width="1.8" stroke-dasharray="5,4"/>
 
-        <!-- ── SHARED NODES ── -->
+        <line data-route="tech"    x1="375" y1="423" x2="375" y2="368" stroke="rgba(100,220,170,0.5)" stroke-width="1.6" stroke-dasharray="6,4"/>
+        <line data-route="tech"    x1="375" y1="342" x2="375" y2="278" stroke="rgba(100,220,170,0.45)" stroke-width="1.6" stroke-dasharray="6,4"/>
+        <line data-route="tech"    x1="375" y1="252" x2="375" y2="188" stroke="rgba(100,220,170,0.42)" stroke-width="1.6" stroke-dasharray="6,4"/>
+        <line data-route="tech"    x1="375" y1="162" x2="375" y2="100" stroke="rgba(253,230,138,0.55)" stroke-width="1.8" stroke-dasharray="5,4"/>
 
-        <!-- ① ADMISSION — ground, amber -->
+        <line data-route="startup" x1="375" y1="423" x2="620" y2="368" stroke="rgba(245,180,60,0.5)" stroke-width="1.6" stroke-dasharray="6,4"/>
+        <line data-route="startup" x1="620" y1="342" x2="620" y2="278" stroke="rgba(245,180,60,0.45)" stroke-width="1.6" stroke-dasharray="6,4"/>
+        <line data-route="startup" x1="620" y1="252" x2="620" y2="188" stroke="rgba(245,180,60,0.42)" stroke-width="1.6" stroke-dasharray="6,4"/>
+        <line data-route="startup" x1="620" y1="162" x2="620" y2="100" stroke="rgba(253,230,138,0.55)" stroke-width="1.8" stroke-dasharray="5,4"/>
+
+        <!-- ── SHARED NODES (6 stages) ── -->
+
+        <!-- ① ADMISSION — ground -->
         <g class="node-g" onclick="openQuestModal('admission')">
-          <g class="star-ray" transform="translate(375,682)">
+          <g class="star-ray" transform="translate(375,930)">
             <line x1="0" y1="-68" x2="0" y2="68" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round"/>
             <line x1="-68" y1="0" x2="68" y2="0" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round"/>
             <line x1="-48" y1="-48" x2="48" y2="48" stroke="#fbbf24" stroke-width="1.8" stroke-linecap="round"/>
             <line x1="48" y1="-48" x2="-48" y2="48" stroke="#fbbf24" stroke-width="1.8" stroke-linecap="round"/>
           </g>
-          <circle class="node-main" cx="375" cy="682" r="38" fill="url(#gAdmit)" filter="url(#glow1)"/>
-          <text x="375" y="673" text-anchor="middle" font-size="22" fill="white">🎓</text>
-          <text x="375" y="690" text-anchor="middle" font-size="13" fill="white" font-weight="800">Admission</text>
-          <circle cx="408" cy="652" r="13" fill="rgba(255,255,255,0.9)" stroke="#f59e0b" stroke-width="1.5"/>
-          <text x="408" y="656" text-anchor="middle" font-size="10" fill="#b45309" font-weight="800">Q</text>
+          <circle class="node-main" cx="375" cy="930" r="30" fill="url(#gAdmit)" filter="url(#glow1)"/>
+          <text x="375" y="922" text-anchor="middle" font-size="18" fill="white" filter="url(#txtShadow)">🎓</text>
+          <text x="375" y="937" text-anchor="middle" font-size="10" fill="white" font-weight="800" filter="url(#txtShadow)">Admission</text>
+          <circle cx="400" cy="907" r="11" fill="rgba(255,255,255,0.9)" stroke="#f59e0b" stroke-width="1.5"/>
+          <text x="400" y="911" text-anchor="middle" font-size="9" fill="#b45309" font-weight="800">Q</text>
         </g>
 
-        <!-- ② LAB EXPLORATION — purple (done) -->
+        <!-- 2 GRE & Research Prep -->
+        <g class="node-g" onclick="openQuestModal('prereq')">
+          <g class="star-ray" transform="translate(375,835)">
+            <line x1="0" y1="-55" x2="0" y2="55" stroke="#fbbf24" stroke-width="2" stroke-linecap="round"/>
+            <line x1="-55" y1="0" x2="55" y2="0" stroke="#fbbf24" stroke-width="2" stroke-linecap="round"/>
+            <line x1="-39" y1="-39" x2="39" y2="39" stroke="#fbbf24" stroke-width="1.4" stroke-linecap="round"/>
+            <line x1="39" y1="-39" x2="-39" y2="39" stroke="#fbbf24" stroke-width="1.4" stroke-linecap="round"/>
+          </g>
+          <circle class="node-main" cx="375" cy="835" r="26" fill="url(#gAdmit)" opacity="0.85" filter="url(#glow1)"/>
+          <text x="375" y="829" text-anchor="middle" font-size="16" fill="white" filter="url(#txtShadow)">📝</text>
+          <text x="375" y="841" text-anchor="middle" font-size="9" fill="white" font-weight="800" filter="url(#txtShadow)">GRE &amp; Prep</text>
+          <circle cx="396" cy="813" r="10" fill="rgba(255,255,255,0.9)" stroke="#f59e0b" stroke-width="1.5"/>
+          <text x="396" y="817" text-anchor="middle" font-size="8" fill="#b45309" font-weight="800">Q</text>
+        </g>
+
+        <!-- 3 Orientation & Core Courses -->
+        <g class="node-g" onclick="openQuestModal('orient')">
+          <g class="star-ray" transform="translate(375,747)">
+            <line x1="0" y1="-55" x2="0" y2="55" stroke="#a78bfa" stroke-width="2" stroke-linecap="round"/>
+            <line x1="-55" y1="0" x2="55" y2="0" stroke="#a78bfa" stroke-width="2" stroke-linecap="round"/>
+            <line x1="-39" y1="-39" x2="39" y2="39" stroke="#a78bfa" stroke-width="1.4" stroke-linecap="round"/>
+            <line x1="39" y1="-39" x2="-39" y2="39" stroke="#a78bfa" stroke-width="1.4" stroke-linecap="round"/>
+          </g>
+          <circle class="node-main" cx="375" cy="747" r="26" fill="url(#gDone)" opacity="0.9" filter="url(#glow1)"/>
+          <text x="375" y="741" text-anchor="middle" font-size="16" fill="white" filter="url(#txtShadow)">🏫</text>
+          <text x="375" y="752" text-anchor="middle" font-size="9" fill="white" font-weight="800" filter="url(#txtShadow)">Orientation</text>
+          <text x="375" y="762" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.92)" font-weight="700" filter="url(#txtShadow)">&amp; Core Courses</text>
+          <circle cx="396" cy="725" r="10" fill="rgba(255,255,255,0.9)" stroke="#9b6dff" stroke-width="1.5"/>
+          <text x="396" y="729" text-anchor="middle" font-size="8" fill="#6d28d9" font-weight="800">Q</text>
+        </g>
+
+        <!-- 4 Lab Exploration -->
         <g class="node-g" onclick="openQuestModal('lab')">
-          <g class="star-ray" transform="translate(375,497)">
-            <line x1="0" y1="-72" x2="0" y2="72" stroke="#a78bfa" stroke-width="2.5" stroke-linecap="round"/>
-            <line x1="-72" y1="0" x2="72" y2="0" stroke="#a78bfa" stroke-width="2.5" stroke-linecap="round"/>
-            <line x1="-51" y1="-51" x2="51" y2="51" stroke="#a78bfa" stroke-width="1.8" stroke-linecap="round"/>
-            <line x1="51" y1="-51" x2="-51" y2="51" stroke="#a78bfa" stroke-width="1.8" stroke-linecap="round"/>
+          <g class="star-ray" transform="translate(375,649)">
+            <line x1="0" y1="-60" x2="0" y2="60" stroke="#a78bfa" stroke-width="2.2" stroke-linecap="round"/>
+            <line x1="-60" y1="0" x2="60" y2="0" stroke="#a78bfa" stroke-width="2.2" stroke-linecap="round"/>
+            <line x1="-42" y1="-42" x2="42" y2="42" stroke="#a78bfa" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="42" y1="-42" x2="-42" y2="42" stroke="#a78bfa" stroke-width="1.5" stroke-linecap="round"/>
           </g>
-          <circle class="node-main" cx="375" cy="497" r="40" fill="url(#gDone)" filter="url(#glow1)"/>
-          <text x="375" y="487" text-anchor="middle" font-size="22" fill="white">🔭</text>
-          <text x="375" y="503" text-anchor="middle" font-size="12" fill="white" font-weight="800">Lab</text>
-          <text x="375" y="517" text-anchor="middle" font-size="11" fill="rgba(255,255,255,0.95)" font-weight="700">Exploration</text>
-          <circle cx="411" cy="468" r="13" fill="rgba(255,255,255,0.9)" stroke="#9b6dff" stroke-width="1.5"/>
-          <text x="411" y="472" text-anchor="middle" font-size="10" fill="#6d28d9" font-weight="800">Q</text>
+          <circle class="node-main" cx="375" cy="649" r="30" fill="url(#gDone)" filter="url(#glow1)"/>
+          <text x="375" y="642" text-anchor="middle" font-size="18" fill="white" filter="url(#txtShadow)">🔭</text>
+          <text x="375" y="655" text-anchor="middle" font-size="10" fill="white" font-weight="800" filter="url(#txtShadow)">Lab</text>
+          <text x="375" y="666" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.95)" font-weight="700" filter="url(#txtShadow)">Exploration</text>
+          <circle cx="400" cy="626" r="11" fill="rgba(255,255,255,0.9)" stroke="#9b6dff" stroke-width="1.5"/>
+          <text x="400" y="630" text-anchor="middle" font-size="9" fill="#6d28d9" font-weight="800">Q</text>
         </g>
 
-        <!-- ③ RESEARCH FOCUS — pink, ACTIVE -->
-        <g class="node-g" onclick="openQuestModal('topic')">
-          <g class="star-ray" transform="translate(375,370)">
-            <line x1="0" y1="-78" x2="0" y2="78" stroke="#f472b6" stroke-width="3" stroke-linecap="round"/>
-            <line x1="-78" y1="0" x2="78" y2="0" stroke="#f472b6" stroke-width="3" stroke-linecap="round"/>
-            <line x1="-55" y1="-55" x2="55" y2="55" stroke="#f472b6" stroke-width="2" stroke-linecap="round"/>
-            <line x1="55" y1="-55" x2="-55" y2="55" stroke="#f472b6" stroke-width="2" stroke-linecap="round"/>
+        <!-- 5 Lab Joining -->
+        <g class="node-g" onclick="openQuestModal('labsel')">
+          <g class="star-ray" transform="translate(375,559)">
+            <line x1="0" y1="-55" x2="0" y2="55" stroke="#c4b5fd" stroke-width="2" stroke-linecap="round"/>
+            <line x1="-55" y1="0" x2="55" y2="0" stroke="#c4b5fd" stroke-width="2" stroke-linecap="round"/>
+            <line x1="-39" y1="-39" x2="39" y2="39" stroke="#c4b5fd" stroke-width="1.4" stroke-linecap="round"/>
+            <line x1="39" y1="-39" x2="-39" y2="39" stroke="#c4b5fd" stroke-width="1.4" stroke-linecap="round"/>
           </g>
-          <circle class="node-main" cx="375" cy="370" r="46" fill="url(#gActive)" filter="url(#glow1)"/>
-          <text x="375" y="358" text-anchor="middle" font-size="26" fill="white">💡</text>
-          <text x="375" y="376" text-anchor="middle" font-size="13" fill="white" font-weight="800">Research</text>
-          <text x="375" y="390" text-anchor="middle" font-size="12" fill="rgba(255,255,255,0.95)" font-weight="700">Focus</text>
-          <circle cx="375" cy="370" r="54" fill="none" stroke="#f472b6" stroke-width="2" opacity="0.5" stroke-dasharray="5,4">
-            <animate attributeName="r" values="54;66;54" dur="2.4s" repeatCount="indefinite"/>
+          <circle class="node-main" cx="375" cy="559" r="26" fill="url(#gLock)" opacity="0.9" filter="url(#glow1)"/>
+          <text x="375" y="553" text-anchor="middle" font-size="16" fill="white" filter="url(#txtShadow)">🏠</text>
+          <text x="375" y="564" text-anchor="middle" font-size="9" fill="white" font-weight="800" filter="url(#txtShadow)">Lab</text>
+          <text x="375" y="574" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.92)" font-weight="700" filter="url(#txtShadow)">Joining</text>
+          <circle cx="396" cy="537" r="10" fill="rgba(255,255,255,0.9)" stroke="#c4a0ff" stroke-width="1.5"/>
+          <text x="396" y="541" text-anchor="middle" font-size="8" fill="#8b5cf6" font-weight="800">Q</text>
+        </g>
+
+        <!-- 6 Research Focus — ACTIVE -->
+        <g class="node-g" onclick="openQuestModal('topic')">
+          <g class="star-ray" transform="translate(375,460)">
+            <line x1="0" y1="-65" x2="0" y2="65" stroke="#f472b6" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="-65" y1="0" x2="65" y2="0" stroke="#f472b6" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="-46" y1="-46" x2="46" y2="46" stroke="#f472b6" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="46" y1="-46" x2="-46" y2="46" stroke="#f472b6" stroke-width="1.8" stroke-linecap="round"/>
+          </g>
+          <circle class="node-main" cx="375" cy="460" r="37" fill="url(#gActive)" filter="url(#glow1)"/>
+          <text x="375" y="451" text-anchor="middle" font-size="21" fill="white" filter="url(#txtShadow)">💡</text>
+          <text x="375" y="466" text-anchor="middle" font-size="10" fill="white" font-weight="800" filter="url(#txtShadow)">Research</text>
+          <text x="375" y="478" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.95)" font-weight="700" filter="url(#txtShadow)">Focus</text>
+          <circle cx="375" cy="460" r="45" fill="none" stroke="#f472b6" stroke-width="2" opacity="0.5" stroke-dasharray="5,4">
+            <animate attributeName="r" values="45;57;45" dur="2.4s" repeatCount="indefinite"/>
             <animate attributeName="opacity" values="0.5;0.08;0.5" dur="2.4s" repeatCount="indefinite"/>
           </circle>
-          <circle cx="416" cy="336" r="13" fill="rgba(255,255,255,0.92)" stroke="#f472b6" stroke-width="2"/>
-          <text x="416" y="340" text-anchor="middle" font-size="10" fill="#be185d" font-weight="800">Q</text>
+          <circle cx="407" cy="430" r="12" fill="rgba(255,255,255,0.92)" stroke="#f472b6" stroke-width="2"/>
+          <text x="407" y="434" text-anchor="middle" font-size="9" fill="#be185d" font-weight="800">Q</text>
         </g>
-        <text x="428" y="322" font-size="11" fill="#f9a8d4" font-weight="800">← Now</text>
+        <text x="420" y="417" font-size="10" fill="#f9a8d4" font-weight="800" filter="url(#txtShadow)">Now</text>
 
-        <!-- ── BRANCH LABELS ── -->
-        <text data-route="prof"    x="135" y="302" text-anchor="middle" font-size="10" fill="rgba(196,160,255,0.9)" font-weight="800">🎓 PROFESSOR</text>
-        <text data-route="tech"    x="375" y="302" text-anchor="middle" font-size="10" fill="rgba(100,220,170,0.9)"  font-weight="800">🏢 INDUSTRY</text>
-        <text data-route="startup" x="615" y="302" text-anchor="middle" font-size="10" fill="rgba(253,200,80,0.9)"  font-weight="800">🚀 STARTUP</text>
+        <!-- BRANCH LABELS -->
+        <text data-route="prof"    x="130" y="410" text-anchor="middle" font-size="9" fill="rgba(196,160,255,0.9)" font-weight="800" filter="url(#txtShadow)">🎓 PROFESSOR</text>
+        <text data-route="tech"    x="375" y="410" text-anchor="middle" font-size="9" fill="rgba(100,220,170,0.9)"  font-weight="800" filter="url(#txtShadow)">🏢 INDUSTRY</text>
+        <text data-route="startup" x="620" y="410" text-anchor="middle" font-size="9" fill="rgba(253,200,80,0.9)"  font-weight="800" filter="url(#txtShadow)">🚀 STARTUP</text>
 
-        <!-- ── PROFESSOR BRANCH (left, cx=135) ── -->
-
-        <!-- P1: First Paper Submission -->
+        <!-- PROFESSOR BRANCH cx=130 -->
+        <!-- P7 Conference Paper -->
         <g data-route="prof" class="node-g" onclick="openQuestModal('paper')">
-          <g class="star-ray" transform="translate(135,248)">
-            <line x1="0" y1="-60" x2="0" y2="60" stroke="#c4b5fd" stroke-width="2.2" stroke-linecap="round"/>
-            <line x1="-60" y1="0" x2="60" y2="0" stroke="#c4b5fd" stroke-width="2.2" stroke-linecap="round"/>
-            <line x1="-42" y1="-42" x2="42" y2="42" stroke="#c4b5fd" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="42" y1="-42" x2="-42" y2="42" stroke="#c4b5fd" stroke-width="1.5" stroke-linecap="round"/>
+          <g class="star-ray" transform="translate(130,355)">
+            <line x1="0" y1="-50" x2="0" y2="50" stroke="#c4b5fd" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="-50" y1="0" x2="50" y2="0" stroke="#c4b5fd" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="-35" y1="-35" x2="35" y2="35" stroke="#c4b5fd" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="35" y1="-35" x2="-35" y2="35" stroke="#c4b5fd" stroke-width="1.2" stroke-linecap="round"/>
           </g>
-          <circle class="node-main" cx="135" cy="248" r="33" fill="url(#gSky)" opacity="0.95" filter="url(#glow1)"/>
-          <text x="135" y="239" text-anchor="middle" font-size="20" fill="white">📄</text>
-          <text x="135" y="254" text-anchor="middle" font-size="11" fill="white" font-weight="800">First</text>
-          <text x="135" y="266" text-anchor="middle" font-size="10" fill="rgba(255,255,255,0.95)" font-weight="700">Paper</text>
-          <circle cx="160" cy="220" r="12" fill="rgba(255,255,255,0.9)" stroke="#818cf8" stroke-width="1.5"/>
-          <text x="160" y="224" text-anchor="middle" font-size="9" fill="#3730a3" font-weight="800">Q</text>
+          <circle class="node-main" cx="130" cy="355" r="26" fill="url(#gSky)" opacity="0.95" filter="url(#glow1)"/>
+          <text x="130" y="349" text-anchor="middle" font-size="16" fill="white" filter="url(#txtShadow)">📄</text>
+          <text x="130" y="360" text-anchor="middle" font-size="9" fill="white" font-weight="800" filter="url(#txtShadow)">Conference</text>
+          <text x="130" y="370" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.92)" font-weight="700" filter="url(#txtShadow)">Paper</text>
+          <circle cx="151" cy="333" r="10" fill="rgba(255,255,255,0.9)" stroke="#818cf8" stroke-width="1.5"/>
+          <text x="151" y="337" text-anchor="middle" font-size="8" fill="#3730a3" font-weight="800">Q</text>
         </g>
-
-        <!-- P2: Postdoc / Visiting Researcher -->
-        <g data-route="prof" class="node-g" onclick="openQuestModal('conf')">
-          <g class="star-ray" transform="translate(135,137)">
-            <line x1="0" y1="-60" x2="0" y2="60" stroke="#c4b5fd" stroke-width="2.2" stroke-linecap="round"/>
-            <line x1="-60" y1="0" x2="60" y2="0" stroke="#c4b5fd" stroke-width="2.2" stroke-linecap="round"/>
-            <line x1="-42" y1="-42" x2="42" y2="42" stroke="#c4b5fd" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="42" y1="-42" x2="-42" y2="42" stroke="#c4b5fd" stroke-width="1.5" stroke-linecap="round"/>
+        <!-- P8 Teaching Assistant -->
+        <g data-route="prof" class="node-g" onclick="openQuestModal('ta')">
+          <g class="star-ray" transform="translate(130,265)">
+            <line x1="0" y1="-50" x2="0" y2="50" stroke="#c4b5fd" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="-50" y1="0" x2="50" y2="0" stroke="#c4b5fd" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="-35" y1="-35" x2="35" y2="35" stroke="#c4b5fd" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="35" y1="-35" x2="-35" y2="35" stroke="#c4b5fd" stroke-width="1.2" stroke-linecap="round"/>
           </g>
-          <circle class="node-main" cx="135" cy="137" r="33" fill="url(#gLock)" opacity="0.95" filter="url(#glow1)"/>
-          <text x="135" y="128" text-anchor="middle" font-size="20" fill="white">🏛️</text>
-          <text x="135" y="143" text-anchor="middle" font-size="11" fill="white" font-weight="800">Postdoc</text>
-          <text x="135" y="155" text-anchor="middle" font-size="10" fill="rgba(255,255,255,0.95)" font-weight="700">Fellowship</text>
-          <circle cx="160" cy="109" r="12" fill="rgba(255,255,255,0.9)" stroke="#c4a0ff" stroke-width="1.5"/>
-          <text x="160" y="113" text-anchor="middle" font-size="9" fill="#8b5cf6" font-weight="800">Q</text>
+          <circle class="node-main" cx="130" cy="265" r="26" fill="url(#gLock)" opacity="0.95" filter="url(#glow1)"/>
+          <text x="130" y="259" text-anchor="middle" font-size="16" fill="white" filter="url(#txtShadow)">🎤</text>
+          <text x="130" y="270" text-anchor="middle" font-size="9" fill="white" font-weight="800" filter="url(#txtShadow)">Teaching</text>
+          <text x="130" y="280" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.92)" font-weight="700" filter="url(#txtShadow)">Assistant</text>
+          <circle cx="151" cy="243" r="10" fill="rgba(255,255,255,0.9)" stroke="#c4a0ff" stroke-width="1.5"/>
+          <text x="151" y="247" text-anchor="middle" font-size="8" fill="#8b5cf6" font-weight="800">Q</text>
         </g>
-
-        <!-- P-GOAL: Tenured Professor -->
-        <g data-route="prof" class="node-g" onclick="openQuestModal('expert')">
-          <g class="star-ray" transform="translate(135,58)">
-            <line x1="0" y1="-72" x2="0" y2="72" stroke="#fef08a" stroke-width="2.5" stroke-linecap="round"/>
-            <line x1="-72" y1="0" x2="72" y2="0" stroke="#fef08a" stroke-width="2.5" stroke-linecap="round"/>
-            <line x1="-51" y1="-51" x2="51" y2="51" stroke="#fef08a" stroke-width="1.8" stroke-linecap="round"/>
-            <line x1="51" y1="-51" x2="-51" y2="51" stroke="#fef08a" stroke-width="1.8" stroke-linecap="round"/>
+        <!-- P9 Postdoc -->
+        <g data-route="prof" class="node-g" onclick="openQuestModal('postdoc')">
+          <g class="star-ray" transform="translate(130,175)">
+            <line x1="0" y1="-50" x2="0" y2="50" stroke="#c4b5fd" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="-50" y1="0" x2="50" y2="0" stroke="#c4b5fd" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="-35" y1="-35" x2="35" y2="35" stroke="#c4b5fd" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="35" y1="-35" x2="-35" y2="35" stroke="#c4b5fd" stroke-width="1.2" stroke-linecap="round"/>
           </g>
-          <circle class="node-main" cx="135" cy="58" r="38" fill="url(#gGold)" filter="url(#glow2)"/>
-          <text x="135" y="47"  text-anchor="middle" font-size="22" fill="white">🏆</text>
-          <text x="135" y="63"  text-anchor="middle" font-size="12" fill="white" font-weight="800">Tenured</text>
-          <text x="135" y="76"  text-anchor="middle" font-size="11" fill="rgba(255,255,255,0.95)" font-weight="700">Professor</text>
-          <circle cx="135" cy="58" r="46" fill="none" stroke="#fef08a" stroke-width="1" opacity="0.35">
-            <animate attributeName="r" values="46;56;46" dur="3s" repeatCount="indefinite"/>
+          <circle class="node-main" cx="130" cy="175" r="26" fill="url(#gLock)" opacity="0.95" filter="url(#glow1)"/>
+          <text x="130" y="169" text-anchor="middle" font-size="16" fill="white" filter="url(#txtShadow)">🏛️</text>
+          <text x="130" y="180" text-anchor="middle" font-size="9" fill="white" font-weight="800" filter="url(#txtShadow)">Postdoc</text>
+          <text x="130" y="190" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.92)" font-weight="700" filter="url(#txtShadow)">Fellowship</text>
+          <circle cx="151" cy="153" r="10" fill="rgba(255,255,255,0.9)" stroke="#c4a0ff" stroke-width="1.5"/>
+          <text x="151" y="157" text-anchor="middle" font-size="8" fill="#8b5cf6" font-weight="800">Q</text>
+        </g>
+        <!-- P10 GOAL -->
+        <g data-route="prof" class="node-g" onclick="openQuestModal('profgoal')">
+          <g class="star-ray" transform="translate(130,70)">
+            <line x1="0" y1="-58" x2="0" y2="58" stroke="#fef08a" stroke-width="2" stroke-linecap="round"/>
+            <line x1="-58" y1="0" x2="58" y2="0" stroke="#fef08a" stroke-width="2" stroke-linecap="round"/>
+            <line x1="-41" y1="-41" x2="41" y2="41" stroke="#fef08a" stroke-width="1.4" stroke-linecap="round"/>
+            <line x1="41" y1="-41" x2="-41" y2="41" stroke="#fef08a" stroke-width="1.4" stroke-linecap="round"/>
+          </g>
+          <circle class="node-main" cx="130" cy="70" r="30" fill="url(#gGold)" filter="url(#glow2)"/>
+          <text x="130" y="62" text-anchor="middle" font-size="18" fill="white" filter="url(#txtShadow)">🏆</text>
+          <text x="130" y="75" text-anchor="middle" font-size="10" fill="white" font-weight="800" filter="url(#txtShadow)">Tenured</text>
+          <text x="130" y="87" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.95)" font-weight="700" filter="url(#txtShadow)">Professor</text>
+          <circle cx="130" cy="70" r="38" fill="none" stroke="#fef08a" stroke-width="1" opacity="0.35">
+            <animate attributeName="r" values="38;48;38" dur="3s" repeatCount="indefinite"/>
             <animate attributeName="opacity" values="0.35;0.05;0.35" dur="3s" repeatCount="indefinite"/>
           </circle>
         </g>
 
-        <!-- ── INDUSTRY BRANCH (center, cx=375) ── -->
-
-        <!-- I1: AI Lab Internship -->
+        <!-- INDUSTRY BRANCH cx=375 -->
+        <!-- I7 AI Internship -->
         <g data-route="tech" class="node-g" onclick="openQuestModal('intern')">
-          <g class="star-ray" transform="translate(375,248)">
-            <line x1="0" y1="-60" x2="0" y2="60" stroke="#6ee7b7" stroke-width="2.2" stroke-linecap="round"/>
-            <line x1="-60" y1="0" x2="60" y2="0" stroke="#6ee7b7" stroke-width="2.2" stroke-linecap="round"/>
-            <line x1="-42" y1="-42" x2="42" y2="42" stroke="#6ee7b7" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="42" y1="-42" x2="-42" y2="42" stroke="#6ee7b7" stroke-width="1.5" stroke-linecap="round"/>
+          <g class="star-ray" transform="translate(375,355)">
+            <line x1="0" y1="-50" x2="0" y2="50" stroke="#6ee7b7" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="-50" y1="0" x2="50" y2="0" stroke="#6ee7b7" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="-35" y1="-35" x2="35" y2="35" stroke="#6ee7b7" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="35" y1="-35" x2="-35" y2="35" stroke="#6ee7b7" stroke-width="1.2" stroke-linecap="round"/>
           </g>
-          <circle class="node-main" cx="375" cy="248" r="33" fill="url(#gSky)" opacity="0.95" filter="url(#glow1)"/>
-          <text x="375" y="239" text-anchor="middle" font-size="20" fill="white">💼</text>
-          <text x="375" y="254" text-anchor="middle" font-size="11" fill="white" font-weight="800">AI Lab</text>
-          <text x="375" y="266" text-anchor="middle" font-size="10" fill="rgba(255,255,255,0.95)" font-weight="700">Internship</text>
-          <circle cx="400" cy="220" r="12" fill="rgba(255,255,255,0.9)" stroke="#34d399" stroke-width="1.5"/>
-          <text x="400" y="224" text-anchor="middle" font-size="9" fill="#065f46" font-weight="800">Q</text>
+          <circle class="node-main" cx="375" cy="355" r="26" fill="url(#gSky)" opacity="0.95" filter="url(#glow1)"/>
+          <text x="375" y="349" text-anchor="middle" font-size="16" fill="white" filter="url(#txtShadow)">💼</text>
+          <text x="375" y="360" text-anchor="middle" font-size="9" fill="white" font-weight="800" filter="url(#txtShadow)">AI Lab</text>
+          <text x="375" y="370" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.92)" font-weight="700" filter="url(#txtShadow)">Internship</text>
+          <circle cx="396" cy="333" r="10" fill="rgba(255,255,255,0.9)" stroke="#34d399" stroke-width="1.5"/>
+          <text x="396" y="337" text-anchor="middle" font-size="8" fill="#065f46" font-weight="800">Q</text>
         </g>
-
-        <!-- I2: Top Venue Publication -->
-        <g data-route="tech" class="node-g" onclick="openQuestModal('paper')">
-          <g class="star-ray" transform="translate(375,137)">
-            <line x1="0" y1="-60" x2="0" y2="60" stroke="#6ee7b7" stroke-width="2.2" stroke-linecap="round"/>
-            <line x1="-60" y1="0" x2="60" y2="0" stroke="#6ee7b7" stroke-width="2.2" stroke-linecap="round"/>
-            <line x1="-42" y1="-42" x2="42" y2="42" stroke="#6ee7b7" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="42" y1="-42" x2="-42" y2="42" stroke="#6ee7b7" stroke-width="1.5" stroke-linecap="round"/>
+        <!-- I8 NeurIPS Pub -->
+        <g data-route="tech" class="node-g" onclick="openQuestModal('pub1')">
+          <g class="star-ray" transform="translate(375,265)">
+            <line x1="0" y1="-50" x2="0" y2="50" stroke="#6ee7b7" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="-50" y1="0" x2="50" y2="0" stroke="#6ee7b7" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="-35" y1="-35" x2="35" y2="35" stroke="#6ee7b7" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="35" y1="-35" x2="-35" y2="35" stroke="#6ee7b7" stroke-width="1.2" stroke-linecap="round"/>
           </g>
-          <circle class="node-main" cx="375" cy="137" r="33" fill="url(#gSky)" opacity="0.95" filter="url(#glow1)"/>
-          <text x="375" y="128" text-anchor="middle" font-size="20" fill="white">🔬</text>
-          <text x="375" y="143" text-anchor="middle" font-size="11" fill="white" font-weight="800">NeurIPS</text>
-          <text x="375" y="155" text-anchor="middle" font-size="10" fill="rgba(255,255,255,0.95)" font-weight="700">Publication</text>
-          <circle cx="400" cy="109" r="12" fill="rgba(255,255,255,0.9)" stroke="#34d399" stroke-width="1.5"/>
-          <text x="400" y="113" text-anchor="middle" font-size="9" fill="#065f46" font-weight="800">Q</text>
+          <circle class="node-main" cx="375" cy="265" r="26" fill="url(#gSky)" opacity="0.95" filter="url(#glow1)"/>
+          <text x="375" y="259" text-anchor="middle" font-size="16" fill="white" filter="url(#txtShadow)">🔬</text>
+          <text x="375" y="270" text-anchor="middle" font-size="9" fill="white" font-weight="800" filter="url(#txtShadow)">NeurIPS</text>
+          <text x="375" y="280" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.92)" font-weight="700" filter="url(#txtShadow)">Publication</text>
+          <circle cx="396" cy="243" r="10" fill="rgba(255,255,255,0.9)" stroke="#34d399" stroke-width="1.5"/>
+          <text x="396" y="247" text-anchor="middle" font-size="8" fill="#065f46" font-weight="800">Q</text>
         </g>
-
-        <!-- I-GOAL: Research Scientist @ AI Lab -->
-        <g data-route="tech" class="node-g" onclick="openQuestModal('expert')">
-          <g class="star-ray" transform="translate(375,58)">
-            <line x1="0" y1="-72" x2="0" y2="72" stroke="#fef08a" stroke-width="2.5" stroke-linecap="round"/>
-            <line x1="-72" y1="0" x2="72" y2="0" stroke="#fef08a" stroke-width="2.5" stroke-linecap="round"/>
-            <line x1="-51" y1="-51" x2="51" y2="51" stroke="#fef08a" stroke-width="1.8" stroke-linecap="round"/>
-            <line x1="51" y1="-51" x2="-51" y2="51" stroke="#fef08a" stroke-width="1.8" stroke-linecap="round"/>
+        <!-- I9 Sr Research -->
+        <g data-route="tech" class="node-g" onclick="openQuestModal('srresearch')">
+          <g class="star-ray" transform="translate(375,175)">
+            <line x1="0" y1="-50" x2="0" y2="50" stroke="#6ee7b7" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="-50" y1="0" x2="50" y2="0" stroke="#6ee7b7" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="-35" y1="-35" x2="35" y2="35" stroke="#6ee7b7" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="35" y1="-35" x2="-35" y2="35" stroke="#6ee7b7" stroke-width="1.2" stroke-linecap="round"/>
           </g>
-          <circle class="node-main" cx="375" cy="58" r="38" fill="url(#gGold)" filter="url(#glow2)"/>
-          <text x="375" y="47"  text-anchor="middle" font-size="22" fill="white">🏆</text>
-          <text x="375" y="63"  text-anchor="middle" font-size="12" fill="white" font-weight="800">Research</text>
-          <text x="375" y="76"  text-anchor="middle" font-size="11" fill="rgba(255,255,255,0.95)" font-weight="700">Scientist</text>
-          <circle cx="375" cy="58" r="46" fill="none" stroke="#fef08a" stroke-width="1" opacity="0.35">
-            <animate attributeName="r" values="46;56;46" dur="3.2s" repeatCount="indefinite"/>
+          <circle class="node-main" cx="375" cy="175" r="26" fill="url(#gSky)" opacity="0.95" filter="url(#glow1)"/>
+          <text x="375" y="169" text-anchor="middle" font-size="16" fill="white" filter="url(#txtShadow)">🧪</text>
+          <text x="375" y="180" text-anchor="middle" font-size="9" fill="white" font-weight="800" filter="url(#txtShadow)">Sr. Research</text>
+          <text x="375" y="190" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.92)" font-weight="700" filter="url(#txtShadow)">Role</text>
+          <circle cx="396" cy="153" r="10" fill="rgba(255,255,255,0.9)" stroke="#34d399" stroke-width="1.5"/>
+          <text x="396" y="157" text-anchor="middle" font-size="8" fill="#065f46" font-weight="800">Q</text>
+        </g>
+        <!-- I10 GOAL -->
+        <g data-route="tech" class="node-g" onclick="openQuestModal('indgoal')">
+          <g class="star-ray" transform="translate(375,70)">
+            <line x1="0" y1="-58" x2="0" y2="58" stroke="#fef08a" stroke-width="2" stroke-linecap="round"/>
+            <line x1="-58" y1="0" x2="58" y2="0" stroke="#fef08a" stroke-width="2" stroke-linecap="round"/>
+            <line x1="-41" y1="-41" x2="41" y2="41" stroke="#fef08a" stroke-width="1.4" stroke-linecap="round"/>
+            <line x1="41" y1="-41" x2="-41" y2="41" stroke="#fef08a" stroke-width="1.4" stroke-linecap="round"/>
+          </g>
+          <circle class="node-main" cx="375" cy="70" r="30" fill="url(#gGold)" filter="url(#glow2)"/>
+          <text x="375" y="62" text-anchor="middle" font-size="18" fill="white" filter="url(#txtShadow)">🏆</text>
+          <text x="375" y="75" text-anchor="middle" font-size="10" fill="white" font-weight="800" filter="url(#txtShadow)">Research</text>
+          <text x="375" y="87" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.95)" font-weight="700" filter="url(#txtShadow)">Scientist</text>
+          <circle cx="375" cy="70" r="38" fill="none" stroke="#fef08a" stroke-width="1" opacity="0.35">
+            <animate attributeName="r" values="38;48;38" dur="3.2s" repeatCount="indefinite"/>
             <animate attributeName="opacity" values="0.35;0.05;0.35" dur="3.2s" repeatCount="indefinite"/>
           </circle>
         </g>
 
-        <!-- ── STARTUP BRANCH (right, cx=615) ── -->
-
-        <!-- S1: MVP Launch -->
-        <g data-route="startup" class="node-g" onclick="openQuestModal('conf')">
-          <g class="star-ray" transform="translate(615,248)">
-            <line x1="0" y1="-60" x2="0" y2="60" stroke="#fde68a" stroke-width="2.2" stroke-linecap="round"/>
-            <line x1="-60" y1="0" x2="60" y2="0" stroke="#fde68a" stroke-width="2.2" stroke-linecap="round"/>
-            <line x1="-42" y1="-42" x2="42" y2="42" stroke="#fde68a" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="42" y1="-42" x2="-42" y2="42" stroke="#fde68a" stroke-width="1.5" stroke-linecap="round"/>
+        <!-- STARTUP BRANCH cx=620 -->
+        <!-- S7 AI MVP -->
+        <g data-route="startup" class="node-g" onclick="openQuestModal('mvp')">
+          <g class="star-ray" transform="translate(620,355)">
+            <line x1="0" y1="-50" x2="0" y2="50" stroke="#fde68a" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="-50" y1="0" x2="50" y2="0" stroke="#fde68a" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="-35" y1="-35" x2="35" y2="35" stroke="#fde68a" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="35" y1="-35" x2="-35" y2="35" stroke="#fde68a" stroke-width="1.2" stroke-linecap="round"/>
           </g>
-          <circle class="node-main" cx="615" cy="248" r="33" fill="url(#gSky)" opacity="0.95" filter="url(#glow1)"/>
-          <text x="615" y="239" text-anchor="middle" font-size="20" fill="white">🛠️</text>
-          <text x="615" y="254" text-anchor="middle" font-size="11" fill="white" font-weight="800">MVP</text>
-          <text x="615" y="266" text-anchor="middle" font-size="10" fill="rgba(255,255,255,0.95)" font-weight="700">Launch</text>
-          <circle cx="640" cy="220" r="12" fill="rgba(255,255,255,0.9)" stroke="#f59e0b" stroke-width="1.5"/>
-          <text x="640" y="224" text-anchor="middle" font-size="9" fill="#92400e" font-weight="800">Q</text>
+          <circle class="node-main" cx="620" cy="355" r="26" fill="url(#gSky)" opacity="0.95" filter="url(#glow1)"/>
+          <text x="620" y="349" text-anchor="middle" font-size="16" fill="white" filter="url(#txtShadow)">🛠️</text>
+          <text x="620" y="360" text-anchor="middle" font-size="9" fill="white" font-weight="800" filter="url(#txtShadow)">AI Product</text>
+          <text x="620" y="370" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.92)" font-weight="700" filter="url(#txtShadow)">MVP</text>
+          <circle cx="641" cy="333" r="10" fill="rgba(255,255,255,0.9)" stroke="#f59e0b" stroke-width="1.5"/>
+          <text x="641" y="337" text-anchor="middle" font-size="8" fill="#92400e" font-weight="800">Q</text>
         </g>
-
-        <!-- S2: Seed Funding -->
-        <g data-route="startup" class="node-g" onclick="openQuestModal('intern')">
-          <g class="star-ray" transform="translate(615,137)">
-            <line x1="0" y1="-60" x2="0" y2="60" stroke="#fde68a" stroke-width="2.2" stroke-linecap="round"/>
-            <line x1="-60" y1="0" x2="60" y2="0" stroke="#fde68a" stroke-width="2.2" stroke-linecap="round"/>
-            <line x1="-42" y1="-42" x2="42" y2="42" stroke="#fde68a" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="42" y1="-42" x2="-42" y2="42" stroke="#fde68a" stroke-width="1.5" stroke-linecap="round"/>
+        <!-- S8 YC/Seed -->
+        <g data-route="startup" class="node-g" onclick="openQuestModal('yc')">
+          <g class="star-ray" transform="translate(620,265)">
+            <line x1="0" y1="-50" x2="0" y2="50" stroke="#fde68a" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="-50" y1="0" x2="50" y2="0" stroke="#fde68a" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="-35" y1="-35" x2="35" y2="35" stroke="#fde68a" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="35" y1="-35" x2="-35" y2="35" stroke="#fde68a" stroke-width="1.2" stroke-linecap="round"/>
           </g>
-          <circle class="node-main" cx="615" cy="137" r="33" fill="url(#gSky)" opacity="0.95" filter="url(#glow1)"/>
-          <text x="615" y="128" text-anchor="middle" font-size="20" fill="white">💰</text>
-          <text x="615" y="143" text-anchor="middle" font-size="11" fill="white" font-weight="800">Seed</text>
-          <text x="615" y="155" text-anchor="middle" font-size="10" fill="rgba(255,255,255,0.95)" font-weight="700">Funding</text>
-          <circle cx="640" cy="109" r="12" fill="rgba(255,255,255,0.9)" stroke="#f59e0b" stroke-width="1.5"/>
-          <text x="638" y="116" text-anchor="middle" font-size="9" fill="#92400e" font-weight="800">Q</text>
+          <circle class="node-main" cx="620" cy="265" r="26" fill="url(#gSky)" opacity="0.95" filter="url(#glow1)"/>
+          <text x="620" y="259" text-anchor="middle" font-size="16" fill="white" filter="url(#txtShadow)">💰</text>
+          <text x="620" y="270" text-anchor="middle" font-size="9" fill="white" font-weight="800" filter="url(#txtShadow)">YC / Seed</text>
+          <text x="620" y="280" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.92)" font-weight="700" filter="url(#txtShadow)">Round</text>
+          <circle cx="641" cy="243" r="10" fill="rgba(255,255,255,0.9)" stroke="#f59e0b" stroke-width="1.5"/>
+          <text x="641" y="247" text-anchor="middle" font-size="8" fill="#92400e" font-weight="800">Q</text>
         </g>
-
-        <!-- S-GOAL: Co-Founder / CTO -->
-        <g data-route="startup" class="node-g" onclick="openQuestModal('expert')">
-          <g class="star-ray" transform="translate(615,58)">
-            <line x1="0" y1="-72" x2="0" y2="72" stroke="#fef08a" stroke-width="2.5" stroke-linecap="round"/>
-            <line x1="-72" y1="0" x2="72" y2="0" stroke="#fef08a" stroke-width="2.5" stroke-linecap="round"/>
-            <line x1="-51" y1="-51" x2="51" y2="51" stroke="#fef08a" stroke-width="1.8" stroke-linecap="round"/>
-            <line x1="51" y1="-51" x2="-51" y2="51" stroke="#fef08a" stroke-width="1.8" stroke-linecap="round"/>
+        <!-- S9 Series A -->
+        <g data-route="startup" class="node-g" onclick="openQuestModal('seriesa')">
+          <g class="star-ray" transform="translate(620,175)">
+            <line x1="0" y1="-50" x2="0" y2="50" stroke="#fde68a" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="-50" y1="0" x2="50" y2="0" stroke="#fde68a" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="-35" y1="-35" x2="35" y2="35" stroke="#fde68a" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="35" y1="-35" x2="-35" y2="35" stroke="#fde68a" stroke-width="1.2" stroke-linecap="round"/>
           </g>
-          <circle class="node-main" cx="615" cy="58" r="38" fill="url(#gGold)" filter="url(#glow2)"/>
-          <text x="615" y="47"  text-anchor="middle" font-size="22" fill="white">🏆</text>
-          <text x="615" y="63"  text-anchor="middle" font-size="12" fill="white" font-weight="800">Co-Founder</text>
-          <text x="615" y="76"  text-anchor="middle" font-size="11" fill="rgba(255,255,255,0.95)" font-weight="700">/ CTO</text>
-          <circle cx="615" cy="58" r="46" fill="none" stroke="#fef08a" stroke-width="1" opacity="0.35">
-            <animate attributeName="r" values="46;56;46" dur="2.8s" repeatCount="indefinite"/>
+          <circle class="node-main" cx="620" cy="175" r="26" fill="url(#gSky)" opacity="0.95" filter="url(#glow1)"/>
+          <text x="620" y="169" text-anchor="middle" font-size="16" fill="white" filter="url(#txtShadow)">📈</text>
+          <text x="620" y="180" text-anchor="middle" font-size="9" fill="white" font-weight="800" filter="url(#txtShadow)">Series A</text>
+          <text x="620" y="190" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.92)" font-weight="700" filter="url(#txtShadow)">&amp; Scale</text>
+          <circle cx="641" cy="153" r="10" fill="rgba(255,255,255,0.9)" stroke="#f59e0b" stroke-width="1.5"/>
+          <text x="641" y="157" text-anchor="middle" font-size="8" fill="#92400e" font-weight="800">Q</text>
+        </g>
+        <!-- S10 GOAL -->
+        <g data-route="startup" class="node-g" onclick="openQuestModal('startupgoal')">
+          <g class="star-ray" transform="translate(620,70)">
+            <line x1="0" y1="-58" x2="0" y2="58" stroke="#fef08a" stroke-width="2" stroke-linecap="round"/>
+            <line x1="-58" y1="0" x2="58" y2="0" stroke="#fef08a" stroke-width="2" stroke-linecap="round"/>
+            <line x1="-41" y1="-41" x2="41" y2="41" stroke="#fef08a" stroke-width="1.4" stroke-linecap="round"/>
+            <line x1="41" y1="-41" x2="-41" y2="41" stroke="#fef08a" stroke-width="1.4" stroke-linecap="round"/>
+          </g>
+          <circle class="node-main" cx="620" cy="70" r="30" fill="url(#gGold)" filter="url(#glow2)"/>
+          <text x="620" y="62" text-anchor="middle" font-size="18" fill="white" filter="url(#txtShadow)">🏆</text>
+          <text x="620" y="75" text-anchor="middle" font-size="10" fill="white" font-weight="800" filter="url(#txtShadow)">Co-Founder</text>
+          <text x="620" y="87" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.95)" font-weight="700" filter="url(#txtShadow)">/ CTO</text>
+          <circle cx="620" cy="70" r="38" fill="none" stroke="#fef08a" stroke-width="1" opacity="0.35">
+            <animate attributeName="r" values="38;48;38" dur="2.8s" repeatCount="indefinite"/>
             <animate attributeName="opacity" values="0.35;0.05;0.35" dur="2.8s" repeatCount="indefinite"/>
           </circle>
         </g>
+
 
         <!-- Journey direction labels -->
         <text x="18" y="680" font-size="9" fill="rgba(255,200,100,0.6)" font-weight="700">🌱 Start</text>
@@ -821,7 +908,7 @@
 
 <script>
 /* JOURNEY BANNER */
-const steps=[{label:'Admission',done:true},{label:'Lab\nExploration',done:true},{label:'Research\nFocus',now:true},{label:'First\nPaper',done:false},{label:'Conference\nTalk',done:false},{label:'Expert\nInterview',done:false}];
+const steps=[{label:'Admission',done:true},{label:'GRE &\nPrep',done:true},{label:'Orientation',done:true},{label:'Lab\nExplore',done:true},{label:'Lab\nJoining',done:false},{label:'Research\nFocus',now:true},{label:'Branch\nStage 7',done:false},{label:'Branch\nStage 8',done:false},{label:'Branch\nStage 9',done:false},{label:'Final\nGoal',done:false}];
 const wrap=document.getElementById('journeySteps');
 steps.forEach((s,i)=>{
   const div=document.createElement('div');div.className='jstep';
@@ -878,40 +965,91 @@ function togglePanel(side){
 /* QUEST DATA */
 const questData={
   admission:{icon:'🎓',iconBg:'background:linear-gradient(135deg,#f59e0b,#b45309)',title:'Admission',node:'✅ Completed stage',quests:[
-    {name:'Complete Application Package',stars:2,done:true,desc:'SOP, recommendation letters, and transcripts fully prepared.',time:'Done',type:'Admin',reward:[{icon:'⭐',txt:'+100 Stars'},{icon:'🗺️',txt:'Pioneer Badge unlocked'}]},
-    {name:'Visa & System Setup',stars:1,done:true,desc:'Visa issued, school ID, email, and systems registered.',time:'Done',type:'Admin',reward:[{icon:'⭐',txt:'+50 Stars'}]},
+    {name:'Complete Application Package',stars:2,done:true,desc:'SOP, recommendation letters, and transcripts fully prepared.',time:'Done',type:'Admin',reward:[{icon:'⭐',txt:'+100 Stars'},{icon:'🗺️',txt:'Pioneer Badge'},{icon:'👤',txt:'Quest by: Admissions Committee'},{icon:'🎯',txt:'Interview: Faculty Meet & Greet'}]},
+    {name:'Visa & System Setup',stars:1,done:true,desc:'Visa issued, school ID, email, and systems registered.',time:'Done',type:'Admin',reward:[{icon:'⭐',txt:'+50 Stars'},{icon:'👤',txt:'Quest by: International Office'},{icon:'🎯',txt:'Interview: Orientation Director'}]},
+  ]},
+  prereq:{icon:'📝',iconBg:'background:linear-gradient(135deg,#fbbf24,#f59e0b)',title:'GRE & Research Prep',node:'✅ Completed stage',quests:[
+    {name:'Achieve GRE Target Score',stars:3,done:true,desc:'Study and achieve your target GRE score (Q: 165+, AW: 4.0+).',time:'Done',type:'Exam',reward:[{icon:'⭐',txt:'+200 Stars'},{icon:'📊',txt:'Test-Ready Badge'},{icon:'👤',txt:'Quest by: Test Prep Advisor'},{icon:'🎯',txt:'Interview: Graduate Program Coordinator'}]},
+    {name:'Research Interest Statement',stars:2,done:true,desc:'Write a 500-word statement of your primary research interests for reference.',time:'Done',type:'Writing',reward:[{icon:'⭐',txt:'+100 Stars'},{icon:'👤',txt:'Quest by: Writing Center'},{icon:'🎯',txt:'Interview: Faculty Research Advisor'}]},
+    {name:'Programming & Math Foundations',stars:2,done:true,desc:'Refresh linear algebra, probability, and Python/ML tooling basics.',time:'Done',type:'Learning',reward:[{icon:'⭐',txt:'+150 Stars'},{icon:'💻',txt:'Coder Ready Badge'},{icon:'👤',txt:'Quest by: CS Core TA'},{icon:'🎯',txt:'Interview: Core Course Professor'}]},
+  ]},
+  orient:{icon:'🏫',iconBg:'background:linear-gradient(135deg,#a78bfa,#7c3aed)',title:'Orientation & Core Courses',node:'✅ Completed stage',quests:[
+    {name:'Attend Orientation Week',stars:1,done:true,desc:'Attend all required orientation sessions and meet department admin.',time:'Done',type:'Admin',reward:[{icon:'⭐',txt:'+50 Stars'},{icon:'🏫',txt:'Newcomer Badge'},{icon:'👤',txt:'Quest by: Dept. Coordinator'},{icon:'🎯',txt:'Interview: Grad Student Council'}]},
+    {name:'Enroll in 2 Core PhD Courses',stars:2,done:true,desc:'Register for required AI/ML core courses for first semester.',time:'Done',type:'Coursework',reward:[{icon:'⭐',txt:'+120 Stars'},{icon:'📚',txt:'Scholar Badge'},{icon:'👤',txt:'Quest by: Academic Advisor'},{icon:'🎯',txt:'Interview: Course Teaching Staff'}]},
+    {name:'Join a Reading Group',stars:2,done:true,desc:'Participate in a weekly paper reading group with other PhD students.',time:'Done',type:'Networking',reward:[{icon:'⭐',txt:'+100 Stars'},{icon:'👤',txt:'Quest by: PhD Student Association'},{icon:'🎯',txt:'Interview: Senior PhD Student Mentor'}]},
   ]},
   lab:{icon:'🔭',iconBg:'background:linear-gradient(135deg,#9b6dff,#c4a0ff)',title:'Lab Exploration',node:'✅ Completed stage',quests:[
-    {name:'3+ Professor Meetings',stars:2,done:true,desc:'Schedule and conduct meetings with professors in your area of interest.',time:'Done',type:'Networking',reward:[{icon:'⭐',txt:'+150 Stars'},{icon:'☕',txt:'Meeting Pro Badge'}]},
-    {name:'Attend Lab Seminars',stars:2,done:true,desc:'Visit seminars of at least 2 labs to get a feel for the culture.',time:'Done',type:'Exploration',reward:[{icon:'⭐',txt:'+100 Stars'}]},
-    {name:'Informal Chats with PhD Students',stars:3,done:false,desc:'Talk directly with current PhD students to get an honest view of lab life.',time:'1–2 weeks',type:'Networking',reward:[{icon:'⭐',txt:'+200 Stars'},{icon:'🔓',txt:'Lab Selection node unlocked'}]},
+    {name:'3+ Professor Meetings',stars:2,done:true,desc:'Schedule and conduct meetings with professors in your area of interest.',time:'Done',type:'Networking',reward:[{icon:'⭐',txt:'+150 Stars'},{icon:'☕',txt:'Meeting Pro Badge'},{icon:'👤',txt:'Quest by: Graduate Advisor'},{icon:'🎯',txt:'Interview: Potential Advisor 1-on-1'}]},
+    {name:'Attend Lab Seminars',stars:2,done:true,desc:'Visit seminars of at least 2 labs to get a feel for the culture.',time:'Done',type:'Exploration',reward:[{icon:'⭐',txt:'+100 Stars'},{icon:'👤',txt:'Quest by: SAIL / AI Lab'},{icon:'🎯',txt:'Interview: Lab Manager'}]},
+    {name:'Informal Chats with PhD Students',stars:3,done:false,desc:'Talk directly with current PhD students to get an honest view of lab life.',time:'1–2 weeks',type:'Networking',reward:[{icon:'⭐',txt:'+200 Stars'},{icon:'🔓',txt:'Lab Selection unlocked'},{icon:'👤',txt:'Quest by: PhD Buddy Program'},{icon:'🎯',txt:'Interview: 3rd-Year PhD Guide'}]},
   ]},
-  join:{icon:'🏠',iconBg:'background:linear-gradient(135deg,#c4a0ff,#9b6dff)',title:'Lab Selection',node:'🔒 Unlocks after Lab Exploration',quests:[
-    {name:'Confirm Advisor',stars:4,done:false,desc:'Verify research direction, faculty openings (TO), and funding before finalizing.',time:'1 month',type:'Decision',reward:[{icon:'⭐',txt:'+300 Stars'},{icon:'🏠',txt:'Lab Member Badge'},{icon:'🔓',txt:'Research Focus unlocked'}]},
-    {name:'First Lab Meeting Presentation',stars:3,done:false,desc:'Introduce yourself and your research interests in a 5-minute lab meeting talk.',time:'2 weeks',type:'Presentation',reward:[{icon:'⭐',txt:'+150 Stars'}]},
+  labsel:{icon:'🏠',iconBg:'background:linear-gradient(135deg,#c4a0ff,#9b6dff)',title:'Lab Joining',node:'🔒 Unlocks after Lab Exploration',quests:[
+    {name:'Confirm Advisor',stars:4,done:false,desc:'Verify research direction, faculty openings (TO), and funding before finalizing.',time:'1 month',type:'Decision',reward:[{icon:'⭐',txt:'+300 Stars'},{icon:'🏠',txt:'Lab Member Badge'},{icon:'🔓',txt:'Research Focus unlocked'},{icon:'👤',txt:'Quest by: Advisor & Dept. Chair'},{icon:'🎯',txt:'Interview: Research Group Lead'}]},
+    {name:'First Lab Meeting Presentation',stars:3,done:false,desc:'Introduce yourself and your research interests in a 5-minute lab meeting talk.',time:'2 weeks',type:'Presentation',reward:[{icon:'⭐',txt:'+150 Stars'},{icon:'👤',txt:'Quest by: Lab Group'},{icon:'🎯',txt:'Interview: Senior Lab Postdoc'}]},
+    {name:'Setup Research Environment',stars:2,done:false,desc:'Configure GPU cluster access, code repos, and lab Slack/tools.',time:'1 week',type:'Admin',reward:[{icon:'⭐',txt:'+80 Stars'},{icon:'⚙️',txt:'Setup Badge'},{icon:'👤',txt:'Quest by: Lab Tech Lead'},{icon:'🎯',txt:'Interview: Lab Engineer'}]},
   ]},
   topic:{icon:'💡',iconBg:'background:linear-gradient(135deg,#f472b6,#db2777)',title:'Research Focus',node:'🌸 Currently in progress',quests:[
-    {name:'Summarize 3 Key Papers',stars:2,done:false,desc:'Read 3 foundational papers and write a 1–2 paragraph summary + connection to your interest.',time:'1–2 weeks',type:'Research',reward:[{icon:'⭐',txt:'+200 Stars'},{icon:'🔓',txt:'Expert Quest unlocked'}]},
-    {name:'Identify a Research Gap',stars:4,done:false,desc:'Find one clearly unsolved problem in existing literature and articulate it precisely.',time:'3–4 weeks',type:'Research',reward:[{icon:'⭐',txt:'+400 Stars'},{icon:'💡',txt:'Explorer Badge'},{icon:'🔓',txt:'First Paper node unlocked'}]},
-    {name:'Advisor Feedback Session',stars:3,done:false,desc:'Present your identified research gap to your advisor and incorporate their feedback.',time:'2 weeks',type:'Presentation',reward:[{icon:'⭐',txt:'+250 Stars'},{icon:'📈',txt:'Growth Score +10'}]},
+    {name:'Summarize 3 Key Papers',stars:2,done:false,desc:'Read 3 foundational papers and write a 1–2 paragraph summary + connection to your interest.',time:'1–2 weeks',type:'Research',reward:[{icon:'⭐',txt:'+200 Stars'},{icon:'👤',txt:'Quest by: Advisor'},{icon:'🎯',txt:'Interview: Paper Author (if reachable)'}]},
+    {name:'Identify a Research Gap',stars:4,done:false,desc:'Find one clearly unsolved problem in existing literature and articulate it precisely.',time:'3–4 weeks',type:'Research',reward:[{icon:'⭐',txt:'+400 Stars'},{icon:'💡',txt:'Explorer Badge'},{icon:'🔓',txt:'First Paper unlocked'},{icon:'👤',txt:'Quest by: Advisor / Lab'},{icon:'🎯',txt:'Interview: Domain Expert Professor'}]},
+    {name:'Advisor Feedback Session',stars:3,done:false,desc:'Present your identified research gap to your advisor and incorporate their feedback.',time:'2 weeks',type:'Presentation',reward:[{icon:'⭐',txt:'+250 Stars'},{icon:'📈',txt:'Growth Score +10'},{icon:'👤',txt:'Quest by: Advisor'},{icon:'🎯',txt:'Interview: Senior Researcher in Field'}]},
   ]},
-  conf:{icon:'🌐',iconBg:'background:linear-gradient(135deg,#c4a0ff,#9b6dff)',title:'Conference Network',node:'🔒 Unlocks after Research Focus',quests:[
-    {name:'Apply as Paper Reviewer',stars:3,done:false,desc:'Apply to review for NeurIPS, ICML, or ICLR to stay current on cutting-edge research.',time:'2 months',type:'Review',reward:[{icon:'⭐',txt:'+300 Stars'},{icon:'🌐',txt:'Reviewer Badge'}]},
-    {name:'Attend & Network at a Conference',stars:2,done:false,desc:'Attend a conference in person, talk with presenters, and exchange contacts.',time:'Per schedule',type:'Networking',reward:[{icon:'⭐',txt:'+200 Stars'},{icon:'🤝',txt:'Networker Badge'}]},
+  paper:{icon:'📄',iconBg:'background:linear-gradient(135deg,#818cf8,#3730a3)',title:'Conference Paper',node:'🔒 Unlocks after Research Focus',quests:[
+    {name:'Complete Paper Draft',stars:4,done:false,desc:'Write a full paper draft including experimental results and submit to your advisor.',time:'2–3 months',type:'Writing',reward:[{icon:'⭐',txt:'+500 Stars'},{icon:'📄',txt:'First Paper Badge'},{icon:'👤',txt:'Quest by: Advisor'},{icon:'🎯',txt:'Interview: Lab Collaborator at Other Uni'}]},
+    {name:'Peer Review within Lab',stars:3,done:false,desc:'Ask a fellow PhD student to review your draft and revise accordingly.',time:'2 weeks',type:'Review',reward:[{icon:'⭐',txt:'+150 Stars'},{icon:'👤',txt:'Quest by: Lab Group'},{icon:'🎯',txt:'Interview: Writing Center Coach'}]},
+    {name:'Submit to Top-tier Venue',stars:5,done:false,desc:'Submit your paper to NeurIPS, ICML, or ICLR.',time:'Deadline',type:'Submission',reward:[{icon:'⭐',txt:'+800 Stars'},{icon:'🏅',txt:'Researcher Badge'},{icon:'👤',txt:'Quest by: Dept. Admin'},{icon:'🎯',txt:'Interview: Area Chair / PC Member'}]},
   ]},
-  paper:{icon:'📄',iconBg:'background:linear-gradient(135deg,#818cf8,#3730a3)',title:'First Paper',node:'🔒 Unlocks after Research Gap quest',quests:[
-    {name:'Complete Paper Draft',stars:4,done:false,desc:'Write a full paper draft including experimental results and submit to your advisor.',time:'2–3 months',type:'Writing',reward:[{icon:'⭐',txt:'+500 Stars'},{icon:'📄',txt:'First Paper Badge'},{icon:'🔓',txt:'Conference Talk unlocked'}]},
-    {name:'Peer Review within Lab',stars:3,done:false,desc:'Ask a fellow PhD student to review your draft and revise accordingly.',time:'2 weeks',type:'Review',reward:[{icon:'⭐',txt:'+150 Stars'}]},
-    {name:'Submit to Top-tier Venue',stars:5,done:false,desc:'Submit your paper to NeurIPS, ICML, or ICLR.',time:'Deadline',type:'Submission',reward:[{icon:'⭐',txt:'+800 Stars'},{icon:'🏅',txt:'Researcher Badge'},{icon:'🏆',txt:'Expert Interview opportunity'}]},
+  ta:{icon:'🏫',iconBg:'background:linear-gradient(135deg,#34d399,#059669)',title:'Teaching Assistant',node:'🔒 Unlocks after Conference Paper (Prof. track)',quests:[
+    {name:'Apply for TA Position',stars:2,done:false,desc:'Apply to TA an undergrad or master\'s level AI/ML course.',time:'1 week',type:'Application',reward:[{icon:'⭐',txt:'+100 Stars'},{icon:'👤',txt:'Quest by: Department Teaching Office'},{icon:'🎯',txt:'Interview: Course Professor'}]},
+    {name:'Lead Discussion Sections',stars:3,done:false,desc:'Run weekly discussion sections and office hours for students.',time:'1 semester',type:'Teaching',reward:[{icon:'⭐',txt:'+300 Stars'},{icon:'🎓',txt:'Teacher Badge'},{icon:'👤',txt:'Quest by: Course Professor'},{icon:'🎯',txt:'Interview: Education Research Group'}]},
+    {name:'Design a Problem Set',stars:4,done:false,desc:'Author one problem set with new questions on your research area.',time:'3 weeks',type:'Teaching',reward:[{icon:'⭐',txt:'+400 Stars'},{icon:'📚',txt:'Curriculum Badge'},{icon:'👤',txt:'Quest by: Professor'},{icon:'🎯',txt:'Interview: Pedagogy Expert'}]},
   ]},
-  intern:{icon:'💼',iconBg:'background:linear-gradient(135deg,#818cf8,#3730a3)',title:'Internship & Collaboration',node:'🔒 Unlocks after First Paper',quests:[
-    {name:'Apply to 3 Research Internships',stars:3,done:false,desc:'Apply to research intern positions at Google, OpenAI, Meta AI, or similar.',time:'1 month',type:'Application',reward:[{icon:'⭐',txt:'+300 Stars'}]},
-    {name:'Accept Offer & Onboard',stars:5,done:false,desc:'Accept an internship and start the project.',time:'Summer / semester',type:'Industry Exp.',reward:[{icon:'⭐',txt:'+600 Stars'},{icon:'💼',txt:'Industry Exp. Badge'},{icon:'📈',txt:'Tech Researcher probability +20%'}]},
+  pub1:{icon:'📰',iconBg:'background:linear-gradient(135deg,#60a5fa,#2563eb)',title:'NeurIPS / Top Publication',node:'🔒 Unlocks after AI Lab Internship (Industry track)',quests:[
+    {name:'Identify Conference Target',stars:2,done:false,desc:'Select a top venue (NeurIPS/ICML/ICLR/CVPR) and study the submission guidelines.',time:'1 week',type:'Planning',reward:[{icon:'⭐',txt:'+100 Stars'},{icon:'👤',txt:'Quest by: Advisor'},{icon:'🎯',txt:'Interview: Lab Alumni at Top Venue'}]},
+    {name:'Full Experimental Run',stars:4,done:false,desc:'Run all ablations, baselines, and significance tests for a complete paper.',time:'6–8 weeks',type:'Research',reward:[{icon:'⭐',txt:'+500 Stars'},{icon:'🧪',txt:'Experimentalist Badge'},{icon:'👤',txt:'Quest by: Research Group'},{icon:'🎯',txt:'Interview: Senior Scientist at FAIR / Google Brain'}]},
+    {name:'Camera-Ready & Presentation',stars:5,done:false,desc:'Finalize the camera-ready version and present a poster/talk at the venue.',time:'1 month post-accept',type:'Presentation',reward:[{icon:'⭐',txt:'+700 Stars'},{icon:'🏆',txt:'Top Venue Badge'},{icon:'👤',txt:'Quest by: Conference PC'},{icon:'🎯',txt:'Interview: Industry Recruiter at Venue'}]},
   ]},
-  expert:{icon:'🏆',iconBg:'background:linear-gradient(135deg,#fef08a,#ca8a04)',title:'Expert Interview',node:'✨ Final reward for quest completion',quests:[
-    {name:'1:1 Expert Coffee Chat',stars:5,done:false,desc:'Earn a 1:1 session with a leading expert in your field based on your quest achievements.',time:'30–60 min',type:'Reward',reward:[{icon:'🏆',txt:'Expert Interview Badge'},{icon:'🌟',txt:'Premium mentoring connection'},{icon:'⭐',txt:'+1,000 Stars'}]},
+  mvp:{icon:'🛠️',iconBg:'background:linear-gradient(135deg,#fb923c,#ea580c)',title:'AI Product MVP',node:'🔒 Unlocks after Research Focus (Startup track)',quests:[
+    {name:'Define Problem & Users',stars:2,done:false,desc:'Write a 1-page problem statement identifying target users and pain points.',time:'1 week',type:'Planning',reward:[{icon:'⭐',txt:'+150 Stars'},{icon:'👤',txt:'Quest by: BASES / StartX Mentor'},{icon:'🎯',txt:'Interview: Product Manager at AI Startup'}]},
+    {name:'Build & Deploy MVP',stars:5,done:false,desc:'Build a minimal AI-powered product and deploy it to at least 10 beta users.',time:'6–8 weeks',type:'Engineering',reward:[{icon:'⭐',txt:'+600 Stars'},{icon:'🛠️',txt:'Builder Badge'},{icon:'👤',txt:'Quest by: d.school / StartX'},{icon:'🎯',txt:'Interview: Y Combinator Partner'}]},
+    {name:'User Feedback Loop',stars:3,done:false,desc:'Collect structured feedback from beta users and ship a v2 iteration.',time:'2 weeks',type:'Product',reward:[{icon:'⭐',txt:'+300 Stars'},{icon:'📈',txt:'Growth Hacker Badge'},{icon:'👤',txt:'Quest by: Startup Mentor'},{icon:'🎯',txt:'Interview: VC Seed Investor'}]},
+  ]},
+  postdoc:{icon:'🔬',iconBg:'background:linear-gradient(135deg,#f9a8d4,#be185d)',title:'Postdoc',node:'🔒 Unlocks after Teaching Asst. (Prof. track)',quests:[
+    {name:'Apply to Top Postdoc Programs',stars:3,done:false,desc:'Identify and apply to postdoc positions at MIT, CMU, Berkeley, or similar.',time:'3–6 months',type:'Application',reward:[{icon:'⭐',txt:'+300 Stars'},{icon:'👤',txt:'Quest by: Advisor + References'},{icon:'🎯',txt:'Interview: Host Faculty (offer stage)'}]},
+    {name:'Lead an Independent Project',stars:5,done:false,desc:'Propose and execute a research project independently from your postdoc supervisor.',time:'1–2 years',type:'Research',reward:[{icon:'⭐',txt:'+800 Stars'},{icon:'🔬',txt:'Postdoc Badge'},{icon:'👤',txt:'Quest by: Host Professor'},{icon:'🎯',txt:'Interview: Faculty Search Committee (early)'}]},
+    {name:'Publish 2+ Papers',stars:4,done:false,desc:'Publish at least two papers during your postdoc at top venues.',time:'Ongoing',type:'Research',reward:[{icon:'⭐',txt:'+600 Stars'},{icon:'📚',txt:'Prolific Badge'},{icon:'👤',txt:'Quest by: Research Community'},{icon:'🎯',txt:'Interview: Department Chair (faculty search)'}]},
+  ]},
+  srresearch:{icon:'🧠',iconBg:'background:linear-gradient(135deg,#67e8f9,#0891b2)',title:'Sr. Research Scientist',node:'🔒 Unlocks after Top Publication (Industry track)',quests:[
+    {name:'Mentor Junior Researchers',stars:3,done:false,desc:'Formally mentor 1–2 intern or junior researcher projects.',time:'1 semester',type:'Leadership',reward:[{icon:'⭐',txt:'+350 Stars'},{icon:'🎖️',txt:'Mentor Badge'},{icon:'👤',txt:'Quest by: Research Manager'},{icon:'🎯',txt:'Interview: VP of Research'}]},
+    {name:'Lead a Research Initiative',stars:5,done:false,desc:'Propose and own a multi-quarter research initiative with cross-team collaboration.',time:'6+ months',type:'Leadership',reward:[{icon:'⭐',txt:'+700 Stars'},{icon:'🧠',txt:'Senior Researcher Badge'},{icon:'👤',txt:'Quest by: Director of Research'},{icon:'🎯',txt:'Interview: Chief Scientist / Lab Director'}]},
+    {name:'File a Patent',stars:4,done:false,desc:'Work with the IP team to file a patent on a novel research contribution.',time:'3 months',type:'IP',reward:[{icon:'⭐',txt:'+400 Stars'},{icon:'📋',txt:'Inventor Badge'},{icon:'👤',txt:'Quest by: IP Counsel'},{icon:'🎯',txt:'Interview: CTO Office'}]},
+  ]},
+  yc:{icon:'🌱',iconBg:'background:linear-gradient(135deg,#fbbf24,#d97706)',title:'YC / Seed Round',node:'🔒 Unlocks after AI Product MVP (Startup track)',quests:[
+    {name:'Apply to Y Combinator',stars:5,done:false,desc:'Complete and submit a YC application, go through interviews, and present your MVP.',time:'2 months',type:'Fundraising',reward:[{icon:'⭐',txt:'+800 Stars'},{icon:'🌱',txt:'YC Batch Badge'},{icon:'👤',txt:'Quest by: YC Partners'},{icon:'🎯',txt:'Interview: YC Partner Conversation'}]},
+    {name:'Raise Seed Round',stars:4,done:false,desc:'Pitch 20+ angels/seed funds and close a $1M+ seed round.',time:'3–6 months',type:'Fundraising',reward:[{icon:'⭐',txt:'+600 Stars'},{icon:'💰',txt:'Funded Badge'},{icon:'👤',txt:'Quest by: Seed Investors'},{icon:'🎯',txt:'Interview: Lead Investor'}]},
+    {name:'Hire First Engineers',stars:3,done:false,desc:'Recruit and hire 2–3 founding engineers to join full-time.',time:'2 months',type:'Recruiting',reward:[{icon:'⭐',txt:'+300 Stars'},{icon:'👥',txt:'Team Builder Badge'},{icon:'👤',txt:'Quest by: Recruiting Advisor'},{icon:'🎯',txt:'Interview: Founding Team Candidate'}]},
+  ]},
+  seriesa:{icon:'📈',iconBg:'background:linear-gradient(135deg,#f87171,#dc2626)',title:'Series A & Scale',node:'🔒 Unlocks after Seed Round (Startup track)',quests:[
+    {name:'Achieve Product–Market Fit',stars:5,done:false,desc:'Reach 40%+ "very disappointed" in Sean Ellis survey or strong NPS.',time:'6+ months',type:'Product',reward:[{icon:'⭐',txt:'+900 Stars'},{icon:'🎯',txt:'PMF Badge'},{icon:'👤',txt:'Quest by: Advisor Board'},{icon:'🎯',txt:'Interview: Series A Lead Partner'}]},
+    {name:'Close Series A',stars:5,done:false,desc:'Raise $5–15M Series A from a top-tier VC (a16z, Sequoia, Benchmark).',time:'4–6 months',type:'Fundraising',reward:[{icon:'⭐',txt:'+1000 Stars'},{icon:'🚀',txt:'Scale-Up Badge'},{icon:'👤',txt:'Quest by: Lead VC Partner'},{icon:'🎯',txt:'Interview: VC Board Member'}]},
+    {name:'Scale to 50+ Customers',stars:4,done:false,desc:'Grow from initial traction to 50 paying customers with recurring revenue.',time:'6 months',type:'Sales',reward:[{icon:'⭐',txt:'+600 Stars'},{icon:'📊',txt:'Revenue Badge'},{icon:'👤',txt:'Quest by: Head of Sales'},{icon:'🎯',txt:'Interview: Enterprise Customer CTO'}]},
+  ]},
+  profgoal:{icon:'🏛️',iconBg:'background:linear-gradient(135deg,#fde68a,#ca8a04)',title:'Tenured Professor',node:'🏆 Final Goal — Professor Track',quests:[
+    {name:'Job Market Applications',stars:5,done:false,desc:'Apply to 30+ faculty positions, prepare job talk, and go on campus visits.',time:'1 year',type:'Application',reward:[{icon:'⭐',txt:'+1000 Stars'},{icon:'🏛️',txt:'Faculty Candidate Badge'},{icon:'👤',txt:'Quest by: Department Search Committee'},{icon:'🎯',txt:'Interview: Dean of Research'}]},
+    {name:'Receive & Negotiate Offer',stars:5,done:false,desc:'Receive a tenure-track offer, negotiate startup package and lab space.',time:'2–3 months',type:'Negotiation',reward:[{icon:'⭐',txt:'+800 Stars'},{icon:'📋',txt:'Offer Badge'},{icon:'👤',txt:'Quest by: Dept. Chair'},{icon:'🎯',txt:'Interview: Future Colleagues'}]},
+    {name:'Launch Your Own Lab',stars:5,done:false,desc:'Set up your lab, recruit your first PhD students, and submit first grant.',time:'First year',type:'Leadership',reward:[{icon:'⭐',txt:'+2000 Stars'},{icon:'🏆',txt:'Professor Badge'},{icon:'🌟',txt:'CAREER Award eligible'},{icon:'👤',txt:'Quest by: NSF / NIH Program Officer'},{icon:'🎯',txt:'Interview: Your First PhD Students'}]},
+  ]},
+  indgoal:{icon:'🤖',iconBg:'background:linear-gradient(135deg,#60a5fa,#1d4ed8)',title:'Research Scientist — OpenAI / DeepMind',node:'🏆 Final Goal — Industry Track',quests:[
+    {name:'Top-tier Research Portfolio',stars:5,done:false,desc:'Have 5+ first-author papers at NeurIPS/ICML/ICLR and a strong citation record.',time:'Throughout PhD',type:'Research',reward:[{icon:'⭐',txt:'+1000 Stars'},{icon:'📊',txt:'Impact Badge'},{icon:'👤',txt:'Quest by: Research Community'},{icon:'🎯',txt:'Interview: OpenAI Research Lead'}]},
+    {name:'Industry Research Interview Loop',stars:5,done:false,desc:'Pass the full interview loop (research talk + coding + system design + culture).',time:'1–2 months',type:'Interview',reward:[{icon:'⭐',txt:'+800 Stars'},{icon:'💼',txt:'Interview Ace Badge'},{icon:'👤',txt:'Quest by: Recruiter + Research Team'},{icon:'🎯',txt:'Interview: Future Manager 1-on-1'}]},
+    {name:'Join & Ship Research Impact',stars:5,done:false,desc:'Join as Research Scientist and lead a project that ships to production.',time:'First year',type:'Leadership',reward:[{icon:'⭐',txt:'+2000 Stars'},{icon:'🤖',txt:'Research Scientist Badge'},{icon:'🏆',txt:'AI Impact Award eligible'},{icon:'👤',txt:'Quest by: Research Manager'},{icon:'🎯',txt:'Interview: VP of Research'}]},
+  ]},
+  startupgoal:{icon:'🦄',iconBg:'background:linear-gradient(135deg,#fb923c,#dc2626)',title:'Co-Founder / CTO — AI Startup',node:'🏆 Final Goal — Startup Track',quests:[
+    {name:'Reach $1M ARR',stars:5,done:false,desc:'Scale to $1M annual recurring revenue with strong unit economics.',time:'Year 2–3',type:'Revenue',reward:[{icon:'⭐',txt:'+1000 Stars'},{icon:'💰',txt:'Revenue Milestone Badge'},{icon:'👤',txt:'Quest by: Board / Investors'},{icon:'🎯',txt:'Interview: Forbes 30u30 Consideration'}]},
+    {name:'Series B Readiness',stars:5,done:false,desc:'Prepare data room, growth metrics, and team for a $20M+ Series B round.',time:'Year 3–4',type:'Fundraising',reward:[{icon:'⭐',txt:'+1200 Stars'},{icon:'📈',txt:'Scale Badge'},{icon:'👤',txt:'Quest by: Series A Lead Investor'},{icon:'🎯',txt:'Interview: Series B VC Partner'}]},
+    {name:'100+ Team & Exit Path',stars:5,done:false,desc:'Scale company to 100+ employees and evaluate IPO / strategic acquisition.',time:'Year 4–5',type:'Leadership',reward:[{icon:'⭐',txt:'+2000 Stars'},{icon:'🦄',txt:'Unicorn Track Badge'},{icon:'🏆',txt:'Co-Founder CTO Badge'},{icon:'👤',txt:'Quest by: Board of Directors'},{icon:'🎯',txt:'Interview: Investment Bankers / Acquirers'}]},
   ]},
 };
+
 const completedQ=new Set();
 
 function openQuestModal(key){
