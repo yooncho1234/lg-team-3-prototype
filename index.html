@@ -1,1 +1,843 @@
-<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>팀 3 소개</title><style>*{margin:0;padding:0;box-sizing:border-box;}body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:#f0f4f8;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:2rem;}h1{font-size:2.5rem;color:#1a202c;margin-bottom:2.5rem;letter-spacing:0.05em;}.team{display:flex;gap:1.5rem;flex-wrap:wrap;justify-content:center;}.member{background:#ffffff;border-radius:16px;padding:2rem 2.5rem;text-align:center;box-shadow:0 4px 16px rgba(0,0,0,0.08);min-width:160px;transition:transform 0.2s,box-shadow 0.2s;}.member:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,0.12);}.avatar{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;font-size:1.5rem;color:#fff;margin:0 auto 1rem;}.name{font-size:1.2rem;font-weight:600;color:#2d3748;}</style></head><body><h1>3조</h1><div class="team"><div class="member"><div class="avatar">허</div><div class="name">허민제</div></div><div class="member"><div class="avatar">이</div><div class="name">이혜린</div></div><div class="member"><div class="avatar">조</div><div class="name">조윤영</div></div></div><p style="margin-top:2rem;font-size:1.5rem;font-weight:700;color:#764ba2;">화이팅!</p></body></html>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PathFinder — 나만의 커리어 테크트리</title>
+  <style>
+    :root {
+      --bg: #0d0f1a;
+      --surface: #151929;
+      --surface2: #1e2440;
+      --border: #2a3260;
+      --accent: #6c63ff;
+      --accent2: #a78bfa;
+      --gold: #f59e0b;
+      --green: #10b981;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --danger: #ef4444;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      min-height: 100vh;
+    }
+
+    /* ── NAV ── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .logo {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--accent2);
+      letter-spacing: 0.05em;
+    }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+    .xp-badge {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 0.35rem 0.9rem;
+      font-size: 0.82rem;
+      color: var(--gold);
+      font-weight: 600;
+    }
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    /* ── LAYOUT ── */
+    .main {
+      display: grid;
+      grid-template-columns: 300px 1fr 280px;
+      gap: 0;
+      height: calc(100vh - 57px);
+    }
+
+    /* ── LEFT PANEL ── */
+    .panel-left {
+      border-right: 1px solid var(--border);
+      padding: 1.5rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .profile-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.2rem;
+    }
+    .profile-top {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 1rem;
+    }
+    .profile-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #6c63ff, #a78bfa);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+    .profile-info h3 {
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+    .profile-info p {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    .level-bar-wrap {
+      margin-bottom: 0.5rem;
+    }
+    .level-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .level-bar {
+      height: 6px;
+      background: var(--border);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .level-fill {
+      height: 100%;
+      width: 38%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 3px;
+      transition: width 1s ease;
+    }
+
+    .section-title {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      font-weight: 600;
+      margin-bottom: 0.6rem;
+    }
+
+    /* today quest */
+    .quest-card {
+      background: var(--surface2);
+      border: 1px solid var(--accent);
+      border-radius: 12px;
+      padding: 1.2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .quest-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px;
+      height: 100%;
+      background: var(--accent);
+    }
+    .quest-tag {
+      font-size: 0.65rem;
+      background: rgba(108,99,255,0.2);
+      color: var(--accent2);
+      border-radius: 4px;
+      padding: 2px 7px;
+      font-weight: 600;
+      display: inline-block;
+      margin-bottom: 0.6rem;
+    }
+    .quest-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      line-height: 1.4;
+    }
+    .quest-desc {
+      font-size: 0.75rem;
+      color: var(--muted);
+      line-height: 1.5;
+      margin-bottom: 0.9rem;
+    }
+    .quest-reward {
+      font-size: 0.72rem;
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-bottom: 0.8rem;
+    }
+    .btn-quest {
+      width: 100%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.6rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .btn-quest:hover { opacity: 0.85; }
+
+    /* route selector */
+    .route-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .route-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.65rem 0.8rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      font-size: 0.82rem;
+    }
+    .route-item:hover, .route-item.active {
+      border-color: var(--accent2);
+      background: rgba(167,139,250,0.08);
+    }
+    .route-item.active .route-dot {
+      background: var(--accent2);
+    }
+    .route-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--border);
+      flex-shrink: 0;
+    }
+    .route-pct {
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+
+    /* ── CENTER: TECH TREE ── */
+    .panel-center {
+      overflow: auto;
+      position: relative;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .tree-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .tree-header h2 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+    }
+    .tree-header p {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    /* SVG tree */
+    .tree-svg-wrap {
+      width: 100%;
+      max-width: 560px;
+    }
+
+    svg.tree {
+      width: 100%;
+      height: auto;
+      overflow: visible;
+    }
+
+    .node-circle {
+      cursor: pointer;
+      transition: filter 0.2s;
+    }
+    .node-circle:hover { filter: brightness(1.3); }
+
+    .node-label {
+      font-size: 11px;
+      fill: var(--text);
+      text-anchor: middle;
+      pointer-events: none;
+    }
+    .node-sub {
+      font-size: 9px;
+      fill: var(--muted);
+      text-anchor: middle;
+    }
+
+    /* milestone strip */
+    .milestone-strip {
+      display: flex;
+      gap: 0.7rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 560px;
+    }
+    .milestone {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.5rem 0.9rem;
+      font-size: 0.72rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .milestone.done {
+      border-color: var(--green);
+      color: var(--green);
+    }
+    .milestone.active {
+      border-color: var(--accent);
+      color: var(--accent2);
+    }
+
+    /* ── RIGHT PANEL ── */
+    .panel-right {
+      border-left: 1px solid var(--border);
+      padding: 1.5rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    /* future self */
+    .future-card {
+      background: linear-gradient(135deg, #1a1040, #2a1a60);
+      border: 1px solid var(--accent);
+      border-radius: 12px;
+      padding: 1.3rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .future-card::after {
+      content: '✦';
+      position: absolute;
+      top: 0.8rem;
+      right: 1rem;
+      font-size: 1.2rem;
+      color: var(--accent2);
+      opacity: 0.5;
+    }
+    .future-label {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent2);
+      font-weight: 700;
+      margin-bottom: 0.8rem;
+    }
+    .future-role {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+    }
+    .future-org {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+    .prob-bar-wrap { margin-bottom: 0.6rem; }
+    .prob-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-bottom: 3px;
+    }
+    .prob-bar {
+      height: 5px;
+      background: var(--border);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .prob-fill {
+      height: 100%;
+      border-radius: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+    }
+    .future-note {
+      font-size: 0.7rem;
+      color: var(--muted);
+      line-height: 1.5;
+      margin-top: 0.8rem;
+      padding-top: 0.8rem;
+      border-top: 1px solid var(--border);
+    }
+    .future-note strong {
+      color: var(--accent2);
+    }
+
+    /* alumni */
+    .alumni-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .alumni-item {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      padding: 0.6rem 0.8rem;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.75rem;
+    }
+    .alumni-dot {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+    .alumni-info strong { display: block; font-size: 0.78rem; margin-bottom: 1px; }
+    .alumni-info span { color: var(--muted); font-size: 0.68rem; }
+
+    /* expert quest */
+    .expert-card {
+      background: var(--surface2);
+      border: 1px solid var(--gold);
+      border-radius: 12px;
+      padding: 1.2rem;
+      opacity: 0.6;
+      position: relative;
+    }
+    .lock-badge {
+      position: absolute;
+      top: 0.8rem;
+      right: 0.8rem;
+      font-size: 0.75rem;
+      background: rgba(245,158,11,0.15);
+      color: var(--gold);
+      border-radius: 4px;
+      padding: 2px 6px;
+      font-weight: 600;
+    }
+    .expert-title {
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+    }
+    .expert-desc {
+      font-size: 0.72rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* node tooltip */
+    .tooltip {
+      display: none;
+      position: fixed;
+      background: var(--surface);
+      border: 1px solid var(--accent);
+      border-radius: 10px;
+      padding: 0.9rem 1.1rem;
+      font-size: 0.78rem;
+      max-width: 220px;
+      z-index: 100;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      pointer-events: none;
+    }
+    .tooltip h4 { font-size: 0.88rem; margin-bottom: 0.3rem; color: var(--accent2); }
+    .tooltip p { color: var(--muted); line-height: 1.5; }
+    .tooltip .t-status {
+      margin-top: 0.5rem;
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: var(--green);
+    }
+
+    /* notification */
+    .notif {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--surface);
+      border: 1px solid var(--green);
+      border-radius: 12px;
+      padding: 1rem 1.3rem;
+      font-size: 0.82rem;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+      z-index: 200;
+    }
+    .notif.show { transform: translateY(0); opacity: 1; }
+    .notif-icon { font-size: 1.3rem; }
+    .notif-text strong { display: block; color: var(--green); font-size: 0.85rem; }
+    .notif-text span { color: var(--muted); }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">✦ PathFinder</div>
+  <div class="nav-right">
+    <div class="xp-badge">⚡ 1,240 XP</div>
+    <div class="avatar">J</div>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- LEFT -->
+  <aside class="panel-left">
+
+    <!-- profile -->
+    <div class="profile-card">
+      <div class="profile-top">
+        <div class="profile-avatar">J</div>
+        <div class="profile-info">
+          <h3>Jiyeon Kim</h3>
+          <p>Stanford CS · PhD 1년차</p>
+        </div>
+      </div>
+      <div class="level-bar-wrap">
+        <div class="level-label"><span>Lv.3 탐색자</span><span>38%</span></div>
+        <div class="level-bar"><div class="level-fill" id="lvBar"></div></div>
+      </div>
+      <div style="font-size:0.7rem;color:var(--muted);">다음 레벨까지 퀘스트 4개</div>
+    </div>
+
+    <!-- today quest -->
+    <div>
+      <div class="section-title">오늘의 퀘스트</div>
+      <div class="quest-card">
+        <div class="quest-tag">🧭 연구 방향 탐색</div>
+        <div class="quest-title">관심 교수님 논문 3편 읽고 요약 남기기</div>
+        <div class="quest-desc">논문 요약 1~2문단 + 내 연구와 연결고리 한 줄</div>
+        <div class="quest-reward">🏆 +200 XP · 전문가 퀘스트 해금</div>
+        <button class="btn-quest" onclick="completeQuest()">완료 표시하기</button>
+      </div>
+    </div>
+
+    <!-- route -->
+    <div>
+      <div class="section-title">내 루트 선택</div>
+      <div class="route-list">
+        <div class="route-item active" onclick="setRoute(this)">
+          <span>🎓 교수 트랙</span>
+          <span class="route-dot"></span>
+          <span class="route-pct">23% 달성</span>
+        </div>
+        <div class="route-item" onclick="setRoute(this)">
+          <span>🏢 테크 기업 연구소</span>
+          <span class="route-dot"></span>
+          <span class="route-pct">—</span>
+        </div>
+        <div class="route-item" onclick="setRoute(this)">
+          <span>🚀 스타트업 창업</span>
+          <span class="route-dot"></span>
+          <span class="route-pct">—</span>
+        </div>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- CENTER: TECH TREE -->
+  <main class="panel-center">
+    <div class="tree-header">
+      <h2>나의 커리어 테크트리</h2>
+      <p>노드를 클릭해 세부 정보를 확인하세요</p>
+    </div>
+
+    <div class="tree-svg-wrap">
+      <svg class="tree" viewBox="0 0 560 480" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="done" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#10b981"/>
+            <stop offset="100%" stop-color="#059669"/>
+          </radialGradient>
+          <radialGradient id="active" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#6c63ff"/>
+            <stop offset="100%" stop-color="#4c46cc"/>
+          </radialGradient>
+          <radialGradient id="locked" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#2a3260"/>
+            <stop offset="100%" stop-color="#1e2440"/>
+          </radialGradient>
+          <radialGradient id="expert" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#f59e0b"/>
+            <stop offset="100%" stop-color="#b45309"/>
+          </radialGradient>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="3" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+
+        <!-- EDGES -->
+        <!-- root → 연구실 결정 -->
+        <line x1="280" y1="60" x2="280" y2="130" stroke="#2a3260" stroke-width="2"/>
+        <!-- 연구실 결정 → 3 branches -->
+        <line x1="280" y1="170" x2="130" y2="230" stroke="#2a3260" stroke-width="2"/>
+        <line x1="280" y1="170" x2="280" y2="230" stroke="#6c63ff" stroke-width="2" stroke-dasharray="4,3"/>
+        <line x1="280" y1="170" x2="430" y2="230" stroke="#2a3260" stroke-width="2"/>
+        <!-- 연구 주제 → 논문 / 협업 -->
+        <line x1="280" y1="270" x2="210" y2="340" stroke="#6c63ff" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <line x1="280" y1="270" x2="350" y2="340" stroke="#2a3260" stroke-width="1.5"/>
+        <!-- 논문 → 전문가 인터뷰 -->
+        <line x1="210" y1="380" x2="280" y2="430" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="3,3"/>
+        <line x1="350" y1="380" x2="280" y2="430" stroke="#2a3260" stroke-width="1.5"/>
+
+        <!-- NODES -->
+        <!-- Root: 입학 (done) -->
+        <g class="node-circle" onclick="showTip(event,'입학','Stanford PhD 입학을 축하합니다. 여정이 시작됩니다.','완료 ✓',280,40)">
+          <circle cx="280" cy="40" r="22" fill="url(#done)" filter="url(#glow)"/>
+          <text class="node-label" x="280" y="44">입학</text>
+        </g>
+
+        <!-- 연구실 탐색 (done) -->
+        <g class="node-circle" onclick="showTip(event,'연구실 탐색','여러 교수님과 미팅하며 핏을 확인하는 단계.','완료 ✓',280,150)">
+          <circle cx="280" cy="150" r="26" fill="url(#done)" filter="url(#glow)"/>
+          <text class="node-label" x="280" y="148">연구실</text>
+          <text class="node-label" x="280" y="160">탐색</text>
+        </g>
+
+        <!-- 랩 선택 (locked left) -->
+        <g class="node-circle" onclick="showTip(event,'랩 조인 결정','자신에게 맞는 연구실을 최종 선택합니다.','🔒 진행 중 필요')">
+          <circle cx="130" cy="250" r="22" fill="url(#locked)"/>
+          <text class="node-label" x="130" y="248" fill="#6b7280">랩</text>
+          <text class="node-label" x="130" y="260" fill="#6b7280">조인</text>
+        </g>
+
+        <!-- 연구 주제 구체화 (active center) -->
+        <g class="node-circle" onclick="showTip(event,'연구 주제 구체화','내 관심사와 교수 TO, 시장 흐름을 교차해 주제를 좁힙니다.','🔵 현재 단계',280,250)">
+          <circle cx="280" cy="250" r="28" fill="url(#active)" filter="url(#glow)"/>
+          <text class="node-label" x="280" y="247">연구 주제</text>
+          <text class="node-label" x="280" y="259">구체화</text>
+        </g>
+
+        <!-- 관련 분야 네트워크 (locked right) -->
+        <g class="node-circle" onclick="showTip(event,'학회 네트워크','학회 참석 및 동료 연구자와 연결하는 단계.','🔒 잠금')">
+          <circle cx="430" cy="250" r="22" fill="url(#locked)"/>
+          <text class="node-label" x="430" y="248" fill="#6b7280">학회</text>
+          <text class="node-label" x="430" y="260" fill="#6b7280">네트워크</text>
+        </g>
+
+        <!-- 첫 논문 (semi-active) -->
+        <g class="node-circle" onclick="showTip(event,'첫 논문 제출','연구 주제를 논문으로 정리해 submit합니다.','🔒 연구 주제 구체화 필요',210,360)">
+          <circle cx="210" cy="360" r="22" fill="url(#locked)" stroke="#6c63ff" stroke-width="1.5"/>
+          <text class="node-label" x="210" y="358" fill="#a78bfa">첫 논문</text>
+          <text class="node-label" x="210" y="370" fill="#6b7280">제출</text>
+        </g>
+
+        <!-- 인턴/협업 (locked) -->
+        <g class="node-circle" onclick="showTip(event,'인턴·산학협력','구글, OpenAI 등 산업 인턴 또는 공동연구.','🔒 잠금',350,360)">
+          <circle cx="350" cy="360" r="22" fill="url(#locked)"/>
+          <text class="node-label" x="350" y="358" fill="#6b7280">인턴</text>
+          <text class="node-label" x="350" y="370" fill="#6b7280">협업</text>
+        </g>
+
+        <!-- Expert Quest (gold) -->
+        <g class="node-circle" onclick="showTip(event,'전문가 인터뷰 퀘스트','퀘스트 완료 시 해당 분야 전문가와 1:1 인터뷰 기회 제공.','🏆 퀘스트 달성 리워드',280,450)">
+          <circle cx="280" cy="450" r="24" fill="url(#expert)" filter="url(#glow)"/>
+          <text class="node-label" x="280" y="447">전문가</text>
+          <text class="node-label" x="280" y="459">인터뷰</text>
+        </g>
+
+        <!-- YOU ARE HERE marker -->
+        <circle cx="280" cy="250" r="34" fill="none" stroke="#6c63ff" stroke-width="1" stroke-dasharray="4,3" opacity="0.6">
+          <animate attributeName="r" values="34;38;34" dur="2s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.6;0.2;0.6" dur="2s" repeatCount="indefinite"/>
+        </circle>
+        <text x="316" y="218" fill="#6c63ff" font-size="9" font-weight="600">현재 위치</text>
+      </svg>
+    </div>
+
+    <!-- milestones -->
+    <div class="milestone-strip">
+      <div class="milestone done">✅ 교수 미팅 3회 완료</div>
+      <div class="milestone done">✅ 연구실 탐색 완료</div>
+      <div class="milestone active">🔵 연구 주제 좁히는 중</div>
+      <div class="milestone">🔒 첫 논문 제출</div>
+      <div class="milestone">🔒 학회 발표</div>
+    </div>
+  </main>
+
+  <!-- RIGHT -->
+  <aside class="panel-right">
+
+    <!-- future self -->
+    <div>
+      <div class="section-title">미래의 내 모습</div>
+      <div class="future-card">
+        <div class="future-label">✦ 3년 후 시뮬레이션</div>
+        <div class="future-role">AI 연구 과학자</div>
+        <div class="future-org">Google DeepMind · 또는 조교수</div>
+
+        <div class="prob-bar-wrap">
+          <div class="prob-label"><span>테크 기업 연구소</span><span>62%</span></div>
+          <div class="prob-bar"><div class="prob-fill" style="width:62%"></div></div>
+        </div>
+        <div class="prob-bar-wrap">
+          <div class="prob-label"><span>교수 트랙</span><span>28%</span></div>
+          <div class="prob-bar"><div class="prob-fill" style="width:28%;background:linear-gradient(90deg,#a78bfa,#c084fc)"></div></div>
+        </div>
+        <div class="prob-bar-wrap">
+          <div class="prob-label"><span>스타트업 창업</span><span>10%</span></div>
+          <div class="prob-bar"><div class="prob-fill" style="width:10%;background:linear-gradient(90deg,#f59e0b,#fbbf24)"></div></div>
+        </div>
+
+        <div class="future-note">
+          <strong>퀘스트 2개</strong>를 더 완료하면 교수 트랙 확률이 <strong>+15%</strong> 상승합니다.
+        </div>
+      </div>
+    </div>
+
+    <!-- alumni -->
+    <div>
+      <div class="section-title">비슷한 경로를 걸은 선배들</div>
+      <div class="alumni-list">
+        <div class="alumni-item">
+          <div class="alumni-dot" style="background:linear-gradient(135deg,#6c63ff,#a78bfa)">P</div>
+          <div class="alumni-info">
+            <strong>Park S. · PhD 4년차</strong>
+            <span>같은 주제 탐색 → NeurIPS 논문 → OpenAI</span>
+          </div>
+        </div>
+        <div class="alumni-item">
+          <div class="alumni-dot" style="background:linear-gradient(135deg,#10b981,#059669)">L</div>
+          <div class="alumni-info">
+            <strong>Lee J. · 졸업</strong>
+            <span>교수 TO 없음 → 조기 졸업 → 스타트업 CTO</span>
+          </div>
+        </div>
+        <div class="alumni-item">
+          <div class="alumni-dot" style="background:linear-gradient(135deg,#f59e0b,#b45309)">K</div>
+          <div class="alumni-info">
+            <strong>Kim H. · PhD 3년차</strong>
+            <span>연구 주제 전환 → CMU 교수 트랙 진입</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- expert quest locked -->
+    <div>
+      <div class="section-title">전문가 퀘스트</div>
+      <div class="expert-card">
+        <div class="lock-badge">🔒 잠금</div>
+        <div class="expert-title">Prof. Andrew Ng 부여 퀘스트</div>
+        <div class="expert-desc">오늘의 퀘스트를 완료하면 해금됩니다.<br>완료 시 1:1 커피챗 기회 제공.</div>
+      </div>
+    </div>
+
+  </aside>
+</div>
+
+<!-- TOOLTIP -->
+<div class="tooltip" id="tooltip">
+  <h4 id="tip-title"></h4>
+  <p id="tip-desc"></p>
+  <div class="t-status" id="tip-status"></div>
+</div>
+
+<!-- NOTIFICATION -->
+<div class="notif" id="notif">
+  <div class="notif-icon">🎉</div>
+  <div class="notif-text">
+    <strong>퀘스트 완료!</strong>
+    <span>+200 XP 획득 · 전문가 퀘스트 해금</span>
+  </div>
+</div>
+
+<script>
+  // level bar animate on load
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.getElementById('lvBar').style.width = '38%';
+    }, 300);
+  });
+
+  // route selector
+  function setRoute(el) {
+    document.querySelectorAll('.route-item').forEach(r => r.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  // quest complete
+  function completeQuest() {
+    const notif = document.getElementById('notif');
+    notif.classList.add('show');
+    document.querySelector('.btn-quest').textContent = '✅ 완료!';
+    document.querySelector('.btn-quest').style.background = 'var(--green)';
+    document.querySelector('.expert-card').style.opacity = '1';
+    document.querySelector('.lock-badge').textContent = '🏆 해금';
+    // increment XP badge
+    document.querySelector('.xp-badge').textContent = '⚡ 1,440 XP';
+    setTimeout(() => notif.classList.remove('show'), 3500);
+  }
+
+  // node tooltip
+  function showTip(e, title, desc, status) {
+    const t = document.getElementById('tooltip');
+    document.getElementById('tip-title').textContent = title;
+    document.getElementById('tip-desc').textContent = desc;
+    document.getElementById('tip-status').textContent = status;
+    t.style.display = 'block';
+    t.style.left = (e.clientX + 14) + 'px';
+    t.style.top  = (e.clientY - 10) + 'px';
+  }
+
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.node-circle') && !e.target.closest('#tooltip')) {
+      document.getElementById('tooltip').style.display = 'none';
+    }
+  });
+</script>
+</body>
+</html>
