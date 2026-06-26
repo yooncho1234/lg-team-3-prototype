@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>첫 번째 웹 페이지</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #4c1d95, #7c3aed, #a855f7, #c084fc);
+      font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+      padding: 2rem;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 24px;
+      padding: 3rem 3.5rem;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(76, 29, 149, 0.35);
+      max-width: 420px;
+      width: 100%;
+    }
+
+    .card h1 {
+      font-size: 2.4rem;
+      color: #2d1a5e;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.01em;
+    }
+
+    .card p {
+      font-size: 1.1rem;
+      color: #6b7280;
+      margin-bottom: 2rem;
+    }
+
+    button {
+      background: linear-gradient(135deg, #7c3aed, #a855f7);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 0.85rem 2.2rem;
+      font-size: 1.05rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+      letter-spacing: 0.01em;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(124, 58, 237, 0.4);
+    }
+
+    button:active { transform: translateY(0); }
+
+    .result {
+      display: none;
+      margin-top: 1.5rem;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #7c3aed;
+      animation: pop 0.3s ease;
+    }
+
+    @keyframes pop {
+      0%   { transform: scale(0.7); opacity: 0; }
+      70%  { transform: scale(1.1); }
+      100% { transform: scale(1);   opacity: 1; }
+    }
+
+    footer {
+      margin-top: 2.5rem;
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.65);
+      letter-spacing: 0.03em;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>안녕하세요 👋</h1>
+    <p>제 첫 번째 웹 페이지예요</p>
+    <button onclick="showResult()">눌러보기</button>
+    <div class="result" id="result">🎉 잘 작동해요!</div>
+  </div>
+  <footer>LG U+ Lifestyle Innovation Workshop</footer>
+
+  <script>
+    function showResult() {
+      const el = document.getElementById('result');
+      el.style.display = 'block';
+    }
+  </script>
+</body>
+</html>
