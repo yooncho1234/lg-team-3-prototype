@@ -1,92 +1,459 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>팀 3 소개</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GrowthTree — Stanford PhD Journey</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    /* ── Reset & Base ── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --cardinal:   #8C1515;
+      --cardinal-d: #6A0F0F;
+      --cardinal-l: #B83A3A;
+      --sand:       #F4F0E8;
+      --sand-d:     #E8E0D0;
+      --cool-grey:  #4D4F53;
+      --white:      #FFFFFF;
+      --text:       #1A1A1A;
+      --text-muted: #6B6B6B;
     }
+
+    html { scroll-behavior: smooth; }
 
     body {
-      font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
-      background: #f0f4f8;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      font-family: 'Georgia', 'Times New Roman', serif;
+      background: var(--white);
+      color: var(--text);
       min-height: 100vh;
-      padding: 2rem;
     }
 
-    h1 {
-      font-size: 2.5rem;
-      color: #1a202c;
-      margin-bottom: 2.5rem;
-      letter-spacing: 0.05em;
+    /* ── Nav ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: var(--cardinal);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2rem; height: 56px;
     }
 
-    .team {
-      display: flex;
-      gap: 1.5rem;
-      flex-wrap: wrap;
-      justify-content: center;
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none;
     }
 
-    .member {
-      background: #ffffff;
-      border-radius: 16px;
-      padding: 2rem 2.5rem;
+    /* Stanford block S mark */
+    .s-mark {
+      width: 36px; height: 36px;
+      background: var(--white);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Georgia', serif;
+      font-size: 1.25rem; font-weight: 700;
+      color: var(--cardinal);
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+
+    .nav-brand {
+      font-size: 1.1rem; font-weight: 600;
+      color: var(--white); letter-spacing: 0.02em;
+    }
+
+    .nav-cta {
+      background: var(--white);
+      color: var(--cardinal);
+      border: none; border-radius: 6px;
+      padding: 0.45rem 1.1rem;
+      font-size: 0.85rem; font-weight: 700;
+      cursor: pointer; transition: opacity 0.2s;
+      font-family: inherit;
+    }
+    .nav-cta:hover { opacity: 0.85; }
+
+    /* ── Hero ── */
+    .hero {
+      background: var(--cardinal);
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
       text-align: center;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-      min-width: 160px;
+      padding: 80px 1.5rem 4rem;
+      position: relative; overflow: hidden;
+    }
+
+    /* subtle tree silhouette watermark */
+    .hero::before {
+      content: '';
+      position: absolute; bottom: -40px; right: -40px;
+      width: 340px; height: 340px;
+      background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.9);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 100px;
+      font-size: 0.78rem; letter-spacing: 0.08em;
+      padding: 0.35rem 1rem;
+      margin-bottom: 1.8rem;
+      font-family: 'Helvetica Neue', sans-serif;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.2rem, 6vw, 4rem);
+      color: var(--white);
+      line-height: 1.15;
+      margin-bottom: 1.4rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: #FFCC00; /* Stanford Gold accent */
+    }
+
+    .hero p {
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      color: rgba(255,255,255,0.82);
+      max-width: 560px;
+      line-height: 1.7;
+      margin-bottom: 2.6rem;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    .hero-btns {
+      display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+    }
+
+    .btn-primary {
+      background: var(--white); color: var(--cardinal);
+      border: none; border-radius: 8px;
+      padding: 0.85rem 2rem;
+      font-size: 1rem; font-weight: 700;
+      cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
+      font-family: 'Helvetica Neue', sans-serif;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.25); }
+
+    .btn-ghost {
+      background: transparent; color: var(--white);
+      border: 2px solid rgba(255,255,255,0.5);
+      border-radius: 8px;
+      padding: 0.85rem 2rem;
+      font-size: 1rem; font-weight: 600;
+      cursor: pointer; transition: border-color 0.2s, background 0.2s;
+      font-family: 'Helvetica Neue', sans-serif;
+    }
+    .btn-ghost:hover { border-color: var(--white); background: rgba(255,255,255,0.08); }
+
+    /* social proof strip */
+    .hero-proof {
+      margin-top: 3rem;
+      color: rgba(255,255,255,0.55);
+      font-size: 0.82rem;
+      font-family: 'Helvetica Neue', sans-serif;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── Moments Section ── */
+    .section { padding: 5rem 1.5rem; }
+
+    .section-inner {
+      max-width: 900px; margin: 0 auto;
+    }
+
+    .section-label {
+      display: block;
+      color: var(--cardinal);
+      font-size: 0.78rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      font-family: 'Helvetica Neue', sans-serif;
+      margin-bottom: 0.75rem;
+    }
+
+    .section h2 {
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      color: var(--text);
+      line-height: 1.25;
+      margin-bottom: 0.8rem;
+    }
+
+    .section-sub {
+      color: var(--text-muted);
+      font-size: 1rem; line-height: 1.65;
+      max-width: 560px;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      margin-bottom: 3rem;
+    }
+
+    /* moment cards */
+    .moments {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .moment-card {
+      background: var(--sand);
+      border-radius: 14px;
+      padding: 1.75rem 1.5rem;
+      border-left: 4px solid var(--cardinal);
       transition: transform 0.2s, box-shadow 0.2s;
     }
+    .moment-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(140,21,21,0.12); }
 
-    .member:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    .moment-num {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em;
+      color: var(--cardinal); text-transform: uppercase;
+      font-family: 'Helvetica Neue', sans-serif;
+      margin-bottom: 0.6rem;
     }
 
-    .avatar {
-      width: 64px;
-      height: 64px;
+    .moment-title {
+      font-size: 1.1rem; font-weight: 700;
+      color: var(--text); margin-bottom: 0.6rem;
+    }
+
+    .moment-desc {
+      font-size: 0.9rem; color: var(--text-muted);
+      line-height: 1.6;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    .moment-time {
+      display: inline-block;
+      margin-top: 0.9rem;
+      background: var(--cardinal);
+      color: var(--white);
+      font-size: 0.72rem; font-weight: 600;
+      border-radius: 100px;
+      padding: 0.2rem 0.7rem;
+      font-family: 'Helvetica Neue', sans-serif;
+    }
+
+    /* ── How It Works ── */
+    .how { background: var(--cardinal); padding: 5rem 1.5rem; }
+
+    .how-inner { max-width: 900px; margin: 0 auto; }
+
+    .how h2 {
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      color: var(--white); margin-bottom: 0.6rem;
+    }
+
+    .how-sub {
+      color: rgba(255,255,255,0.7);
+      font-size: 1rem; line-height: 1.6;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      margin-bottom: 3rem;
+      max-width: 520px;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .step {
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+
+    .step-icon {
+      width: 64px; height: 64px;
+      background: rgba(255,255,255,0.12);
+      border: 2px solid rgba(255,255,255,0.25);
       border-radius: 50%;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-      color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem;
       margin: 0 auto 1rem;
     }
 
-    .name {
-      font-size: 1.2rem;
-      font-weight: 600;
-      color: #2d3748;
+    .step h3 {
+      font-size: 1rem; font-weight: 700;
+      color: var(--white); margin-bottom: 0.5rem;
+    }
+
+    .step p {
+      font-size: 0.85rem; color: rgba(255,255,255,0.7);
+      line-height: 1.55;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    /* connector dots between steps on wide screen */
+    .step:not(:last-child) { position: relative; }
+
+    /* ── CTA Banner ── */
+    .cta-banner {
+      background: var(--sand);
+      padding: 5rem 1.5rem;
+      text-align: center;
+    }
+
+    .cta-banner h2 {
+      font-size: clamp(1.5rem, 4vw, 2.2rem);
+      color: var(--text); margin-bottom: 0.8rem;
+    }
+
+    .cta-banner p {
+      color: var(--text-muted); font-size: 1rem;
+      max-width: 480px; margin: 0 auto 2.2rem;
+      line-height: 1.65;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    .btn-cardinal {
+      background: var(--cardinal); color: var(--white);
+      border: none; border-radius: 8px;
+      padding: 0.9rem 2.2rem;
+      font-size: 1rem; font-weight: 700;
+      cursor: pointer; transition: background 0.2s, transform 0.15s;
+      font-family: 'Helvetica Neue', sans-serif;
+    }
+    .btn-cardinal:hover { background: var(--cardinal-d); transform: translateY(-2px); }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--cool-grey);
+      color: rgba(255,255,255,0.55);
+      text-align: center;
+      padding: 1.5rem;
+      font-size: 0.78rem;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      letter-spacing: 0.03em;
+    }
+
+    /* ── Responsive tweaks ── */
+    @media (max-width: 480px) {
+      .hero-btns { flex-direction: column; align-items: center; }
+      .btn-primary, .btn-ghost { width: 100%; max-width: 300px; }
     }
   </style>
 </head>
 <body>
-  <h1>3조</h1>
-  <div class="team">
-    <div class="member">
-      <div class="avatar">허</div>
-      <div class="name">허민제</div>
+
+  <!-- ── Navigation ── -->
+  <nav>
+    <a class="nav-logo" href="#">
+      <div class="s-mark">S</div>
+      <span class="nav-brand">GrowthTree</span>
+    </a>
+    <button class="nav-cta">시작하기</button>
+  </nav>
+
+  <!-- ── Hero ── -->
+  <section class="hero">
+    <span class="hero-tag">Stanford PhD Growth Platform</span>
+    <h1>
+      이미 그 길을 걸어간<br/>
+      <em>선배가 함께합니다</em>
+    </h1>
+    <p>
+      연구주제를 찾는 박사 1년차의 불안함,<br/>
+      혼자 감당하지 않아도 됩니다.<br/>
+      전문가가 설계한 퀘스트를 하나씩 해내며<br/>실제 선배와 대화할 기회를 얻으세요.
+    </p>
+    <div class="hero-btns">
+      <button class="btn-primary">내 성장 여정 시작하기</button>
+      <button class="btn-ghost">어떻게 작동하나요?</button>
     </div>
-    <div class="member">
-      <div class="avatar">이</div>
-      <div class="name">이혜린</div>
+    <p class="hero-proof">스탠포드 석·박사 유학생을 위한 커리어 성장 플랫폼</p>
+  </section>
+
+  <!-- ── First 15-min Moments ── -->
+  <section class="section">
+    <div class="section-inner">
+      <span class="section-label">첫 15분의 경험</span>
+      <h2>처음 느껴야 할<br/>3가지 순간</h2>
+      <p class="section-sub">
+        GrowthTree는 정보를 주는 앱이 아닙니다.<br/>
+        불안함을 이해받고, 방향을 찾고, 가능성을 보는 감정의 여정입니다.
+      </p>
+
+      <div class="moments">
+        <div class="moment-card">
+          <div class="moment-num">Moment 01</div>
+          <div class="moment-title">"나를 정확히 알고 있구나"</div>
+          <div class="moment-desc">
+            내 상황이 화면에 그대로 반영되는 순간,
+            처음으로 누군가 내 고민을 이해했다는 느낌을 받습니다.
+          </div>
+          <span class="moment-time">약 2분차</span>
+        </div>
+
+        <div class="moment-card">
+          <div class="moment-num">Moment 02</div>
+          <div class="moment-title">"내가 걷고 있는 길이 보인다"</div>
+          <div class="moment-desc">
+            지금의 불안이 성장 과정의 특정 단계이기 때문임을
+            시각적으로 확인하고 안도감을 느낍니다.
+          </div>
+          <span class="moment-time">약 7분차</span>
+        </div>
+
+        <div class="moment-card">
+          <div class="moment-num">Moment 03</div>
+          <div class="moment-title">"나도 저렇게 될 수 있겠다"</div>
+          <div class="moment-desc">
+            비슷한 상황에서 출발한 선배의 경로를 보며,
+            막연한 롤모델이 아닌 구체적인 나의 미래로 인식합니다.
+          </div>
+          <span class="moment-time">약 13분차</span>
+        </div>
+      </div>
     </div>
-    <div class="member">
-      <div class="avatar">조</div>
-      <div class="name">조윤영</div>
+  </section>
+
+  <!-- ── How It Works ── -->
+  <section class="how">
+    <div class="how-inner">
+      <span class="section-label" style="color:rgba(255,255,255,0.6);">How It Works</span>
+      <h2>선배의 경험이<br/>퀘스트가 됩니다</h2>
+      <p class="how-sub">
+        이미 그 길을 걸어간 전문가가 다음 할 일을 알려주고,
+        해내면 그 선배와 직접 이야기할 수 있습니다.
+      </p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-icon">🎯</div>
+          <h3>목표 설정</h3>
+          <p>내 연구 방향과 현재 단계를 입력하면 나만의 성장 테크트리가 만들어집니다.</p>
+        </div>
+        <div class="step">
+          <div class="step-icon">⚡</div>
+          <h3>전문가 퀘스트</h3>
+          <p>이미 그 길을 걸어간 선배·전문가가 설계한 단계별 퀘스트를 수행합니다.</p>
+        </div>
+        <div class="step">
+          <div class="step-icon">🏆</div>
+          <h3>인터뷰 리워드</h3>
+          <p>퀘스트를 달성하면 실제 선배와 1:1 인터뷰 기회가 리워드로 주어집니다.</p>
+        </div>
+      </div>
     </div>
-  </div>
-  <p style="margin-top: 2rem; font-size: 1.5rem; font-weight: 700; color: #764ba2;">화이팅!</p>
+  </section>
+
+  <!-- ── CTA ── -->
+  <section class="cta-banner">
+    <h2>혼자 감당하지 않아도 됩니다</h2>
+    <p>
+      AI의 빠른 발전도, 제한된 교수 TO도,<br/>
+      먼저 걸어간 선배와 함께라면 다음 걸음이 보입니다.
+    </p>
+    <button class="btn-cardinal">내 성장 여정 시작하기 →</button>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer>
+    GrowthTree · Stanford PhD Growth Platform · LG Team 3 Prototype
+  </footer>
+
 </body>
 </html>
