@@ -1,398 +1,827 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Stanford PhD Growth Tree</title>
-  <style>
-    :root {
-      --cardinal: #8C1515;
-      --cardinal-dark: #5E0B0B;
-      --cardinal-light: #B83A3A;
-      --gold: #B26F16;
-      --gold-light: #EAAA00;
-      --bg: #FAF7F5;
-      --surface: #FFFFFF;
-      --border: #E8DDD8;
-      --text: #1A1410;
-      --muted: #6B5B52;
-      --light: #F5EDE8;
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    body { font-family: 'Georgia', serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>GrowthTree · Stanford PhD</title>
+<style>
+:root {
+  --red: #8C1515;
+  --red2: #B03A3A;
+  --gold: #D4900A;
+  --gold2: #F5C842;
+  --bg: #F7F3FF;
+  --white: #FFFFFF;
+  --gray1: #F2F0FB;
+  --gray2: #E4E0F5;
+  --gray3: #9B92C0;
+  --text: #1A1630;
+  --muted: #6B6494;
+  --green: #1A7A5E;
+  --green2: #E8F7F2;
+  --radius: 20px;
+  --shadow: 0 4px 24px rgba(80,60,180,0.10);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);}
 
-    /* ── Header ── */
-    header {
-      background: var(--cardinal);
-      color: white; padding: 16px 20px;
-      display: flex; align-items: center; gap: 12px;
-      position: sticky; top: 0; z-index: 100;
-      box-shadow: 0 2px 12px rgba(140,21,21,0.3);
-    }
-    .s-badge {
-      width: 34px; height: 34px; background: white; border-radius: 6px;
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 900; font-size: 18px; color: var(--cardinal); flex-shrink: 0;
-    }
-    .header-text h1 { font-size: 16px; font-weight: 600; }
-    .header-text p  { font-size: 11px; opacity: 0.75; font-family: sans-serif; margin-top: 1px; }
+/* ── Screen system ── */
+.screen{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  transition:transform .38s cubic-bezier(.4,0,.2,1), opacity .38s ease;
+  overflow:hidden;
+}
+.screen.hidden{transform:translateX(100%);pointer-events:none;opacity:0;}
+.screen.exit{transform:translateX(-30%);pointer-events:none;opacity:0;}
 
-    main { max-width: 480px; margin: 0 auto; padding: 18px 15px 80px; display: flex; flex-direction: column; gap: 18px; }
+/* ── Scroll area ── */
+.scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:none;}
+.scroll::-webkit-scrollbar{display:none;}
 
-    /* ── Card ── */
-    .card { background: var(--surface); border-radius: 16px; padding: 18px; border: 1px solid var(--border); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-    .card-label {
-      font-size: 10px; font-family: sans-serif; font-weight: 700;
-      letter-spacing: 0.09em; color: var(--cardinal); text-transform: uppercase;
-      margin-bottom: 13px; display: flex; align-items: center; gap: 6px;
-    }
-    .card-label::before { content:''; width:3px; height:13px; background:var(--cardinal); border-radius:2px; }
+/* ── Top bar ── */
+.topbar{
+  display:flex;align-items:center;gap:10px;padding:16px 20px 12px;
+  background:var(--white);border-bottom:1px solid var(--gray2);
+  flex-shrink:0;position:relative;
+}
+.topbar-back{
+  width:36px;height:36px;border-radius:50%;background:var(--gray1);
+  border:none;display:flex;align-items:center;justify-content:center;
+  font-size:18px;cursor:pointer;flex-shrink:0;
+}
+.topbar-title{font-size:16px;font-weight:700;flex:1;text-align:center;}
+.topbar-right{width:36px;flex-shrink:0;}
 
-    /* ── Empathy ── */
-    .empathy {
-      background: var(--cardinal-dark); color: white; border-radius: 14px;
-      padding: 16px 18px; display: flex; gap: 12px; align-items: flex-start;
-    }
-    .emp-icon { font-size: 28px; flex-shrink: 0; margin-top: 2px; }
-    .emp-quote { font-size: 13.5px; line-height: 1.65; font-family: sans-serif; }
-    .emp-who { font-size: 11px; opacity: 0.65; margin-top: 8px; font-style: italic; }
+/* ── Bottom nav ── */
+.bottom-nav{
+  display:flex;background:var(--white);
+  border-top:1px solid var(--gray2);
+  padding:0 8px;padding-bottom:env(safe-area-inset-bottom,0);
+  flex-shrink:0;
+}
+.nav-btn{
+  flex:1;display:flex;flex-direction:column;align-items:center;
+  gap:3px;padding:10px 4px 8px;border:none;background:none;cursor:pointer;
+  color:var(--gray3);font-size:10px;font-weight:600;transition:color .2s;
+}
+.nav-btn.active{color:var(--red);}
+.nav-btn .nav-icon{font-size:22px;}
 
-    /* ── Progress ── */
-    .prog-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-    .prog-lbl { font-size: 12px; font-family: sans-serif; color: var(--muted); flex-shrink: 0; }
-    .prog-track { flex:1; height:8px; background:var(--light); border-radius:99px; overflow:hidden; }
-    .prog-fill {
-      height:100%; background: linear-gradient(90deg, var(--cardinal), var(--cardinal-light));
-      border-radius:99px; transition: width 1.2s cubic-bezier(.4,0,.2,1);
-    }
-    .prog-pct { font-size:13px; font-family:sans-serif; font-weight:700; color:var(--cardinal); flex-shrink:0; }
-    .prog-sub { font-size:12px; font-family:sans-serif; color:var(--muted); }
+/* ── Onboarding ── */
+#screen-onboard{background:var(--white);}
+.onboard-hero{
+  background:linear-gradient(160deg,#8C1515 0%,#C05050 60%,#E8A0A0 100%);
+  padding:60px 28px 40px;text-align:center;color:white;
+}
+.onboard-logo{font-size:48px;margin-bottom:12px;}
+.onboard-title{font-size:28px;font-weight:800;line-height:1.2;margin-bottom:8px;}
+.onboard-sub{font-size:15px;opacity:.85;line-height:1.6;}
+.onboard-body{padding:28px 24px;display:flex;flex-direction:column;gap:20px;}
+.input-group label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px;letter-spacing:.05em;}
+.input-group input,.input-group select{
+  width:100%;padding:14px 16px;border:2px solid var(--gray2);
+  border-radius:14px;font-size:15px;outline:none;background:var(--gray1);
+  transition:border-color .2s;appearance:none;
+}
+.input-group input:focus,.input-group select:focus{border-color:var(--red);background:white;}
+.goal-chips{display:flex;flex-wrap:wrap;gap:8px;}
+.goal-chip{
+  padding:8px 16px;border-radius:99px;border:2px solid var(--gray2);
+  background:var(--gray1);font-size:13px;font-weight:600;cursor:pointer;
+  transition:all .2s;color:var(--muted);
+}
+.goal-chip.sel{border-color:var(--red);background:#FFF0F0;color:var(--red);}
+.cta-btn{
+  width:100%;padding:16px;border-radius:16px;border:none;
+  background:var(--red);color:white;font-size:16px;font-weight:700;
+  cursor:pointer;transition:opacity .2s;margin-top:4px;
+}
+.cta-btn:active{opacity:.85;}
+.cta-btn.gold{background:linear-gradient(90deg,var(--gold),var(--gold2));color:#1A1630;}
+.cta-btn:disabled{opacity:.45;pointer-events:none;}
 
-    /* ── Tech Tree ── */
-    .stages { display:flex; flex-direction:column; }
-    .stage { display:flex; gap:13px; align-items:flex-start; padding:11px 0; position:relative; }
-    .stage:not(:last-child)::after {
-      content:''; position:absolute; left:16px; top:43px;
-      width:2px; height:calc(100% - 18px); background:var(--border);
-    }
-    .stage.done::after, .stage.active::after { background:var(--cardinal); }
-    .stage-dot {
-      width:32px; height:32px; border-radius:50%; flex-shrink:0;
-      display:flex; align-items:center; justify-content:center; font-size:14px;
-      border:2px solid var(--border); background:var(--surface); position:relative; z-index:1;
-    }
-    .stage.done .stage-dot   { background:var(--cardinal); border-color:var(--cardinal); }
-    .stage.active .stage-dot { border-color:var(--cardinal); box-shadow:0 0 0 4px rgba(140,21,21,0.13); }
-    .stage.locked .stage-dot { opacity:.4; }
-    .stage-body { flex:1; padding-top:5px; }
-    .stage-title { font-size:13.5px; font-weight:700; font-family:sans-serif; margin-bottom:2px; }
-    .stage.locked .stage-title { color:var(--muted); }
-    .stage-desc { font-size:12px; color:var(--muted); font-family:sans-serif; line-height:1.5; }
-    .stage-tag {
-      margin-top:5px; display:inline-block; font-size:10px;
-      font-family:sans-serif; font-weight:700; padding:2px 8px; border-radius:99px;
-      background:var(--light); color:var(--cardinal);
-    }
-    .stage.active .stage-tag { background:var(--cardinal); color:white; }
+/* ── Home ── */
+#screen-home{background:var(--bg);}
+.home-header{
+  background:linear-gradient(135deg,#8C1515 0%,#C05050 100%);
+  padding:20px 20px 28px;color:white;
+}
+.home-greeting{font-size:13px;opacity:.8;margin-bottom:4px;}
+.home-name{font-size:22px;font-weight:800;margin-bottom:16px;}
+.home-prog-card{
+  background:rgba(255,255,255,0.18);border-radius:16px;padding:16px;
+  backdrop-filter:blur(8px);
+}
+.prog-label{font-size:12px;opacity:.8;margin-bottom:8px;}
+.prog-bar{height:8px;background:rgba(255,255,255,0.25);border-radius:99px;overflow:hidden;margin-bottom:6px;}
+.prog-fill{height:100%;background:white;border-radius:99px;transition:width 1s ease;}
+.prog-info{display:flex;justify-content:space-between;font-size:12px;opacity:.85;}
 
-    /* ── Quest ── */
-    .quest-box {
-      background: linear-gradient(135deg, #8C1515 0%, #5E0B0B 100%);
-      border-radius: 14px; padding: 18px; color: white;
-    }
-    .quest-tag {
-      font-size:10px; font-family:sans-serif; font-weight:700; letter-spacing:.1em;
-      background:rgba(255,255,255,0.18); padding:3px 10px; border-radius:99px;
-      display:inline-block; margin-bottom:11px; text-transform:uppercase;
-    }
-    .quest-title { font-size:17px; font-weight:700; line-height:1.35; margin-bottom:7px; }
-    .quest-desc  { font-size:13px; font-family:sans-serif; opacity:.88; line-height:1.6; margin-bottom:14px; }
-    .quest-chips { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px; }
-    .q-chip { font-size:11px; font-family:sans-serif; background:rgba(255,255,255,0.15); padding:4px 10px; border-radius:99px; }
-    .quest-btn {
-      width:100%; padding:13px; background:white; color:var(--cardinal);
-      border:none; border-radius:10px; font-size:15px; font-weight:700;
-      font-family:sans-serif; cursor:pointer; transition:opacity .2s; -webkit-appearance:none;
-    }
-    .quest-btn:active { opacity:.82; }
+.home-scroll{padding:20px 16px;display:flex;flex-direction:column;gap:14px;}
 
-    /* ── Reward ── */
-    .reward-box {
-      border:1.5px solid var(--gold-light); border-radius:16px;
-      padding:18px; background:linear-gradient(135deg,#FFF9EC,#FFF3D0);
-    }
-    .reward-hdr { display:flex; align-items:center; gap:10px; margin-bottom:13px; }
-    .reward-hdr-icon { font-size:22px; }
-    .reward-hdr-text h3 { font-size:14px; font-family:sans-serif; font-weight:700; }
-    .reward-hdr-text p  { font-size:11px; font-family:sans-serif; color:var(--gold); }
-    .expert {
-      display:flex; gap:13px; align-items:center; background:white;
-      border-radius:12px; padding:13px; margin-bottom:13px; border:1px solid #F0E0A0;
-    }
-    .expert-avatar {
-      width:52px; height:52px; border-radius:50%; flex-shrink:0;
-      background:linear-gradient(135deg,#8C1515,#B83A3A);
-      display:flex; align-items:center; justify-content:center;
-      color:white; font-size:18px; font-weight:700; font-family:sans-serif;
-    }
-    .expert-info h4 { font-size:13.5px; font-family:sans-serif; font-weight:700; margin-bottom:2px; }
-    .expert-info p  { font-size:11.5px; font-family:sans-serif; color:var(--muted); line-height:1.5; }
-    .expert-info a  { color:var(--cardinal); text-decoration:none; font-size:11px; }
-    .reward-lock { text-align:center; font-size:12px; font-family:sans-serif; color:var(--gold); margin-bottom:11px; }
-    .reward-btn {
-      width:100%; padding:12px;
-      background:linear-gradient(90deg,var(--gold),var(--gold-light));
-      color:white; border:none; border-radius:10px;
-      font-size:14px; font-weight:700; font-family:sans-serif;
-      cursor:pointer; transition:opacity .2s; -webkit-appearance:none;
-    }
-    .reward-btn:active { opacity:.85; }
+.section-title{font-size:13px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px;}
 
-    /* ── Future Avatar ── */
-    .avatar-row {
-      display:flex; justify-content:center; align-items:flex-end;
-      gap:16px; margin:18px 0 12px;
-    }
-    .av { display:flex; flex-direction:column; align-items:center; gap:7px; }
-    .av-circle {
-      border-radius:50%; display:flex; align-items:center; justify-content:center;
-      border:3px solid transparent; font-size:30px; transition:filter .8s ease;
-    }
-    .av-now   { width:76px; height:76px; background:var(--light); border-color:var(--cardinal); }
-    .av-mid   { width:60px; height:60px; font-size:24px; background:#EEE; filter:blur(2.5px); opacity:.55; }
-    .av-far   { width:48px; height:48px; font-size:20px; background:#E0E0E0; filter:blur(5px);  opacity:.3; }
-    .av-lbl   { font-size:11px; font-family:sans-serif; color:var(--muted); font-weight:600; }
-    .av-arrow { font-size:16px; color:var(--border); padding-bottom:30px; }
-    .avatar-caption { font-size:13px; font-family:sans-serif; color:var(--muted); line-height:1.6; text-align:center; }
-    .avatar-caption strong { color:var(--cardinal); }
+/* Quest card */
+.quest-card{
+  background:var(--white);border-radius:var(--radius);padding:18px;
+  box-shadow:var(--shadow);cursor:pointer;transition:transform .15s;
+  border:1px solid var(--gray2);
+}
+.quest-card:active{transform:scale(.98);}
+.quest-card-tag{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:11px;font-weight:700;padding:3px 10px;border-radius:99px;
+  margin-bottom:10px;
+}
+.tag-active{background:#FFF0F0;color:var(--red);}
+.tag-locked{background:var(--gray1);color:var(--gray3);}
+.tag-done{background:var(--green2);color:var(--green);}
+.quest-card-title{font-size:16px;font-weight:700;line-height:1.35;margin-bottom:6px;}
+.quest-card-desc{font-size:13px;color:var(--muted);line-height:1.55;}
+.quest-card-meta{
+  display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;
+}
+.meta-chip{
+  font-size:11px;background:var(--gray1);color:var(--muted);
+  padding:4px 10px;border-radius:99px;font-weight:600;
+}
+.quest-card-arrow{
+  display:flex;align-items:center;justify-content:space-between;margin-top:14px;
+}
+.card-btn-sm{
+  padding:9px 18px;border-radius:99px;border:none;
+  font-size:13px;font-weight:700;cursor:pointer;transition:opacity .2s;
+}
+.btn-red{background:var(--red);color:white;}
+.btn-gray{background:var(--gray1);color:var(--gray3);}
+.btn-green{background:var(--green2);color:var(--green);}
 
-    /* ── Quest Log ── */
-    .log-item {
-      display:flex; align-items:flex-start; gap:11px;
-      padding:11px 0; border-bottom:1px solid var(--border);
-    }
-    .log-item:last-child { border-bottom:none; padding-bottom:0; }
-    .log-icon { font-size:18px; flex-shrink:0; margin-top:1px; }
-    .log-body { flex:1; }
-    .log-title { font-size:13px; font-family:sans-serif; font-weight:600; margin-bottom:2px; }
-    .log-date  { font-size:11px; font-family:sans-serif; color:var(--muted); }
-    .log-badge {
-      font-size:10px; font-family:sans-serif; font-weight:700;
-      padding:2px 8px; border-radius:99px;
-      background:var(--light); color:var(--cardinal);
-    }
+/* Empathy banner */
+.empathy-banner{
+  background:linear-gradient(135deg,#2D1B69,#4A2D8F);
+  border-radius:var(--radius);padding:16px 18px;
+  display:flex;gap:12px;align-items:flex-start;
+  box-shadow:0 4px 20px rgba(45,27,105,.2);
+}
+.emp-q{font-size:13.5px;color:white;line-height:1.6;}
+.emp-who{font-size:11px;color:rgba(255,255,255,.6);margin-top:7px;}
 
-    /* ── Modal ── */
-    .backdrop {
-      display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5);
-      z-index:200; align-items:flex-end; justify-content:center;
-    }
-    .backdrop.open { display:flex; }
-    .modal {
-      background:white; border-radius:22px 22px 0 0;
-      padding:26px 22px 44px; width:100%; max-width:480px;
-      animation:slideUp .3s ease;
-    }
-    @keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
-    .modal h3 { font-size:18px; margin-bottom:8px; }
-    .modal p  { font-size:14px; font-family:sans-serif; color:var(--muted); line-height:1.7; margin-bottom:20px; }
-    .modal-btn {
-      width:100%; padding:13px; background:var(--cardinal); color:white;
-      border:none; border-radius:10px; font-size:15px; font-weight:700;
-      font-family:sans-serif; cursor:pointer; -webkit-appearance:none;
-    }
-    .modal-btn.gold { background:linear-gradient(90deg,var(--gold),var(--gold-light)); }
-    .modal-cancel {
-      width:100%; padding:10px; background:none; border:none;
-      font-size:14px; font-family:sans-serif; color:var(--muted);
-      cursor:pointer; margin-top:8px;
-    }
+/* Reward teaser */
+.reward-teaser{
+  background:linear-gradient(135deg,#FFF8E7,#FFF0C0);
+  border:1.5px solid var(--gold2);border-radius:var(--radius);
+  padding:16px 18px;cursor:pointer;transition:transform .15s;
+}
+.reward-teaser:active{transform:scale(.98);}
+.reward-row{display:flex;align-items:center;gap:12px;}
+.reward-avatar{
+  width:48px;height:48px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,var(--red),var(--red2));
+  display:flex;align-items:center;justify-content:center;
+  color:white;font-weight:800;font-size:16px;
+}
+.reward-info h4{font-size:14px;font-weight:700;margin-bottom:2px;}
+.reward-info p{font-size:12px;color:var(--muted);line-height:1.4;}
+.reward-lock-badge{
+  margin-left:auto;font-size:10px;font-weight:700;padding:4px 10px;
+  border-radius:99px;background:var(--gold2);color:#6B4A00;flex-shrink:0;
+}
+.reward-lock-badge.unlocked{background:var(--green2);color:var(--green);}
 
-    /* ── Toast ── */
-    .toast {
-      position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(80px);
-      background:#1A1410; color:white; font-family:sans-serif; font-size:13px;
-      padding:11px 18px; border-radius:99px; z-index:300;
-      transition:transform .35s ease, opacity .35s ease; opacity:0; white-space:nowrap;
-    }
-    .toast.show { transform:translateX(-50%) translateY(0); opacity:1; }
-  </style>
+/* ── Tech Tree screen ── */
+#screen-tree{background:var(--bg);}
+.tree-list{padding:16px;display:flex;flex-direction:column;gap:12px;}
+.tree-item{
+  background:var(--white);border-radius:18px;padding:18px;
+  box-shadow:var(--shadow);border:2px solid transparent;
+  cursor:pointer;transition:all .2s;
+}
+.tree-item.active-item{border-color:var(--red);}
+.tree-item.locked-item{opacity:.55;}
+.tree-item-hdr{display:flex;align-items:center;gap:12px;margin-bottom:8px;}
+.tree-num{
+  width:40px;height:40px;border-radius:14px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;background:var(--gray1);
+}
+.tree-num.done-num{background:#FFF0F0;}
+.tree-num.active-num{background:#FFF0F0;box-shadow:0 0 0 4px rgba(140,21,21,.15);}
+.tree-item-title{font-size:15px;font-weight:700;}
+.tree-item-sub{font-size:12px;color:var(--muted);margin-top:1px;}
+.tree-progress{margin-top:10px;}
+.tree-prog-bar{height:5px;background:var(--gray2);border-radius:99px;overflow:hidden;margin-bottom:4px;}
+.tree-prog-fill{height:100%;border-radius:99px;background:var(--red);transition:width 1s ease;}
+.tree-prog-txt{font-size:11px;color:var(--muted);}
+.connector{
+  display:flex;justify-content:center;margin:-6px 0;
+}
+.connector-line{width:2px;height:20px;background:var(--gray2);border-radius:2px;}
+.connector-line.done-line{background:var(--red);}
+
+/* ── Quest Detail screen ── */
+#screen-quest{background:var(--bg);}
+.quest-hero{
+  background:linear-gradient(135deg,#8C1515,#C05050);
+  padding:24px 20px 32px;color:white;
+}
+.quest-hero-tag{
+  display:inline-block;background:rgba(255,255,255,.2);
+  font-size:11px;font-weight:700;padding:4px 12px;border-radius:99px;
+  margin-bottom:12px;
+}
+.quest-hero-title{font-size:22px;font-weight:800;line-height:1.3;margin-bottom:10px;}
+.quest-chips-row{display:flex;gap:8px;flex-wrap:wrap;}
+.q-chip-w{
+  background:rgba(255,255,255,.18);font-size:12px;
+  padding:5px 12px;border-radius:99px;
+}
+.quest-body{padding:20px 16px;display:flex;flex-direction:column;gap:16px;}
+.quest-why{
+  background:var(--white);border-radius:16px;padding:16px;
+  border:1px solid var(--gray2);
+}
+.quest-why h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.06em;}
+.quest-why p{font-size:14px;line-height:1.7;color:var(--text);}
+
+/* Steps */
+.steps-card{background:var(--white);border-radius:16px;padding:16px;border:1px solid var(--gray2);}
+.steps-card h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;text-transform:uppercase;letter-spacing:.06em;}
+.step{display:flex;gap:12px;margin-bottom:14px;}
+.step:last-child{margin-bottom:0;}
+.step-num{
+  width:28px;height:28px;border-radius:50%;background:var(--red);
+  color:white;font-size:13px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.step-num.done-step{background:var(--green);}
+.step-body{flex:1;padding-top:4px;}
+.step-title{font-size:14px;font-weight:600;margin-bottom:3px;}
+.step-desc{font-size:12px;color:var(--muted);line-height:1.5;}
+.step-check{
+  width:28px;height:28px;border-radius:50%;flex-shrink:0;
+  border:2px solid var(--gray2);background:var(--gray1);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;font-size:14px;
+  transition:all .2s;margin-top:2px;
+}
+.step-check.checked{background:var(--green);border-color:var(--green);color:white;}
+
+.complete-btn-wrap{padding:0 16px 32px;}
+.complete-btn{
+  width:100%;padding:16px;border-radius:16px;border:none;
+  background:var(--red);color:white;font-size:16px;font-weight:700;
+  cursor:pointer;transition:all .2s;
+}
+.complete-btn:disabled{background:var(--gray2);color:var(--gray3);cursor:not-allowed;}
+.complete-btn.done-btn{background:var(--green);}
+
+/* ── Future Avatar screen ── */
+#screen-future{background:var(--bg);}
+.future-body{padding:20px 16px;display:flex;flex-direction:column;gap:16px;align-items:center;}
+.avatar-timeline{display:flex;align-items:flex-end;gap:12px;justify-content:center;padding:20px 0;}
+.av-item{display:flex;flex-direction:column;align-items:center;gap:8px;}
+.av-circle{
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:32px;border:3px solid transparent;transition:all .8s ease;
+}
+.av-now{width:80px;height:80px;background:#FFF0F0;border-color:var(--red);}
+.av-1yr{width:64px;height:64px;font-size:26px;background:var(--gray2);}
+.av-grad{width:52px;height:52px;font-size:20px;background:var(--gray2);}
+.av-lbl{font-size:11px;font-weight:700;color:var(--muted);}
+.av-now-lbl{color:var(--red);}
+.av-arrow{font-size:20px;color:var(--gray2);padding-bottom:28px;}
+
+.milestone-list{width:100%;display:flex;flex-direction:column;gap:10px;}
+.milestone{
+  background:var(--white);border-radius:14px;padding:14px 16px;
+  display:flex;align-items:center;gap:12px;border:1px solid var(--gray2);
+}
+.milestone.locked-ms{opacity:.45;}
+.ms-icon{font-size:22px;flex-shrink:0;}
+.ms-body{flex:1;}
+.ms-title{font-size:13.5px;font-weight:700;margin-bottom:2px;}
+.ms-desc{font-size:12px;color:var(--muted);}
+.ms-lock{font-size:16px;color:var(--gray3);}
+
+/* ── Reward screen ── */
+#screen-reward{background:var(--bg);}
+.reward-hero{
+  background:linear-gradient(135deg,#6B4A00,#D4900A,#F5C842);
+  padding:32px 20px;text-align:center;color:white;
+}
+.reward-hero-icon{font-size:56px;margin-bottom:12px;}
+.reward-hero-title{font-size:24px;font-weight:800;margin-bottom:6px;}
+.reward-hero-sub{font-size:14px;opacity:.9;}
+.reward-body{padding:20px 16px;display:flex;flex-direction:column;gap:14px;}
+.expert-card{
+  background:var(--white);border-radius:18px;padding:20px;
+  box-shadow:var(--shadow);border:1px solid var(--gray2);
+}
+.expert-top{display:flex;gap:14px;align-items:center;margin-bottom:14px;}
+.expert-av{
+  width:60px;height:60px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,var(--red),var(--red2));
+  display:flex;align-items:center;justify-content:center;
+  color:white;font-weight:800;font-size:20px;
+}
+.expert-top-info h3{font-size:16px;font-weight:700;margin-bottom:3px;}
+.expert-top-info p{font-size:12px;color:var(--muted);line-height:1.5;}
+.expert-top-info a{color:var(--red);font-size:12px;text-decoration:none;}
+.expert-tags{display:flex;gap:6px;flex-wrap:wrap;}
+.e-tag{font-size:11px;background:var(--gray1);color:var(--muted);padding:4px 10px;border-radius:99px;font-weight:600;}
+.lock-notice{
+  background:var(--gray1);border-radius:14px;padding:14px 16px;
+  text-align:center;font-size:13px;color:var(--muted);
+  display:flex;flex-direction:column;gap:6px;align-items:center;
+}
+.lock-notice.unlocked-notice{background:var(--green2);color:var(--green);}
+.lock-notice-icon{font-size:28px;}
+.apply-btn{
+  width:100%;padding:16px;border-radius:16px;border:none;
+  font-size:16px;font-weight:700;cursor:pointer;transition:opacity .2s;
+}
+.apply-btn:active{opacity:.85;}
+
+/* ── Celebration overlay ── */
+#celebrate{
+  position:fixed;inset:0;z-index:500;
+  background:rgba(0,0,0,.7);
+  display:none;align-items:center;justify-content:center;
+}
+#celebrate.show{display:flex;}
+.celebrate-card{
+  background:white;border-radius:28px;padding:36px 28px;
+  text-align:center;max-width:340px;margin:20px;
+  animation:popIn .4s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes popIn{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
+.celebrate-emoji{font-size:64px;margin-bottom:16px;}
+.celebrate-title{font-size:24px;font-weight:800;margin-bottom:8px;}
+.celebrate-sub{font-size:14px;color:var(--muted);line-height:1.65;margin-bottom:24px;}
+.confetti{position:fixed;pointer-events:none;z-index:501;}
+
+/* ── Toast ── */
+.toast{
+  position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:#1A1630;color:white;font-size:13px;padding:11px 20px;
+  border-radius:99px;z-index:400;opacity:0;transition:all .3s;white-space:nowrap;
+}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
+
+/* ── Animations ── */
+@keyframes fadeSlideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.anim{animation:fadeSlideUp .35s ease both;}
+.anim-d1{animation-delay:.05s}
+.anim-d2{animation-delay:.1s}
+.anim-d3{animation-delay:.15s}
+.anim-d4{animation-delay:.2s}
+.anim-d5{animation-delay:.25s}
+</style>
 </head>
 <body>
 
-<header>
-  <div class="s-badge">S</div>
-  <div class="header-text">
-    <h1>PhD Growth Tree</h1>
-    <p>Stanford International PhD · 성장 여정 트래커</p>
-  </div>
-</header>
-
-<main>
-
-  <!-- 공감 배너 -->
-  <div class="empathy">
-    <div class="emp-icon">🎓</div>
-    <div>
-      <div class="emp-quote">"랩 탐색하면서 AI 발전 속도에 불안했어요. 그런데 그 시기가 사실 연구자로 자라는 정상적인 과정이었어요."</div>
-      <div class="emp-who">— CS PhD 3년차 선배 · 현재 Google Brain 인턴십 중</div>
+<!-- ══════════════ SCREEN 1: ONBOARDING ══════════════ -->
+<div class="screen" id="screen-onboard">
+  <div class="scroll">
+    <div class="onboard-hero">
+      <div class="onboard-logo">🌳</div>
+      <div class="onboard-title">PhD Growth Tree</div>
+      <div class="onboard-sub">스탠포드 박사 유학생의<br>성장 여정을 함께 그려요</div>
     </div>
-  </div>
-
-  <!-- 진행률 -->
-  <div class="card">
-    <div class="card-label">내 여정 현황</div>
-    <div class="prog-row">
-      <span class="prog-lbl">랩 합류까지</span>
-      <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
-      <span class="prog-pct" id="progPct">22%</span>
-    </div>
-    <div class="prog-sub">1단계 완료 · 지금은 <strong style="color:var(--cardinal)">2단계: 연구주제 탐색</strong> 중</div>
-  </div>
-
-  <!-- 테크트리 -->
-  <div class="card">
-    <div class="card-label">목표 테크트리 — 랩 합류 & 연구 독립</div>
-    <div class="stages">
-      <div class="stage done">
-        <div class="stage-dot">✓</div>
-        <div class="stage-body">
-          <div class="stage-title">1단계 · 스탠포드 정착</div>
-          <div class="stage-desc">수업 등록, 커뮤니티 온보딩, 학교 생활 파악</div>
-          <span class="stage-tag">완료</span>
+    <div class="onboard-body">
+      <div class="input-group anim anim-d1">
+        <label>이름 (또는 닉네임)</label>
+        <input type="text" id="inp-name" placeholder="예: Yoon" maxlength="20">
+      </div>
+      <div class="input-group anim anim-d2">
+        <label>전공 분야</label>
+        <select id="inp-major">
+          <option value="">선택해주세요</option>
+          <option>Computer Science</option>
+          <option>Electrical Engineering</option>
+          <option>Bioengineering</option>
+          <option>Materials Science</option>
+          <option>Mechanical Engineering</option>
+          <option>Physics</option>
+          <option>Chemistry</option>
+          <option>기타</option>
+        </select>
+      </div>
+      <div class="input-group anim anim-d3">
+        <label>지금 나의 목표</label>
+        <div class="goal-chips" id="goal-chips">
+          <div class="goal-chip" data-g="랩 합류">🔬 랩 합류</div>
+          <div class="goal-chip" data-g="연구주제 확정">💡 연구주제 확정</div>
+          <div class="goal-chip" data-g="첫 논문 제출">📄 첫 논문 제출</div>
+          <div class="goal-chip" data-g="취업/포닥 준비">🚀 취업/포닥 준비</div>
         </div>
       </div>
-      <div class="stage active">
-        <div class="stage-dot">🔬</div>
-        <div class="stage-body">
-          <div class="stage-title">2단계 · 연구주제 탐색</div>
-          <div class="stage-desc">교수 미팅, 논문 리딩, 관심 분야 좁히기</div>
-          <span class="stage-tag">진행 중 ← 지금 여기</span>
+      <div class="anim anim-d4" style="background:#FFF8E7;border-radius:14px;padding:14px 16px;">
+        <div style="font-size:13px;color:#6B4A00;line-height:1.65;">
+          💬 <em>"랩 탐색 중 AI 발전 속도에 불안했어요. 그런데 그 시기가 사실 정상적인 과정이었어요."</em><br>
+          <span style="font-size:11px;opacity:.7;margin-top:4px;display:block;">— CS PhD 3년차 · Google Brain 인턴십 중</span>
         </div>
       </div>
-      <div class="stage locked">
-        <div class="stage-dot">🤝</div>
-        <div class="stage-body">
-          <div class="stage-title">3단계 · 랩 합류</div>
-          <div class="stage-desc">지도교수 확정, 랩 미팅 참여, 프로젝트 배정</div>
-          <span class="stage-tag">잠금</span>
-        </div>
-      </div>
-      <div class="stage locked">
-        <div class="stage-dot">📄</div>
-        <div class="stage-body">
-          <div class="stage-title">4단계 · 첫 논문 제출</div>
-          <div class="stage-desc">공동 연구, 컨퍼런스 제출, 리뷰 대응</div>
-          <span class="stage-tag">잠금</span>
-        </div>
-      </div>
-      <div class="stage locked">
-        <div class="stage-dot">🚀</div>
-        <div class="stage-body">
-          <div class="stage-title">5단계 · 연구 독립</div>
-          <div class="stage-desc">독자적 연구 방향 제시, 펀딩, 취업/포닥 준비</div>
-          <span class="stage-tag">잠금</span>
-        </div>
-      </div>
+      <button class="cta-btn anim anim-d5" id="start-btn" disabled>시작하기 →</button>
     </div>
-  </div>
-
-  <!-- 현재 퀘스트 -->
-  <div class="quest-box">
-    <span class="quest-tag">⚡ 이번 주 퀘스트</span>
-    <div class="quest-title">관심 교수 논문 3편 읽고<br>핵심 질문 1개 만들기</div>
-    <div class="quest-desc">
-      교수 미팅 전 논문을 읽고 진짜 질문 하나를 준비해보세요.<br>
-      "이 연구가 왜 지금 필요한가?" 한 줄이면 충분해요.
-    </div>
-    <div class="quest-chips">
-      <span class="q-chip">📅 7일 이내</span>
-      <span class="q-chip">⏱ 약 3–5시간</span>
-      <span class="q-chip">🏆 전문가 연결 +1</span>
-    </div>
-    <button class="quest-btn" id="questMainBtn" ontouchstart="">퀘스트 시작하기</button>
-  </div>
-
-  <!-- 리워드 / 전문가 연결 -->
-  <div class="reward-box">
-    <div class="reward-hdr">
-      <div class="reward-hdr-icon">🏆</div>
-      <div class="reward-hdr-text">
-        <h3>퀘스트 달성 리워드</h3>
-        <p>완료하면 전문가와 1:1로 연결됩니다</p>
-      </div>
-    </div>
-    <div class="expert">
-      <div class="expert-avatar">SK</div>
-      <div class="expert-info">
-        <h4>Soh Kim</h4>
-        <p>Stanford d.school · 디자인 사고 &amp; 혁신<br>유학생 커뮤니티 멘토링 전문</p>
-        <a href="https://sdgc.stanford.edu/people/soh-kim" target="_blank" rel="noopener">→ Stanford 프로필 보기</a>
-      </div>
-    </div>
-    <div class="reward-lock" id="rewardLock">🔒 퀘스트 완료 후 인터뷰 신청 가능</div>
-    <button class="reward-btn" id="rewardBtn" ontouchstart="">전문가 인터뷰 신청하기</button>
-  </div>
-
-  <!-- 미래의 내 모습 -->
-  <div class="card">
-    <div class="card-label">미래의 내 모습</div>
-    <div class="avatar-row">
-      <div class="av">
-        <div class="av-circle av-now">🧑‍💻</div>
-        <span class="av-lbl" style="color:var(--cardinal)">지금의 나</span>
-      </div>
-      <div class="av-arrow">→</div>
-      <div class="av">
-        <div class="av-circle av-mid">🔬</div>
-        <span class="av-lbl">1년 후</span>
-      </div>
-      <div class="av-arrow">→</div>
-      <div class="av">
-        <div class="av-circle av-far">🎓</div>
-        <span class="av-lbl">졸업 후</span>
-      </div>
-    </div>
-    <div class="avatar-caption">
-      퀘스트를 완료할수록 <strong>미래의 모습이 점점 선명해져요</strong>.<br>
-      지금은 흐릿하지만, 한 걸음씩 윤곽이 잡혀갑니다.
-    </div>
-  </div>
-
-  <!-- 완료한 퀘스트 로그 -->
-  <div class="card">
-    <div class="card-label">완료한 퀘스트</div>
-    <div id="questLog"></div>
-  </div>
-
-</main>
-
-<!-- 퀘스트 시작 모달 -->
-<div class="backdrop" id="questModal">
-  <div class="modal">
-    <h3>📖 퀘스트 시작!</h3>
-    <p>관심 교수의 최신 논문 3편을 읽고, <strong>"왜 이 연구가 지금 중요한가?"</strong> 에 대한 질문 하나를 메모해보세요.<br><br>완료 버튼을 누르면 Soh Kim과의 인터뷰 리워드가 열립니다. 🏆</p>
-    <button class="modal-btn" id="questDoneBtn">✅ 퀘스트 완료했어요!</button>
-    <button class="modal-cancel" id="questCancelBtn">나중에 할게요</button>
   </div>
 </div>
 
-<!-- 리워드 잠김 모달 -->
-<div class="backdrop" id="lockModal">
-  <div class="modal">
-    <h3>🔒 아직 잠겨있어요</h3>
-    <p>퀘스트를 완료해야 Soh Kim과의 인터뷰를 신청할 수 있어요.<br>"관심 교수 논문 3편 읽기" 퀘스트를 먼저 완료해보세요!</p>
-    <button class="modal-btn" onclick="close_('lockModal');open_('questModal')">퀘스트 바로 시작하기</button>
-    <button class="modal-cancel" onclick="close_('lockModal')">닫기</button>
+<!-- ══════════════ SCREEN 2: HOME ══════════════ -->
+<div class="screen hidden" id="screen-home">
+  <div class="home-header">
+    <div class="home-greeting" id="home-greeting">안녕하세요 👋</div>
+    <div class="home-name" id="home-name">PhD Growth Tree</div>
+    <div class="home-prog-card">
+      <div class="prog-label">목표까지 진행률</div>
+      <div class="prog-bar"><div class="prog-fill" id="home-prog-fill" style="width:0%"></div></div>
+      <div class="prog-info">
+        <span id="home-prog-stage">2단계 진행 중</span>
+        <span id="home-prog-pct" style="font-weight:700;">22%</span>
+      </div>
+    </div>
+  </div>
+  <div class="scroll">
+    <div class="home-scroll">
+      <!-- Empathy -->
+      <div class="empathy-banner anim">
+        <div style="font-size:28px;flex-shrink:0;">💬</div>
+        <div>
+          <div class="emp-q">"TO가 제한되어 있어도, 내가 먼저 가치를 증명하면 문이 열렸어요."</div>
+          <div class="emp-who">— EE PhD 2년차 선배 · 현재 Stanford AI Lab</div>
+        </div>
+      </div>
+
+      <!-- Current quest -->
+      <div>
+        <div class="section-title anim anim-d1">⚡ 이번 주 퀘스트</div>
+        <div class="quest-card anim anim-d2" id="home-quest-card" onclick="goTo('screen-quest')">
+          <div class="quest-card-tag tag-active">🔥 진행 중</div>
+          <div class="quest-card-title">관심 교수 논문 3편 읽고<br>핵심 질문 1개 만들기</div>
+          <div class="quest-card-desc">교수 미팅 전 논문을 읽고 진짜 질문 하나를 준비해보세요.</div>
+          <div class="quest-card-meta">
+            <span class="meta-chip">📅 7일</span>
+            <span class="meta-chip">⏱ 3–5시간</span>
+            <span class="meta-chip">🏆 리워드 +1</span>
+          </div>
+          <div class="quest-card-arrow">
+            <span id="home-quest-progress-txt" style="font-size:12px;color:var(--muted);font-weight:600;"></span>
+            <button class="card-btn-sm btn-red" id="home-quest-btn">시작 →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reward teaser -->
+      <div>
+        <div class="section-title anim anim-d3">🏆 리워드</div>
+        <div class="reward-teaser anim anim-d4" onclick="goTo('screen-reward')">
+          <div class="reward-row">
+            <div class="reward-avatar">SK</div>
+            <div class="reward-info">
+              <h4>Soh Kim</h4>
+              <p>Stanford d.school · 유학생 멘토</p>
+            </div>
+            <div class="reward-lock-badge" id="home-reward-badge">🔒 잠금</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Future avatar teaser -->
+      <div>
+        <div class="section-title anim anim-d5">🔮 미래의 내 모습</div>
+        <div class="quest-card anim" style="animation-delay:.3s" onclick="goTo('screen-future')">
+          <div style="display:flex;align-items:center;gap:14px;">
+            <div style="display:flex;gap:-4px;">
+              <span style="font-size:32px;">🧑‍💻</span>
+              <span style="font-size:20px;filter:blur(2px);opacity:.5;margin-left:-4px;">🔬</span>
+              <span style="font-size:14px;filter:blur(4px);opacity:.3;margin-left:-4px;">🎓</span>
+            </div>
+            <div>
+              <div style="font-size:14px;font-weight:700;margin-bottom:3px;">미래의 내 모습</div>
+              <div style="font-size:12px;color:var(--muted);">퀘스트를 완료하면 선명해져요 →</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-nav" id="home-nav">
+    <button class="nav-btn active" onclick="showTab('home')"><span class="nav-icon">🏠</span>홈</button>
+    <button class="nav-btn" onclick="showTab('tree')"><span class="nav-icon">🌳</span>테크트리</button>
+    <button class="nav-btn" onclick="showTab('future')"><span class="nav-icon">🔮</span>미래</button>
+    <button class="nav-btn" onclick="showTab('reward')"><span class="nav-icon">🏆</span>리워드</button>
   </div>
 </div>
 
-<!-- 인터뷰 신청 모달 -->
-<div class="backdrop" id="interviewModal">
-  <div class="modal">
-    <h3>🎉 인터뷰 신청 완료!</h3>
-    <p>Soh Kim에게 신청 내역이 전달되었어요.<br>빠른 시일 내에 일정 안내 메일을 받으실 거예요.<br><br>계속 퀘스트를 완료하면 더 많은 전문가와 연결됩니다!</p>
-    <button class="modal-btn gold" onclick="close_('interviewModal')">확인</button>
+<!-- ══════════════ SCREEN 3: TECH TREE ══════════════ -->
+<div class="screen hidden" id="screen-tree">
+  <div class="topbar">
+    <button class="topbar-back" onclick="backTo('screen-home')">←</button>
+    <div class="topbar-title">🌳 목표 테크트리</div>
+    <div class="topbar-right"></div>
+  </div>
+  <div class="scroll">
+    <div class="tree-list">
+      <div class="tree-item anim" onclick="goTo('screen-quest');/* stage 1 done */">
+        <div class="tree-item-hdr">
+          <div class="tree-num done-num">✅</div>
+          <div>
+            <div class="tree-item-title">1단계 · 스탠포드 정착</div>
+            <div class="tree-item-sub">수업 등록, 오리엔테이션, 커뮤니티</div>
+          </div>
+          <span style="margin-left:auto;font-size:11px;font-weight:700;color:var(--green);background:var(--green2);padding:3px 10px;border-radius:99px;">완료</span>
+        </div>
+        <div class="tree-progress">
+          <div class="tree-prog-bar"><div class="tree-prog-fill" style="width:100%"></div></div>
+          <div class="tree-prog-txt">3 / 3 퀘스트 완료</div>
+        </div>
+      </div>
+
+      <div class="connector"><div class="connector-line done-line"></div></div>
+
+      <div class="tree-item active-item anim anim-d1" onclick="goTo('screen-quest')">
+        <div class="tree-item-hdr">
+          <div class="tree-num active-num">🔬</div>
+          <div>
+            <div class="tree-item-title">2단계 · 연구주제 탐색</div>
+            <div class="tree-item-sub">교수 미팅, 논문 리딩, 분야 확정</div>
+          </div>
+          <span style="margin-left:auto;font-size:11px;font-weight:700;color:var(--red);background:#FFF0F0;padding:3px 10px;border-radius:99px;">진행 중</span>
+        </div>
+        <div class="tree-progress">
+          <div class="tree-prog-bar"><div class="tree-prog-fill" id="tree-stage2-fill" style="width:33%"></div></div>
+          <div class="tree-prog-txt" id="tree-stage2-txt">1 / 3 퀘스트 완료</div>
+        </div>
+      </div>
+
+      <div class="connector"><div class="connector-line"></div></div>
+
+      <div class="tree-item locked-item anim anim-d2">
+        <div class="tree-item-hdr">
+          <div class="tree-num">🤝</div>
+          <div>
+            <div class="tree-item-title">3단계 · 랩 합류</div>
+            <div class="tree-item-sub">지도교수 확정, 랩 미팅 참여</div>
+          </div>
+          <span style="margin-left:auto;font-size:16px;">🔒</span>
+        </div>
+      </div>
+
+      <div class="connector"><div class="connector-line"></div></div>
+
+      <div class="tree-item locked-item anim anim-d3">
+        <div class="tree-item-hdr">
+          <div class="tree-num">📄</div>
+          <div>
+            <div class="tree-item-title">4단계 · 첫 논문 제출</div>
+            <div class="tree-item-sub">공동 연구, 컨퍼런스 제출</div>
+          </div>
+          <span style="margin-left:auto;font-size:16px;">🔒</span>
+        </div>
+      </div>
+
+      <div class="connector"><div class="connector-line"></div></div>
+
+      <div class="tree-item locked-item anim anim-d4">
+        <div class="tree-item-hdr">
+          <div class="tree-num">🚀</div>
+          <div>
+            <div class="tree-item-title">5단계 · 연구 독립</div>
+            <div class="tree-item-sub">독자적 연구, 펀딩, 취업/포닥</div>
+          </div>
+          <span style="margin-left:auto;font-size:16px;">🔒</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-nav">
+    <button class="nav-btn" onclick="showTab('home')"><span class="nav-icon">🏠</span>홈</button>
+    <button class="nav-btn active" onclick="showTab('tree')"><span class="nav-icon">🌳</span>테크트리</button>
+    <button class="nav-btn" onclick="showTab('future')"><span class="nav-icon">🔮</span>미래</button>
+    <button class="nav-btn" onclick="showTab('reward')"><span class="nav-icon">🏆</span>리워드</button>
+  </div>
+</div>
+
+<!-- ══════════════ SCREEN 4: QUEST DETAIL ══════════════ -->
+<div class="screen hidden" id="screen-quest">
+  <div class="scroll">
+    <div class="topbar" style="background:transparent;border:none;position:absolute;top:0;left:0;right:0;z-index:10;">
+      <button class="topbar-back" onclick="backTo('screen-home')" style="background:rgba(255,255,255,.25);color:white;">←</button>
+    </div>
+    <div class="quest-hero">
+      <div style="height:20px;"></div>
+      <span class="quest-hero-tag">⚡ 2단계 퀘스트</span>
+      <div class="quest-hero-title">관심 교수 논문 3편 읽고<br>핵심 질문 1개 만들기</div>
+      <div class="quest-chips-row">
+        <span class="q-chip-w">📅 7일</span>
+        <span class="q-chip-w">⏱ 3–5시간</span>
+        <span class="q-chip-w">🏆 Soh Kim 연결</span>
+      </div>
+    </div>
+    <div class="quest-body">
+      <div class="quest-why anim">
+        <h3>왜 이 퀘스트인가요?</h3>
+        <p>교수 미팅에서 가장 인상적인 학생은 "논문 읽고 진짜 질문을 가져온" 학생이에요. AI 분야가 빠르게 변해도, 깊은 질문을 만드는 능력은 변하지 않아요.</p>
+      </div>
+      <div class="steps-card anim anim-d1">
+        <h3>진행 단계</h3>
+        <div class="step">
+          <div class="step-num" id="stepn1">1</div>
+          <div class="step-body">
+            <div class="step-title">관심 교수 3명 리스트업</div>
+            <div class="step-desc">Stanford 홈페이지, Google Scholar에서 찾아보세요</div>
+          </div>
+          <div class="step-check" id="check1" onclick="toggleStep(1)">✓</div>
+        </div>
+        <div class="step">
+          <div class="step-num" id="stepn2">2</div>
+          <div class="step-body">
+            <div class="step-title">교수별 최신 논문 1편씩 읽기</div>
+            <div class="step-desc">Abstract + Introduction + Conclusion 먼저 읽어도 OK</div>
+          </div>
+          <div class="step-check" id="check2" onclick="toggleStep(2)">✓</div>
+        </div>
+        <div class="step">
+          <div class="step-num" id="stepn3">3</div>
+          <div class="step-body">
+            <div class="step-title">핵심 질문 1개 메모하기</div>
+            <div class="step-desc">"이 연구가 왜 지금 필요한가?" 한 줄이면 충분해요</div>
+          </div>
+          <div class="step-check" id="check3" onclick="toggleStep(3)">✓</div>
+        </div>
+      </div>
+      <div class="quest-why anim anim-d2" style="background:#FFF8E7;border-color:#F5C842;">
+        <h3 style="color:var(--gold);">💡 선배 팁</h3>
+        <p>"처음엔 논문이 무서웠는데, 모르는 단어는 넘기고 큰 그림만 잡았더니 질문이 오히려 더 좋게 나왔어요." <br><span style="font-size:12px;color:var(--muted);">— CS PhD 2년차</span></p>
+      </div>
+    </div>
+    <div class="complete-btn-wrap">
+      <button class="complete-btn" id="complete-btn" onclick="completeQuest()">
+        3단계 모두 체크하면 완료할 수 있어요
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ SCREEN 5: FUTURE AVATAR ══════════════ -->
+<div class="screen hidden" id="screen-future">
+  <div class="topbar">
+    <button class="topbar-back" onclick="backTo('screen-home')">←</button>
+    <div class="topbar-title">🔮 미래의 내 모습</div>
+    <div class="topbar-right"></div>
+  </div>
+  <div class="scroll">
+    <div class="future-body">
+      <div class="avatar-timeline">
+        <div class="av-item">
+          <div class="av-circle av-now" id="av-now">🧑‍💻</div>
+          <span class="av-lbl av-now-lbl">지금의 나</span>
+        </div>
+        <div class="av-arrow">→</div>
+        <div class="av-item">
+          <div class="av-circle av-1yr" id="av-1yr" style="filter:blur(3px);opacity:.5;">🔬</div>
+          <span class="av-lbl">1년 후</span>
+        </div>
+        <div class="av-arrow">→</div>
+        <div class="av-item">
+          <div class="av-circle av-grad" id="av-grad" style="filter:blur(6px);opacity:.3;">🎓</div>
+          <span class="av-lbl">졸업 후</span>
+        </div>
+      </div>
+
+      <div style="text-align:center;font-size:14px;color:var(--muted);line-height:1.7;" id="future-caption">
+        퀘스트를 완료할수록 <strong style="color:var(--red);">미래의 모습이 선명해져요</strong>.<br>
+        지금은 흐릿하지만, 한 걸음씩 윤곽이 잡혀갑니다.
+      </div>
+
+      <div class="milestone-list">
+        <div class="milestone anim">
+          <div class="ms-icon">✅</div>
+          <div class="ms-body">
+            <div class="ms-title">스탠포드 첫 학기 적응</div>
+            <div class="ms-desc">수업, 친구, 생활 — 시작을 완주했어요</div>
+          </div>
+        </div>
+        <div class="milestone anim anim-d1" id="ms-quest">
+          <div class="ms-icon" id="ms-quest-icon">⏳</div>
+          <div class="ms-body">
+            <div class="ms-title">첫 교수 미팅 질문 준비</div>
+            <div class="ms-desc">지금 도전 중인 퀘스트예요</div>
+          </div>
+          <div class="ms-lock" id="ms-lock">🔒</div>
+        </div>
+        <div class="milestone locked-ms anim anim-d2">
+          <div class="ms-icon">🤝</div>
+          <div class="ms-body">
+            <div class="ms-title">지도교수 & 랩 확정</div>
+            <div class="ms-desc">2단계 완료 후 해금돼요</div>
+          </div>
+          <div class="ms-lock">🔒</div>
+        </div>
+        <div class="milestone locked-ms anim anim-d3">
+          <div class="ms-icon">📄</div>
+          <div class="ms-body">
+            <div class="ms-title">첫 논문 제출</div>
+            <div class="ms-desc">3단계 완료 후 해금돼요</div>
+          </div>
+          <div class="ms-lock">🔒</div>
+        </div>
+        <div class="milestone locked-ms anim anim-d4">
+          <div class="ms-icon">🎓</div>
+          <div class="ms-body">
+            <div class="ms-title">Stanford PhD 졸업</div>
+            <div class="ms-desc">이 여정의 마지막 이정표</div>
+          </div>
+          <div class="ms-lock">🔒</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-nav">
+    <button class="nav-btn" onclick="showTab('home')"><span class="nav-icon">🏠</span>홈</button>
+    <button class="nav-btn" onclick="showTab('tree')"><span class="nav-icon">🌳</span>테크트리</button>
+    <button class="nav-btn active" onclick="showTab('future')"><span class="nav-icon">🔮</span>미래</button>
+    <button class="nav-btn" onclick="showTab('reward')"><span class="nav-icon">🏆</span>리워드</button>
+  </div>
+</div>
+
+<!-- ══════════════ SCREEN 6: REWARD ══════════════ -->
+<div class="screen hidden" id="screen-reward">
+  <div class="topbar">
+    <button class="topbar-back" onclick="backTo('screen-home')">←</button>
+    <div class="topbar-title">🏆 전문가 리워드</div>
+    <div class="topbar-right"></div>
+  </div>
+  <div class="scroll">
+    <div class="reward-hero">
+      <div class="reward-hero-icon">🏆</div>
+      <div class="reward-hero-title">퀘스트 달성 리워드</div>
+      <div class="reward-hero-sub">완료하면 전문가와 1:1로 연결됩니다</div>
+    </div>
+    <div class="reward-body">
+      <div class="expert-card anim">
+        <div class="expert-top">
+          <div class="expert-av">SK</div>
+          <div class="expert-top-info">
+            <h3>Soh Kim</h3>
+            <p>Stanford d.school<br>디자인 사고 & 유학생 멘토링</p>
+            <a href="https://sdgc.stanford.edu/people/soh-kim" target="_blank" rel="noopener">→ Stanford 프로필 보기</a>
+          </div>
+        </div>
+        <div class="expert-tags">
+          <span class="e-tag">디자인 사고</span>
+          <span class="e-tag">유학생 커뮤니티</span>
+          <span class="e-tag">PhD 멘토링</span>
+          <span class="e-tag">Stanford d.school</span>
+        </div>
+      </div>
+
+      <div class="lock-notice anim anim-d1" id="reward-notice">
+        <div class="lock-notice-icon">🔒</div>
+        <div>
+          <strong>퀘스트 완료 후 신청 가능</strong><br>
+          <span style="font-size:12px;">"논문 3편 읽고 질문 만들기" 퀘스트를 완료하세요</span>
+        </div>
+      </div>
+
+      <button class="apply-btn anim anim-d2" id="apply-btn"
+        style="background:var(--gray2);color:var(--gray3);"
+        onclick="applyInterview()">
+        인터뷰 신청하기
+      </button>
+
+      <div style="background:var(--white);border-radius:14px;padding:16px;border:1px solid var(--gray2);" class="anim anim-d3">
+        <div style="font-size:13px;font-weight:700;color:var(--muted);margin-bottom:10px;letter-spacing:.05em;text-transform:uppercase;">다음 리워드 예고</div>
+        <div style="display:flex;align-items:center;gap:12px;opacity:.5;">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--gray2);display:flex;align-items:center;justify-content:center;font-size:20px;">👩‍🔬</div>
+          <div>
+            <div style="font-size:13px;font-weight:700;">Stanford CS 교수 (익명)</div>
+            <div style="font-size:12px;color:var(--muted);">3단계 완료 후 공개</div>
+          </div>
+          <span style="margin-left:auto;font-size:18px;">🔒</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-nav">
+    <button class="nav-btn" onclick="showTab('home')"><span class="nav-icon">🏠</span>홈</button>
+    <button class="nav-btn" onclick="showTab('tree')"><span class="nav-icon">🌳</span>테크트리</button>
+    <button class="nav-btn" onclick="showTab('future')"><span class="nav-icon">🔮</span>미래</button>
+    <button class="nav-btn active" onclick="showTab('reward')"><span class="nav-icon">🏆</span>리워드</button>
+  </div>
+</div>
+
+<!-- ══════════════ CELEBRATION ══════════════ -->
+<div id="celebrate">
+  <div class="celebrate-card">
+    <div class="celebrate-emoji">🎉</div>
+    <div class="celebrate-title">퀘스트 완료!</div>
+    <div class="celebrate-sub">
+      대단해요! 첫 번째 퀘스트를 완료했어요.<br>
+      <strong>Soh Kim과의 인터뷰</strong> 신청이 열렸어요 🏆<br><br>
+      미래의 내 모습이 조금 더 선명해졌어요.
+    </div>
+    <button class="cta-btn gold" onclick="closeCelebrate()">리워드 확인하러 가기 →</button>
   </div>
 </div>
 
@@ -400,130 +829,215 @@
 <div class="toast" id="toast"></div>
 
 <script>
-  /* ── Storage key ── */
-  const KEY = 'phd_growth_v1';
+/* ── State ── */
+const KEY = 'phd_v2';
+const D = {
+  name:'', major:'', goal:'',
+  steps:[false,false,false],
+  questDone:false, interviewApplied:false
+};
+let S = (() => { try { return {...D,...JSON.parse(localStorage.getItem(KEY))}; } catch(e){ return {...D}; } })();
+function save(){ localStorage.setItem(KEY, JSON.stringify(S)); }
 
-  /* ── Default state with dummy data ── */
-  const DEFAULT = {
-    questDone: false,
-    interviewApplied: false,
-    log: [
-      { icon:'✅', title:'교수 미팅 3회 완료', date:'2025-09-02', badge:'1단계' },
-      { icon:'📚', title:'입학 오리엔테이션 참가', date:'2025-08-25', badge:'1단계' },
-      { icon:'🏫', title:'스탠포드 첫 수업 등록', date:'2025-08-18', badge:'1단계' }
-    ]
-  };
+/* ── Screen navigation ── */
+let history = [];
+function goTo(id){
+  const cur = document.querySelector('.screen:not(.hidden):not(.exit)');
+  if(!cur || cur.id===id) return;
+  cur.classList.add('exit');
+  const next = document.getElementById(id);
+  next.classList.remove('hidden');
+  next.classList.remove('exit');
+  history.push(cur.id);
+  updateScreens();
+  setTimeout(()=>{ cur.classList.add('hidden'); cur.classList.remove('exit'); }, 400);
+}
+function backTo(id){
+  const cur = document.querySelector('.screen:not(.hidden):not(.exit)');
+  if(!cur) return;
+  cur.classList.add('hidden');
+  const target = document.getElementById(id);
+  target.classList.remove('hidden');
+  target.classList.remove('exit');
+  history = history.filter(h=>h!==id);
+  updateScreens();
+}
+function showTab(tab){
+  const map = {home:'screen-home',tree:'screen-tree',future:'screen-future',reward:'screen-reward'};
+  goTo(map[tab]);
+}
 
-  function load() {
-    try { return JSON.parse(localStorage.getItem(KEY)) || DEFAULT; }
-    catch(e) { return DEFAULT; }
-  }
-  function save(s) { localStorage.setItem(KEY, JSON.stringify(s)); }
+/* ── Onboarding ── */
+const nameInp = document.getElementById('inp-name');
+const majorInp = document.getElementById('inp-major');
+const startBtn = document.getElementById('start-btn');
+let selectedGoal = S.goal || '';
 
-  let state = load();
+function checkOnboard(){
+  startBtn.disabled = !(nameInp.value.trim() && majorInp.value && selectedGoal);
+}
+nameInp.addEventListener('input', checkOnboard);
+majorInp.addEventListener('change', checkOnboard);
 
-  /* ── Render ── */
-  function render() {
-    /* Progress bar */
-    const pct = state.questDone ? 38 : 22;
-    document.getElementById('progFill').style.width = pct + '%';
-    document.getElementById('progPct').textContent = pct + '%';
-
-    /* Reward lock */
-    const lockEl = document.getElementById('rewardLock');
-    if (state.questDone) {
-      lockEl.textContent = '🔓 인터뷰 신청 가능!';
-      lockEl.style.color = '#175E54';
-    } else {
-      lockEl.textContent = '🔒 퀘스트 완료 후 인터뷰 신청 가능';
-      lockEl.style.color = '';
-    }
-
-    /* Quest button label */
-    const qBtn = document.getElementById('questMainBtn');
-    qBtn.textContent = state.questDone ? '✅ 퀘스트 완료됨' : '퀘스트 시작하기';
-    qBtn.disabled = state.questDone;
-    qBtn.style.opacity = state.questDone ? '.6' : '1';
-
-    /* Future avatar blur — lessen blur as quest done */
-    const mid = document.querySelector('.av-mid');
-    const far = document.querySelector('.av-far');
-    if (state.questDone) {
-      mid.style.filter = 'blur(1px)'; mid.style.opacity = '.75';
-      far.style.filter = 'blur(3px)'; far.style.opacity = '.45';
-    }
-
-    /* Quest log */
-    const logEl = document.getElementById('questLog');
-    if (!state.log.length) {
-      logEl.innerHTML = '<div style="font-size:13px;font-family:sans-serif;color:var(--muted);text-align:center;padding:12px 0;">아직 완료한 퀘스트가 없어요.</div>';
-    } else {
-      logEl.innerHTML = state.log.map(q => `
-        <div class="log-item">
-          <div class="log-icon">${q.icon}</div>
-          <div class="log-body">
-            <div class="log-title">${q.title}</div>
-            <div class="log-date">${q.date}</div>
-          </div>
-          <span class="log-badge">${q.badge}</span>
-        </div>
-      `).join('');
-    }
-  }
-
-  /* ── Modal helpers ── */
-  function open_(id)  { document.getElementById(id).classList.add('open'); }
-  function close_(id) { document.getElementById(id).classList.remove('open'); }
-
-  document.querySelectorAll('.backdrop').forEach(el =>
-    el.addEventListener('click', e => { if(e.target===el) el.classList.remove('open'); })
-  );
-
-  /* ── Toast ── */
-  function toast(msg) {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2800);
-  }
-
-  /* ── Quest button ── */
-  document.getElementById('questMainBtn').addEventListener('click', () => {
-    if (!state.questDone) open_('questModal');
+document.querySelectorAll('.goal-chip').forEach(c=>{
+  if(c.dataset.g===selectedGoal) c.classList.add('sel');
+  c.addEventListener('click',()=>{
+    document.querySelectorAll('.goal-chip').forEach(x=>x.classList.remove('sel'));
+    c.classList.add('sel');
+    selectedGoal = c.dataset.g;
+    checkOnboard();
   });
+});
 
-  /* ── Quest done ── */
-  document.getElementById('questDoneBtn').addEventListener('click', () => {
-    close_('questModal');
-    state.questDone = true;
-    state.log.unshift({
-      icon: '🏆',
-      title: '논문 3편 읽고 핵심 질문 만들기',
-      date: new Date().toISOString().slice(0,10),
-      badge: '2단계'
-    });
-    save(state);
-    render();
-    toast('🎉 퀘스트 완료! 전문가 연결이 열렸어요');
+startBtn.addEventListener('click',()=>{
+  S.name = nameInp.value.trim();
+  S.major = majorInp.value;
+  S.goal = selectedGoal;
+  save();
+  goTo('screen-home');
+  updateScreens();
+});
+
+/* ── If already onboarded, skip to home ── */
+if(S.name){ nameInp.value=S.name; majorInp.value=S.major; selectedGoal=S.goal; checkOnboard(); goTo('screen-home'); }
+
+/* ── Quest steps ── */
+function toggleStep(n){
+  S.steps[n-1] = !S.steps[n-1];
+  save();
+  renderSteps();
+}
+function renderSteps(){
+  [1,2,3].forEach(n=>{
+    const done = S.steps[n-1];
+    const c = document.getElementById('check'+n);
+    const nm = document.getElementById('stepn'+n);
+    c.classList.toggle('checked', done);
+    if(done) nm.classList.add('done-step');
+    else nm.classList.remove('done-step');
   });
+  const allDone = S.steps.every(Boolean);
+  const btn = document.getElementById('complete-btn');
+  if(S.questDone){
+    btn.textContent = '✅ 이미 완료한 퀘스트예요';
+    btn.classList.add('done-btn'); btn.disabled=true;
+  } else if(allDone){
+    btn.textContent = '🎉 퀘스트 완료하기!';
+    btn.disabled=false; btn.classList.remove('done-btn');
+    btn.style.background='var(--red)';
+  } else {
+    const cnt = S.steps.filter(Boolean).length;
+    btn.textContent = cnt===0 ? '3단계 모두 체크하면 완료할 수 있어요' : `${cnt}/3 단계 완료 — 계속 진행해보세요`;
+    btn.disabled=true; btn.classList.remove('done-btn');
+  }
+}
 
-  document.getElementById('questCancelBtn').addEventListener('click', () => close_('questModal'));
+function completeQuest(){
+  if(S.questDone || !S.steps.every(Boolean)) return;
+  S.questDone=true; save();
+  updateScreens();
+  document.getElementById('celebrate').classList.add('show');
+  launchConfetti();
+}
 
-  /* ── Reward button ── */
-  document.getElementById('rewardBtn').addEventListener('click', () => {
-    if (!state.questDone) {
-      open_('lockModal');
-    } else if (!state.interviewApplied) {
-      state.interviewApplied = true;
-      save(state);
-      open_('interviewModal');
-    } else {
-      toast('✅ 이미 인터뷰를 신청하셨어요!');
-    }
-  });
+function closeCelebrate(){
+  document.getElementById('celebrate').classList.remove('show');
+  goTo('screen-reward');
+}
 
-  /* ── Init progress bar animate ── */
-  setTimeout(() => render(), 300);
+function applyInterview(){
+  if(!S.questDone){ toast('🔒 퀘스트를 먼저 완료해주세요!'); return; }
+  if(S.interviewApplied){ toast('✅ 이미 신청하셨어요!'); return; }
+  S.interviewApplied=true; save();
+  updateScreens();
+  toast('🎉 Soh Kim에게 신청 완료! 일정 안내를 기다려주세요.');
+}
+
+/* ── Update all UI ── */
+function updateScreens(){
+  const pct = S.questDone ? 44 : (S.steps.filter(Boolean).length * 7 + 22);
+  // Home
+  document.getElementById('home-greeting').textContent = `안녕하세요 👋`;
+  document.getElementById('home-name').textContent = S.name ? `${S.name}의 성장 여정` : 'PhD Growth Tree';
+  setTimeout(()=>{ document.getElementById('home-prog-fill').style.width = pct+'%'; }, 200);
+  document.getElementById('home-prog-pct').textContent = pct+'%';
+  document.getElementById('home-prog-stage').textContent = S.questDone ? '2단계 완료! 3단계 준비 중' : '2단계 진행 중';
+
+  const hqb = document.getElementById('home-quest-btn');
+  const hqpt = document.getElementById('home-quest-progress-txt');
+  if(S.questDone){
+    hqb.textContent='완료 ✅'; hqb.className='card-btn-sm btn-green';
+    hqpt.textContent='퀘스트 완료!';
+    document.querySelector('#home-quest-card .quest-card-tag').textContent='✅ 완료';
+    document.querySelector('#home-quest-card .quest-card-tag').className='quest-card-tag tag-done';
+  } else {
+    const cnt = S.steps.filter(Boolean).length;
+    hqpt.textContent = cnt>0 ? `${cnt}/3 단계 완료` : '';
+  }
+
+  // Reward badge
+  const rb = document.getElementById('home-reward-badge');
+  if(S.questDone){ rb.textContent='🔓 신청 가능'; rb.classList.add('unlocked'); }
+
+  // Tree stage 2
+  const done2 = S.questDone ? 2 : S.steps.filter(Boolean).length;
+  document.getElementById('tree-stage2-fill').style.width = (done2/3*100)+'%';
+  document.getElementById('tree-stage2-txt').textContent = `${done2} / 3 퀘스트 완료`;
+
+  // Future avatar
+  if(S.questDone){
+    document.getElementById('av-1yr').style.filter='blur(0.5px)';
+    document.getElementById('av-1yr').style.opacity='0.85';
+    document.getElementById('av-grad').style.filter='blur(3px)';
+    document.getElementById('av-grad').style.opacity='0.55';
+    document.getElementById('future-caption').innerHTML = '퀘스트를 완료했어요! <strong style="color:var(--red);">1년 후 모습이 조금 더 선명해졌어요</strong>.<br>계속 완료하면 졸업 후 모습도 보여요.';
+    document.getElementById('ms-quest-icon').textContent='✅';
+    document.getElementById('ms-lock').style.display='none';
+  }
+
+  // Reward screen
+  if(S.questDone){
+    const n = document.getElementById('reward-notice');
+    n.classList.add('unlocked-notice');
+    n.innerHTML = '<div class="lock-notice-icon">🔓</div><div><strong>인터뷰 신청 가능!</strong><br><span style="font-size:12px;">퀘스트를 완료했어요. 지금 신청해보세요.</span></div>';
+    const ab = document.getElementById('apply-btn');
+    ab.style.background='linear-gradient(90deg,var(--gold),var(--gold2))';
+    ab.style.color='#1A1630';
+    if(S.interviewApplied){ ab.textContent='신청 완료 ✅'; ab.style.background='var(--green2)'; ab.style.color='var(--green)'; }
+  }
+
+  renderSteps();
+}
+
+/* ── Toast ── */
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+/* ── Confetti ── */
+function launchConfetti(){
+  const colors=['#8C1515','#D4900A','#F5C842','#175E54','#4A2D8F','#FF6B6B'];
+  for(let i=0;i<60;i++){
+    const d=document.createElement('div');
+    d.style.cssText=`position:fixed;width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      left:${Math.random()*100}vw;top:-10px;border-radius:${Math.random()>.5?'50%':'2px'};
+      z-index:502;pointer-events:none;`;
+    document.body.appendChild(d);
+    const tx=(Math.random()-.5)*200, ty=window.innerHeight+50, rot=Math.random()*720;
+    d.animate([
+      {transform:`translate(0,0) rotate(0deg)`,opacity:1},
+      {transform:`translate(${tx}px,${ty}px) rotate(${rot}deg)`,opacity:0}
+    ],{duration:1800+Math.random()*1200,easing:'cubic-bezier(.25,.46,.45,.94)',delay:Math.random()*600})
+    .onfinish=()=>d.remove();
+  }
+}
+
+/* ── Init ── */
+updateScreens();
+setTimeout(()=>{ document.getElementById('home-prog-fill').style.width = (S.questDone?44:22)+'%'; },400);
 </script>
 </body>
 </html>
