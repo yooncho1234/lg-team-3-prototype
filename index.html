@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Stello — 나만의 커리어 별자리</title>
+  <title>Stello — Career Constellation</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
     :root {
@@ -25,31 +25,56 @@
     .nav-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--pink));display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:800;color:white;box-shadow:0 2px 8px rgba(155,109,255,0.3);}
 
     /* CAREER BANNER */
-    .career-banner{background:linear-gradient(135deg,#f3eaff,#fce7f3,#fef3c7);border-bottom:1px solid var(--border);padding:0.8rem 2rem;display:flex;align-items:center;gap:1.8rem;flex-wrap:wrap;}
+    .career-banner{background:linear-gradient(135deg,#f3eaff,#fce7f3,#fef3c7);border-bottom:1px solid var(--border);padding:0.75rem 2rem;display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;}
     .banner-left{flex-shrink:0;}
-    .banner-track-label{font-size:0.6rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:var(--purple);margin-bottom:2px;}
-    .banner-track-name{font-size:1rem;font-weight:800;color:var(--text);}
-    .banner-sep{width:1px;height:40px;background:var(--border);flex-shrink:0;}
+    .banner-track-label{font-size:0.58rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:var(--purple);margin-bottom:2px;}
+    .banner-track-name{font-size:0.98rem;font-weight:800;color:var(--text);}
+    .banner-sep{width:1px;height:38px;background:var(--border);flex-shrink:0;}
     .journey-steps{display:flex;align-items:center;flex:1;min-width:0;overflow-x:auto;}
     .jstep{display:flex;align-items:center;flex-shrink:0;}
-    .jstep-dot{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;}
-    .jstep-circle{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:800;border:2px solid var(--border);background:var(--surface);color:var(--muted);}
+    .jstep-dot{display:flex;flex-direction:column;align-items:center;gap:3px;}
+    .jstep-circle{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.6rem;font-weight:800;border:2px solid var(--border);background:var(--surface);color:var(--muted);}
     .jstep-circle.done{background:var(--purple);border-color:var(--purple);color:white;}
     .jstep-circle.now{background:var(--pink);border-color:var(--pink);color:white;box-shadow:0 0 0 4px rgba(244,114,182,0.2);}
-    .jstep-label{font-size:0.58rem;color:var(--muted);font-weight:700;text-align:center;max-width:56px;line-height:1.2;}
+    .jstep-label{font-size:0.56rem;color:var(--muted);font-weight:700;text-align:center;max-width:58px;line-height:1.2;}
     .jstep-label.done{color:var(--purple);}
     .jstep-label.now{color:var(--pink);}
-    .jstep-line{width:28px;height:2px;background:var(--border);margin:0 2px;margin-bottom:18px;flex-shrink:0;}
+    .jstep-line{width:24px;height:2px;background:var(--border);margin:0 2px;margin-bottom:18px;flex-shrink:0;}
     .jstep-line.done{background:var(--purple);}
     .banner-right{flex-shrink:0;text-align:right;}
-    .banner-next-label{font-size:0.6rem;color:var(--muted);font-weight:700;margin-bottom:2px;}
-    .banner-next-val{font-size:0.8rem;font-weight:800;color:var(--text);}
+    .banner-next-label{font-size:0.58rem;color:var(--muted);font-weight:700;margin-bottom:2px;}
+    .banner-next-val{font-size:0.78rem;font-weight:800;color:var(--text);}
 
-    /* LAYOUT */
-    .main{display:grid;grid-template-columns:270px 1fr 265px;height:calc(100vh - 112px);}
+    /* MAIN LAYOUT — flex, panels collapsible */
+    .main{display:flex;height:calc(100vh - 110px);position:relative;}
 
-    /* LEFT */
-    .panel-left{border-right:1px solid var(--border);padding:1.2rem;overflow-y:auto;display:flex;flex-direction:column;gap:1.1rem;background:var(--surface);}
+    /* SIDE PANELS */
+    .panel-left,.panel-right{overflow:hidden;transition:width 0.38s cubic-bezier(0.4,0,0.2,1),min-width 0.38s,padding 0.38s,opacity 0.25s;display:flex;flex-direction:column;gap:1.1rem;}
+    .panel-left{width:270px;min-width:270px;padding:1.2rem;border-right:1px solid var(--border);background:var(--surface);overflow-y:auto;}
+    .panel-right{width:262px;min-width:262px;padding:1.2rem;border-left:1px solid var(--border);background:var(--surface);overflow-y:auto;}
+    .panel-left.hidden{width:0;min-width:0;padding:0;opacity:0;border:none;}
+    .panel-right.hidden{width:0;min-width:0;padding:0;opacity:0;border:none;}
+
+    /* TOGGLE TABS on center panel edges */
+    .panel-center{flex:1;overflow:auto;position:relative;display:flex;flex-direction:column;align-items:center;
+      background:linear-gradient(to bottom,#030012 0%,#0d0520 8%,#1a0840 20%,#3d1270 35%,#7c2d8a 50%,#c0506a 63%,#e07848 76%,#c4651a 87%,#7c3d08 94%,#3a1a02 100%);}
+    .toggle-tab{position:absolute;top:50%;transform:translateY(-50%);width:18px;height:52px;background:rgba(255,255,255,0.12);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,0.18);cursor:pointer;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.75);font-size:0.65rem;z-index:20;transition:background 0.2s;font-family:inherit;}
+    .toggle-tab:hover{background:rgba(255,255,255,0.22);}
+    .toggle-tab.left-tab{left:0;border-radius:0 7px 7px 0;}
+    .toggle-tab.right-tab{right:0;border-radius:7px 0 0 7px;}
+
+    /* tree */
+    .tree-header{text-align:center;padding-top:1.2rem;margin-bottom:0.8rem;}
+    .tree-header h2{font-size:1.05rem;font-weight:800;color:white;margin-bottom:0.18rem;text-shadow:0 0 20px rgba(196,160,255,0.5);}
+    .tree-header p{font-size:0.68rem;color:rgba(255,255,255,0.55);}
+    .tree-svg-wrap{width:100%;max-width:720px;padding:0 0.5rem;}
+    svg.tree{width:100%;height:auto;overflow:visible;}
+    .ms-strip{display:flex;gap:0.45rem;flex-wrap:wrap;justify-content:center;max-width:720px;padding:0.8rem 0.5rem 1.2rem;}
+    .ms{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.18);border-radius:99px;padding:0.3rem 0.75rem;font-size:0.65rem;color:rgba(255,255,255,0.6);font-weight:600;}
+    .ms.done{border-color:var(--mint);color:#6ee7b7;background:rgba(52,211,153,0.12);}
+    .ms.now{border-color:var(--pink);color:#fca5a5;background:rgba(244,114,182,0.12);}
+
+    /* LEFT PANEL CONTENTS */
     .sec-label{font-size:0.6rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:var(--purple-light);margin-bottom:0.45rem;}
     .profile-card{background:linear-gradient(135deg,#f3eaff,#fce7f3);border-radius:16px;padding:1rem;border:1.5px solid var(--border);text-align:center;}
     .profile-ava{width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--pink));margin:0 auto 0.55rem;display:flex;align-items:center;justify-content:center;font-size:1.15rem;font-weight:800;color:white;box-shadow:0 4px 12px rgba(155,109,255,0.28);}
@@ -69,7 +94,7 @@
     .quest-desc{font-size:0.7rem;color:var(--muted);line-height:1.5;margin-bottom:0.65rem;}
     .quest-reward{font-size:0.66rem;color:#92400e;background:var(--gold-pale);border-radius:6px;padding:0.28rem 0.6rem;display:inline-flex;align-items:center;gap:0.3rem;margin-bottom:0.7rem;font-weight:700;}
     .btn-quest{width:100%;background:linear-gradient(135deg,var(--purple),var(--pink));color:white;border:none;border-radius:10px;padding:0.58rem;font-size:0.8rem;font-weight:800;cursor:pointer;font-family:inherit;transition:transform 0.15s,box-shadow 0.15s;box-shadow:0 4px 12px rgba(155,109,255,0.28);}
-    .btn-quest:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(155,109,255,0.38);}
+    .btn-quest:hover{transform:translateY(-1px);}
     .route-list{display:flex;flex-direction:column;gap:0.38rem;}
     .route-item{display:flex;align-items:center;justify-content:space-between;padding:0.55rem 0.75rem;border-radius:10px;border:1.5px solid var(--border);cursor:pointer;font-size:0.77rem;font-weight:600;transition:all 0.2s;background:var(--surface);}
     .route-item:hover{border-color:var(--purple-light);background:var(--purple-pale);}
@@ -79,22 +104,7 @@
     .btn-rolemodel{width:100%;background:linear-gradient(135deg,#fce7f3,#ede0ff);color:var(--purple);border:1.5px solid var(--border);border-radius:10px;padding:0.58rem;font-size:0.8rem;font-weight:800;cursor:pointer;font-family:inherit;transition:all 0.2s;}
     .btn-rolemodel:hover{box-shadow:0 4px 12px rgba(155,109,255,0.2);transform:translateY(-1px);}
 
-    /* CENTER */
-    .panel-center{overflow:auto;padding:1.5rem 1rem 2rem;display:flex;flex-direction:column;align-items:center;background:var(--bg);position:relative;}
-    .panel-center::before{content:'✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧ ✦';position:absolute;top:0.7rem;left:50%;transform:translateX(-50%);font-size:0.62rem;color:var(--border);letter-spacing:1rem;pointer-events:none;white-space:nowrap;}
-    .tree-header{text-align:center;margin-bottom:1.2rem;}
-    .tree-header h2{font-size:1.08rem;font-weight:800;margin-bottom:0.2rem;}
-    .tree-header p{font-size:0.71rem;color:var(--muted);}
-    /* 1.5x bigger tree */
-    .tree-svg-wrap{width:100%;max-width:720px;}
-    svg.tree{width:100%;height:auto;overflow:visible;}
-    .ms-strip{display:flex;gap:0.48rem;flex-wrap:wrap;justify-content:center;max-width:720px;margin-top:1.3rem;}
-    .ms{background:var(--surface);border:1.5px solid var(--border);border-radius:99px;padding:0.32rem 0.75rem;font-size:0.66rem;color:var(--muted);font-weight:600;}
-    .ms.done{border-color:var(--mint);color:#065f46;background:var(--mint-pale);}
-    .ms.now{border-color:var(--purple);color:var(--purple);background:var(--purple-pale);}
-
-    /* RIGHT */
-    .panel-right{border-left:1px solid var(--border);padding:1.2rem;overflow-y:auto;display:flex;flex-direction:column;gap:1.2rem;background:var(--surface);}
+    /* RIGHT PANEL CONTENTS */
     .future-card{border-radius:16px;padding:1.1rem;border:1.5px solid var(--border);position:relative;overflow:hidden;transition:all 0.4s;}
     .future-deco{position:absolute;top:0.75rem;right:0.85rem;font-size:1.2rem;opacity:0.28;}
     .future-chip{font-size:0.58rem;font-weight:800;letter-spacing:0.08em;border-radius:5px;padding:2px 7px;display:inline-block;margin-bottom:0.65rem;}
@@ -107,17 +117,17 @@
     .future-tip{margin-top:0.8rem;padding-top:0.8rem;border-top:1px solid var(--border);font-size:0.66rem;color:var(--muted);line-height:1.6;}
     .future-tip strong{color:var(--purple);}
 
-    /* ALUMNI SPLIT */
+    /* ALUMNI TABS */
     .alumni-tabs{display:flex;gap:0.4rem;margin-bottom:0.6rem;}
-    .alumni-tab{flex:1;padding:0.38rem 0;border-radius:8px;border:1.5px solid var(--border);font-size:0.68rem;font-weight:700;cursor:pointer;text-align:center;background:var(--bg);color:var(--muted);transition:all 0.2s;font-family:inherit;}
+    .alumni-tab{flex:1;padding:0.35rem 0;border-radius:8px;border:1.5px solid var(--border);font-size:0.67rem;font-weight:700;cursor:pointer;text-align:center;background:var(--bg);color:var(--muted);transition:all 0.2s;font-family:inherit;}
     .alumni-tab.active{border-color:var(--purple);background:var(--purple-pale);color:var(--purple);}
     .alumni-panel{display:none;}
-    .alumni-panel.active{display:flex;flex-direction:column;gap:0.45rem;}
+    .alumni-panel.active{display:flex;flex-direction:column;gap:0.42rem;}
     .alumni-item{display:flex;align-items:center;gap:0.65rem;padding:0.55rem 0.75rem;background:var(--bg);border:1.5px solid var(--border);border-radius:11px;}
-    .alumni-ava{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:800;color:white;flex-shrink:0;}
-    .alumni-name{font-size:0.75rem;font-weight:700;margin-bottom:1px;}
-    .alumni-desc{font-size:0.63rem;color:var(--muted);line-height:1.35;}
-    .alumni-tag{font-size:0.58rem;font-weight:800;border-radius:4px;padding:1px 5px;margin-top:2px;display:inline-block;}
+    .alumni-ava{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:800;color:white;flex-shrink:0;}
+    .alumni-name{font-size:0.74rem;font-weight:700;margin-bottom:1px;}
+    .alumni-desc{font-size:0.62rem;color:var(--muted);line-height:1.35;}
+    .alumni-tag{font-size:0.57rem;font-weight:800;border-radius:4px;padding:1px 5px;margin-top:2px;display:inline-block;}
     .tag-same{background:var(--mint-pale);color:#065f46;}
     .tag-diff{background:var(--gold-pale);color:#92400e;}
 
@@ -127,69 +137,6 @@
     .expert-title{font-size:0.8rem;font-weight:700;color:#92400e;margin-bottom:0.26rem;}
     .expert-desc{font-size:0.68rem;color:#b45309;line-height:1.5;}
 
-    /* TOOLTIP */
-    .tooltip{display:none;position:fixed;background:var(--surface);border:1.5px solid var(--purple-light);border-radius:13px;padding:0.75rem 0.95rem;font-size:0.75rem;max-width:230px;z-index:100;box-shadow:0 8px 28px rgba(155,109,255,0.16);pointer-events:none;}
-    .tooltip h4{font-size:0.82rem;font-weight:800;color:var(--purple);margin-bottom:0.22rem;}
-    .tooltip p{color:var(--muted);line-height:1.5;}
-    .t-li{margin-top:0.45rem;padding-top:0.45rem;border-top:1px solid var(--border);}
-    .t-li-label{font-size:0.6rem;font-weight:800;color:#0077b5;margin-bottom:0.22rem;}
-    .t-li-item{font-size:0.63rem;color:var(--muted);padding:1px 0;}
-    .t-st{margin-top:0.38rem;font-size:0.63rem;font-weight:700;color:var(--mint);}
-
-    /* QUEST POPUP */
-    .modal-overlay{display:none;position:fixed;inset:0;background:rgba(61,43,94,0.45);backdrop-filter:blur(5px);z-index:300;align-items:center;justify-content:center;}
-    .modal-overlay.open{display:flex;}
-    .modal{background:var(--surface);border-radius:22px;padding:1.8rem;max-width:520px;width:92%;max-height:88vh;overflow-y:auto;box-shadow:0 20px 60px rgba(155,109,255,0.22);position:relative;}
-    .modal-close{position:absolute;top:1rem;right:1.1rem;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:0.82rem;color:var(--muted);font-weight:700;}
-    .modal-close:hover{background:var(--purple-pale);color:var(--purple);}
-    .modal h2{font-size:1.08rem;font-weight:800;margin-bottom:0.25rem;}
-    .modal-sub{font-size:0.72rem;color:var(--muted);margin-bottom:1.2rem;}
-
-    /* QUEST MODAL CONTENT */
-    .qm-header{display:flex;align-items:center;gap:0.75rem;margin-bottom:1.1rem;padding-bottom:1rem;border-bottom:1px solid var(--border);}
-    .qm-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;}
-    .qm-title{font-size:1rem;font-weight:800;margin-bottom:0.2rem;}
-    .qm-node{font-size:0.7rem;color:var(--muted);}
-    .quest-list{display:flex;flex-direction:column;gap:0.75rem;}
-    .q-item{border:1.5px solid var(--border);border-radius:14px;padding:1rem;transition:all 0.2s;}
-    .q-item:hover{border-color:var(--purple-light);background:var(--purple-pale);}
-    .q-item.done-q{border-color:var(--mint);background:var(--mint-pale);opacity:0.75;}
-    .q-top{display:flex;align-items:flex-start;justify-content:space-between;gap:0.5rem;margin-bottom:0.5rem;}
-    .q-name{font-size:0.88rem;font-weight:800;}
-    .q-stars{font-size:0.85rem;letter-spacing:1px;flex-shrink:0;}
-    .q-desc{font-size:0.72rem;color:var(--muted);line-height:1.55;margin-bottom:0.65rem;}
-    .q-meta{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.65rem;}
-    .q-chip{font-size:0.62rem;font-weight:700;border-radius:5px;padding:2px 7px;}
-    .chip-time{background:#ede0ff;color:var(--purple);}
-    .chip-type{background:#fce7f3;color:#db2777;}
-    .q-reward-box{background:var(--gold-pale);border:1px solid #fde68a;border-radius:9px;padding:0.5rem 0.75rem;margin-bottom:0.7rem;}
-    .q-reward-title{font-size:0.62rem;font-weight:800;color:#92400e;margin-bottom:0.3rem;text-transform:uppercase;letter-spacing:0.06em;}
-    .q-reward-list{display:flex;flex-direction:column;gap:0.18rem;}
-    .q-reward-item{font-size:0.7rem;color:#b45309;display:flex;align-items:center;gap:0.35rem;}
-    .btn-complete{width:100%;background:linear-gradient(135deg,var(--purple),var(--pink));color:white;border:none;border-radius:9px;padding:0.55rem;font-size:0.8rem;font-weight:800;cursor:pointer;font-family:inherit;transition:all 0.2s;box-shadow:0 3px 10px rgba(155,109,255,0.25);}
-    .btn-complete:hover{transform:translateY(-1px);box-shadow:0 5px 14px rgba(155,109,255,0.38);}
-    .btn-done{background:linear-gradient(135deg,#34d399,#059669);cursor:default;}
-
-    /* ROLE MODEL MODAL */
-    .rm-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.85rem;}
-    .rm-card{border:1.5px solid var(--border);border-radius:13px;padding:1rem;cursor:pointer;transition:all 0.2s;}
-    .rm-card:hover,.rm-card.sel{border-color:var(--purple);background:var(--purple-pale);}
-    .rm-head{display:flex;align-items:center;gap:0.65rem;margin-bottom:0.65rem;}
-    .rm-ava{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.9rem;font-weight:800;color:white;flex-shrink:0;}
-    .rm-name{font-size:0.86rem;font-weight:800;}
-    .rm-title-sm{font-size:0.65rem;color:var(--muted);}
-    .rm-path{display:flex;flex-direction:column;gap:0.28rem;}
-    .rm-step{display:flex;align-items:flex-start;gap:0.45rem;font-size:0.68rem;color:var(--muted);line-height:1.4;}
-    .rm-step-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:3px;background:var(--border);}
-    .rm-step.hl .rm-step-dot{background:var(--purple);}
-    .rm-step.hl{color:var(--text);font-weight:700;}
-    .rm-tag{display:inline-block;margin-top:0.55rem;font-size:0.6rem;font-weight:800;background:var(--purple-pale);color:var(--purple);border-radius:4px;padding:2px 6px;}
-    .rm-detail{margin-top:1.2rem;background:linear-gradient(135deg,#f3eaff,#fce7f3);border-radius:13px;padding:1rem;display:none;}
-    .rm-detail.open{display:block;}
-    .rm-detail h3{font-size:0.88rem;font-weight:800;margin-bottom:0.45rem;}
-    .rm-detail-body{font-size:0.73rem;color:var(--muted);line-height:1.75;}
-    .rm-detail-body strong{color:var(--text);}
-
     /* LINKEDIN */
     .linkedin-card{background:var(--bg);border:1.5px solid var(--border);border-radius:13px;padding:0.9rem;}
     .li-item{display:flex;align-items:flex-start;gap:0.6rem;padding:0.5rem 0;border-bottom:1px solid var(--border);}
@@ -198,7 +145,62 @@
     .li-name{font-size:0.74rem;font-weight:700;margin-bottom:1px;}
     .li-role{font-size:0.63rem;color:var(--muted);line-height:1.3;margin-bottom:3px;}
     .li-why{font-size:0.6rem;color:var(--purple);font-weight:700;background:var(--purple-pale);border-radius:4px;padding:1px 5px;display:inline-block;}
-    .btn-li{font-size:0.63rem;color:#0077b5;font-weight:700;background:#e8f4fd;border:none;border-radius:5px;padding:2px 7px;cursor:pointer;font-family:inherit;margin-top:3px;display:inline-block;}
+    .btn-li{font-size:0.62rem;color:#0077b5;font-weight:700;background:#e8f4fd;border:none;border-radius:5px;padding:2px 7px;cursor:pointer;font-family:inherit;margin-top:3px;display:inline-block;}
+
+    /* MODAL */
+    .modal-overlay{display:none;position:fixed;inset:0;background:rgba(61,43,94,0.5);backdrop-filter:blur(5px);z-index:300;align-items:center;justify-content:center;}
+    .modal-overlay.open{display:flex;}
+    .modal{background:var(--surface);border-radius:22px;padding:1.8rem;max-width:520px;width:92%;max-height:88vh;overflow-y:auto;box-shadow:0 20px 60px rgba(155,109,255,0.25);position:relative;}
+    .modal-close{position:absolute;top:1rem;right:1.1rem;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:0.82rem;color:var(--muted);font-weight:700;}
+    .modal-close:hover{background:var(--purple-pale);color:var(--purple);}
+    .modal h2{font-size:1.05rem;font-weight:800;margin-bottom:0.22rem;}
+    .modal-sub{font-size:0.7rem;color:var(--muted);margin-bottom:1.1rem;}
+
+    /* QUEST MODAL */
+    .qm-header{display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem;padding-bottom:0.9rem;border-bottom:1px solid var(--border);}
+    .qm-icon{width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:1.35rem;flex-shrink:0;}
+    .qm-title{font-size:0.98rem;font-weight:800;margin-bottom:0.18rem;}
+    .qm-node{font-size:0.68rem;color:var(--muted);}
+    .quest-list{display:flex;flex-direction:column;gap:0.7rem;}
+    .q-item{border:1.5px solid var(--border);border-radius:14px;padding:0.95rem;transition:all 0.2s;}
+    .q-item:hover{border-color:var(--purple-light);background:var(--purple-pale);}
+    .q-item.done-q{border-color:var(--mint);background:var(--mint-pale);opacity:0.8;}
+    .q-top{display:flex;align-items:flex-start;justify-content:space-between;gap:0.5rem;margin-bottom:0.45rem;}
+    .q-name{font-size:0.86rem;font-weight:800;}
+    .q-stars{font-size:0.82rem;letter-spacing:1px;flex-shrink:0;}
+    .q-desc{font-size:0.7rem;color:var(--muted);line-height:1.55;margin-bottom:0.6rem;}
+    .q-meta{display:flex;gap:0.45rem;flex-wrap:wrap;margin-bottom:0.6rem;}
+    .q-chip{font-size:0.6rem;font-weight:700;border-radius:5px;padding:2px 7px;}
+    .chip-time{background:#ede0ff;color:var(--purple);}
+    .chip-type{background:#fce7f3;color:#db2777;}
+    .chip-diff{background:#f3f4f6;color:#6b7280;}
+    .q-reward-box{background:var(--gold-pale);border:1px solid #fde68a;border-radius:9px;padding:0.45rem 0.7rem;margin-bottom:0.65rem;}
+    .q-reward-title{font-size:0.6rem;font-weight:800;color:#92400e;margin-bottom:0.28rem;text-transform:uppercase;letter-spacing:0.06em;}
+    .q-reward-list{display:flex;flex-direction:column;gap:0.15rem;}
+    .q-reward-item{font-size:0.68rem;color:#b45309;display:flex;align-items:center;gap:0.32rem;}
+    .btn-complete{width:100%;background:linear-gradient(135deg,var(--purple),var(--pink));color:white;border:none;border-radius:9px;padding:0.52rem;font-size:0.78rem;font-weight:800;cursor:pointer;font-family:inherit;transition:all 0.2s;box-shadow:0 3px 10px rgba(155,109,255,0.25);}
+    .btn-complete:hover{transform:translateY(-1px);}
+    .btn-done{background:linear-gradient(135deg,#34d399,#059669) !important;cursor:default !important;}
+
+    /* ROLE MODEL */
+    .rm-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;}
+    .rm-card{border:1.5px solid var(--border);border-radius:13px;padding:0.95rem;cursor:pointer;transition:all 0.2s;}
+    .rm-card:hover,.rm-card.sel{border-color:var(--purple);background:var(--purple-pale);}
+    .rm-head{display:flex;align-items:center;gap:0.62rem;margin-bottom:0.62rem;}
+    .rm-ava{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:800;color:white;flex-shrink:0;}
+    .rm-name{font-size:0.84rem;font-weight:800;}
+    .rm-title-sm{font-size:0.63rem;color:var(--muted);}
+    .rm-path{display:flex;flex-direction:column;gap:0.26rem;}
+    .rm-step{display:flex;align-items:flex-start;gap:0.42rem;font-size:0.67rem;color:var(--muted);line-height:1.4;}
+    .rm-step-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:3px;background:var(--border);}
+    .rm-step.hl .rm-step-dot{background:var(--purple);}
+    .rm-step.hl{color:var(--text);font-weight:700;}
+    .rm-tag{display:inline-block;margin-top:0.5rem;font-size:0.58rem;font-weight:800;background:var(--purple-pale);color:var(--purple);border-radius:4px;padding:2px 6px;}
+    .rm-detail{margin-top:1.1rem;background:linear-gradient(135deg,#f3eaff,#fce7f3);border-radius:13px;padding:0.95rem;display:none;}
+    .rm-detail.open{display:block;}
+    .rm-detail h3{font-size:0.86rem;font-weight:800;margin-bottom:0.42rem;}
+    .rm-detail-body{font-size:0.72rem;color:var(--muted);line-height:1.75;}
+    .rm-detail-body strong{color:var(--text);}
 
     /* NOTIF */
     .notif{position:fixed;bottom:2rem;right:2rem;background:var(--surface);border:1.5px solid var(--mint);border-radius:13px;padding:0.85rem 1.15rem;display:flex;align-items:center;gap:0.7rem;box-shadow:0 8px 28px rgba(52,211,153,0.2);transform:translateY(120px);opacity:0;transition:all 0.45s cubic-bezier(0.34,1.56,0.64,1);z-index:400;}
@@ -206,326 +208,403 @@
     .notif-icon{font-size:1.35rem;}
     .notif-strong{font-size:0.82rem;font-weight:800;color:#065f46;}
     .notif-sub{font-size:0.68rem;color:var(--muted);}
+
+    /* STAR TWINKLE */
+    @keyframes tw1{0%,100%{opacity:0.9}50%{opacity:0.25}}
+    @keyframes tw2{0%,100%{opacity:0.7}50%{opacity:0.15}}
+    @keyframes tw3{0%,100%{opacity:0.85}50%{opacity:0.35}}
+    .tw1{animation:tw1 2.2s infinite;}
+    .tw2{animation:tw2 3.1s infinite;}
+    .tw3{animation:tw3 1.8s infinite;}
   </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
   <div class="logo">✦ Stello</div>
   <div class="nav-right">
-    <div class="star-badge" id="starBadge">⭐ 1,240 별</div>
+    <div class="star-badge" id="starBadge">⭐ 1,240 Stars</div>
     <div class="nav-avatar">J</div>
   </div>
 </nav>
 
-<!-- CAREER BANNER -->
 <div class="career-banner">
   <div class="banner-left">
-    <div class="banner-track-label">현재 커리어 방향</div>
-    <div class="banner-track-name" id="bannerTrack">🎓 교수 트랙</div>
+    <div class="banner-track-label">Current Career Direction</div>
+    <div class="banner-track-name" id="bannerTrack">🎓 Professor Track</div>
   </div>
   <div class="banner-sep"></div>
   <div class="journey-steps" id="journeySteps"></div>
   <div class="banner-sep"></div>
   <div class="banner-right">
-    <div class="banner-next-label">다음 목표</div>
-    <div class="banner-next-val">📄 첫 논문 제출</div>
+    <div class="banner-next-label">Next Milestone</div>
+    <div class="banner-next-val">📄 First Paper Submission</div>
   </div>
 </div>
 
-<!-- MAIN -->
 <div class="main">
 
-  <!-- LEFT -->
-  <aside class="panel-left">
+  <!-- LEFT PANEL -->
+  <aside class="panel-left" id="leftPanel">
     <div class="profile-card">
       <div class="profile-ava">J</div>
       <div class="profile-name">Jiyeon Kim</div>
-      <div class="profile-sub">Stanford CS · PhD 1년차</div>
-      <div class="growth-label"><span>🌱 탐색자 Lv.3</span><span>38%</span></div>
+      <div class="profile-sub">Stanford CS · PhD Year 1</div>
+      <div class="growth-label"><span>🌱 Explorer Lv.3</span><span>38%</span></div>
       <div class="growth-bar"><div class="growth-fill" id="gFill"></div></div>
-      <div class="growth-msg">다음 단계까지 퀘스트 4개 남았어요 ✨</div>
+      <div class="growth-msg">4 quests until your next level ✨</div>
     </div>
 
     <div>
-      <div class="sec-label">획득한 뱃지</div>
+      <div class="sec-label">Earned Badges</div>
       <div class="badge-row">
-        <div class="badge earned">🗺️ 탐험가</div>
-        <div class="badge earned">☕ 미팅 마스터</div>
-        <div class="badge">📄 첫 논문</div>
-        <div class="badge">🏆 학회 발표</div>
+        <div class="badge earned">🗺️ Pioneer</div>
+        <div class="badge earned">☕ Meeting Pro</div>
+        <div class="badge">📄 First Paper</div>
+        <div class="badge">🏆 Conference</div>
       </div>
     </div>
 
     <div>
-      <div class="sec-label">오늘의 퀘스트</div>
+      <div class="sec-label">Today's Quest</div>
       <div class="quest-card">
-        <div class="quest-chip">🧭 연구 방향 탐색</div>
-        <div class="quest-title">관심 교수님 논문 3편 읽고 요약 남기기</div>
-        <div class="quest-desc">논문 요약 1~2문단 + 내 연구와의 연결고리 한 줄</div>
-        <div class="quest-reward">⭐ +200 별 · 전문가 퀘스트 해금</div>
-        <button class="btn-quest" id="questBtn" onclick="completeQuest()">완료 표시하기 ✓</button>
+        <div class="quest-chip">🧭 Research Direction</div>
+        <div class="quest-title">Read & summarize 3 papers from your target professor</div>
+        <div class="quest-desc">Write a 1–2 paragraph summary + one line on how it connects to your research interest.</div>
+        <div class="quest-reward">⭐ +200 Stars · Expert Quest unlocked</div>
+        <button class="btn-quest" id="questBtn" onclick="completeQuest()">Mark Complete ✓</button>
       </div>
     </div>
 
     <div>
-      <div class="sec-label">내 루트 선택</div>
+      <div class="sec-label">Choose Your Path</div>
       <div class="route-list">
-        <div class="route-item active" onclick="setRoute(this,'🎓 교수 트랙','prof')"><span>🎓 교수 트랙</span><span class="route-pct">23% 달성</span></div>
-        <div class="route-item" onclick="setRoute(this,'🏢 테크 기업 연구소','tech')"><span>🏢 테크 기업 연구소</span><span class="route-pct">—</span></div>
-        <div class="route-item" onclick="setRoute(this,'🚀 스타트업 창업','startup')"><span>🚀 스타트업 창업</span><span class="route-pct">—</span></div>
+        <div class="route-item active" onclick="setRoute(this,'🎓 Professor Track','prof')"><span>🎓 Professor Track</span><span class="route-pct">23% done</span></div>
+        <div class="route-item" onclick="setRoute(this,'🏢 Tech Research Lab','tech')"><span>🏢 Tech Research Lab</span><span class="route-pct">—</span></div>
+        <div class="route-item" onclick="setRoute(this,'🚀 Startup Founder','startup')"><span>🚀 Startup Founder</span><span class="route-pct">—</span></div>
       </div>
     </div>
 
     <div>
-      <div class="sec-label">롤모델 커리어패스</div>
-      <button class="btn-rolemodel" onclick="openModal('rm')">🌟 롤모델 커리어 보기</button>
+      <div class="sec-label">Role Model Career Paths</div>
+      <button class="btn-rolemodel" onclick="openModal('rmModal')">🌟 Explore Role Models</button>
     </div>
   </aside>
 
-  <!-- CENTER: TECH TREE (1.5x scale) -->
+  <!-- CENTER: SKY-TO-GROUND TREE -->
   <main class="panel-center">
+    <!-- Left toggle -->
+    <button class="toggle-tab left-tab" id="leftToggle" onclick="togglePanel('left')" title="Toggle left panel">◀</button>
+    <!-- Right toggle -->
+    <button class="toggle-tab right-tab" id="rightToggle" onclick="togglePanel('right')" title="Toggle right panel">▶</button>
+
     <div class="tree-header">
-      <h2>✦ 나의 커리어 별자리</h2>
-      <p>별을 클릭하면 세부 정보와 퀘스트를 확인할 수 있어요</p>
+      <h2>✦ Your Career Constellation</h2>
+      <p>Click any star to see details & quests · Rise from the ground to the night sky</p>
     </div>
 
     <div class="tree-svg-wrap">
-      <!-- viewBox scaled ~1.5x from original 500×480 → 750×720 equivalent nodes scaled too -->
-      <svg class="tree" viewBox="0 0 750 740" xmlns="http://www.w3.org/2000/svg">
+      <svg class="tree" viewBox="0 0 750 760" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <radialGradient id="gDone" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#a78bfa"/><stop offset="100%" stop-color="#7c3aed"/></radialGradient>
-          <radialGradient id="gActive" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#f472b6"/><stop offset="100%" stop-color="#db2777"/></radialGradient>
-          <radialGradient id="gLock" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#e8d5f5"/><stop offset="100%" stop-color="#d4b8f0"/></radialGradient>
-          <radialGradient id="gGold" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#fde68a"/><stop offset="100%" stop-color="#f59e0b"/></radialGradient>
-          <filter id="soft"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-          <filter id="softG"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <!-- Sky-to-ground background gradient (top=night sky, bottom=earth) -->
+          <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"   stop-color="#020010"/>
+            <stop offset="12%"  stop-color="#0d0520"/>
+            <stop offset="28%"  stop-color="#1e0b4a"/>
+            <stop offset="44%"  stop-color="#4a1885"/>
+            <stop offset="58%"  stop-color="#8b2f8a"/>
+            <stop offset="70%"  stop-color="#c85070"/>
+            <stop offset="80%"  stop-color="#e07848"/>
+            <stop offset="90%"  stop-color="#b85a18"/>
+            <stop offset="96%"  stop-color="#6b3808"/>
+            <stop offset="100%" stop-color="#2a1402"/>
+          </linearGradient>
+          <!-- Node gradients -->
+          <radialGradient id="gAdmit" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#fbbf24"/><stop offset="100%" stop-color="#b45309"/></radialGradient>
+          <radialGradient id="gDone"  cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#a78bfa"/><stop offset="100%" stop-color="#6d28d9"/></radialGradient>
+          <radialGradient id="gActive" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#f472b6"/><stop offset="100%" stop-color="#be185d"/></radialGradient>
+          <radialGradient id="gSky"   cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#818cf8"/><stop offset="100%" stop-color="#3730a3"/></radialGradient>
+          <radialGradient id="gLock"  cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#c4b5fd"/><stop offset="100%" stop-color="#8b5cf6"/></radialGradient>
+          <radialGradient id="gGold"  cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#fef08a"/><stop offset="100%" stop-color="#ca8a04"/></radialGradient>
+          <!-- Glow filters -->
+          <filter id="glow1"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="glow2"><feGaussianBlur stdDeviation="9" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="glow3"><feGaussianBlur stdDeviation="14" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
         </defs>
 
-        <!-- LINES -->
-        <line x1="375" y1="78" x2="375" y2="195" stroke="#e8d5f5" stroke-width="2"/>
-        <line x1="375" y1="250" x2="175" y2="360" stroke="#e8d5f5" stroke-width="2"/>
-        <line x1="375" y1="250" x2="375" y2="360" stroke="#c4a0ff" stroke-width="2" stroke-dasharray="7,5"/>
-        <line x1="375" y1="250" x2="575" y2="360" stroke="#e8d5f5" stroke-width="2"/>
-        <line x1="375" y1="418" x2="275" y2="522" stroke="#c4a0ff" stroke-width="1.8" stroke-dasharray="6,5"/>
-        <line x1="375" y1="418" x2="475" y2="522" stroke="#e8d5f5" stroke-width="1.8"/>
-        <line x1="275" y1="572" x2="375" y2="668" stroke="#fde68a" stroke-width="1.8" stroke-dasharray="5,5"/>
-        <line x1="475" y1="572" x2="375" y2="668" stroke="#e8d5f5" stroke-width="1.8"/>
+        <!-- BACKGROUND -->
+        <rect width="750" height="760" fill="url(#bgGrad)" rx="12"/>
 
-        <!-- SPARKLES -->
-        <text x="105" y="185" font-size="14" fill="#c4a0ff" opacity="0.45">✦</text>
-        <text x="615" y="260" font-size="11" fill="#f9a8d4" opacity="0.42">✧</text>
-        <text x="80"  y="460" font-size="10" fill="#c4a0ff" opacity="0.32">✦</text>
-        <text x="630" y="530" font-size="13" fill="#fde68a" opacity="0.35">✦</text>
-
-        <!-- ① 입학 (done) -->
-        <g style="cursor:pointer" onclick="openQuestModal('admission',event)">
-          <circle cx="375" cy="55" r="34" fill="url(#gDone)" filter="url(#soft)"/>
-          <text x="375" y="48" text-anchor="middle" font-size="17" fill="white">🎓</text>
-          <text x="375" y="65" text-anchor="middle" font-size="12" fill="white" font-weight="800">입학</text>
-          <!-- quest button -->
-          <circle cx="405" cy="30" r="12" fill="white" stroke="#9b6dff" stroke-width="1.5"/>
-          <text x="405" y="34" text-anchor="middle" font-size="10" fill="#9b6dff" font-weight="800">Q</text>
+        <!-- ── STARS IN NIGHT SKY (top area, y < 290) ── -->
+        <!-- Large sparkle stars -->
+        <g filter="url(#glow1)">
+          <circle class="tw1" cx="52"  cy="28"  r="2.2" fill="white" opacity="0.9"/>
+          <circle class="tw2" cx="168" cy="18"  r="1.6" fill="white" opacity="0.75"/>
+          <circle class="tw1" cx="290" cy="38"  r="2"   fill="#e0d7ff" opacity="0.85"/>
+          <circle class="tw3" cx="460" cy="22"  r="1.8" fill="white" opacity="0.8"/>
+          <circle class="tw2" cx="602" cy="32"  r="2.2" fill="white" opacity="0.9"/>
+          <circle class="tw1" cx="708" cy="15"  r="1.5" fill="#fef3c7" opacity="0.7"/>
+          <circle class="tw3" cx="88"  cy="68"  r="1.6" fill="white" opacity="0.65"/>
+          <circle class="tw1" cx="205" cy="75"  r="2"   fill="#e0d7ff" opacity="0.8"/>
+          <circle class="tw2" cx="338" cy="55"  r="1.5" fill="white" opacity="0.7"/>
+          <circle class="tw3" cx="510" cy="62"  r="2.2" fill="white" opacity="0.88"/>
+          <circle class="tw1" cx="655" cy="72"  r="1.8" fill="#fef3c7" opacity="0.75"/>
+          <circle class="tw2" cx="728" cy="58"  r="1.5" fill="white" opacity="0.65"/>
+          <circle class="tw3" cx="35"  cy="108" r="1.8" fill="white" opacity="0.7"/>
+          <circle class="tw1" cx="140" cy="118" r="1.5" fill="#e0d7ff" opacity="0.75"/>
+          <circle class="tw2" cx="255" cy="102" r="2"   fill="white" opacity="0.8"/>
+          <circle class="tw3" cx="415" cy="115" r="1.6" fill="white" opacity="0.68"/>
+          <circle class="tw1" cx="560" cy="98"  r="2.2" fill="#fef3c7" opacity="0.85"/>
+          <circle class="tw2" cx="688" cy="112" r="1.5" fill="white" opacity="0.72"/>
+          <circle class="tw3" cx="72"  cy="155" r="2"   fill="white" opacity="0.78"/>
+          <circle class="tw1" cx="188" cy="162" r="1.5" fill="#e0d7ff" opacity="0.7"/>
+          <circle class="tw2" cx="322" cy="148" r="1.8" fill="white" opacity="0.82"/>
+          <circle class="tw3" cx="490" cy="168" r="1.6" fill="white" opacity="0.65"/>
+          <circle class="tw1" cx="618" cy="152" r="2"   fill="#fef3c7" opacity="0.8"/>
+          <circle class="tw2" cx="720" cy="165" r="1.5" fill="white" opacity="0.68"/>
+          <circle class="tw3" cx="48"  cy="200" r="1.6" fill="white" opacity="0.6"/>
+          <circle class="tw1" cx="162" cy="210" r="2"   fill="#e0d7ff" opacity="0.75"/>
+          <circle class="tw2" cx="298" cy="195" r="1.5" fill="white" opacity="0.7"/>
+          <circle class="tw3" cx="445" cy="218" r="2.2" fill="white" opacity="0.8"/>
+          <circle class="tw1" cx="578" cy="205" r="1.8" fill="#fef3c7" opacity="0.72"/>
+          <circle class="tw2" cx="698" cy="215" r="1.5" fill="white" opacity="0.65"/>
+          <circle class="tw3" cx="115" cy="255" r="1.6" fill="white" opacity="0.55"/>
+          <circle class="tw1" cx="352" cy="268" r="1.8" fill="#e0d7ff" opacity="0.62"/>
+          <circle class="tw2" cx="628" cy="252" r="1.5" fill="white" opacity="0.58"/>
         </g>
 
-        <!-- ② 연구실 탐색 (done) -->
-        <g style="cursor:pointer" onclick="openQuestModal('lab',event)">
-          <circle cx="375" cy="222" r="40" fill="url(#gDone)" filter="url(#soft)"/>
-          <text x="375" y="213" text-anchor="middle" font-size="18" fill="white">🔭</text>
-          <text x="375" y="227" text-anchor="middle" font-size="12" fill="white" font-weight="800">연구실</text>
-          <text x="375" y="240" text-anchor="middle" font-size="11" fill="rgba(255,255,255,0.88)">탐색</text>
-          <circle cx="412" cy="193" r="12" fill="white" stroke="#9b6dff" stroke-width="1.5"/>
-          <text x="412" y="197" text-anchor="middle" font-size="10" fill="#9b6dff" font-weight="800">Q</text>
+        <!-- Larger sparkle ✦ shapes -->
+        <text x="105" y="48"  font-size="10" fill="white" opacity="0.6" class="tw1">✦</text>
+        <text x="390" y="35"  font-size="8"  fill="#fef3c7" opacity="0.55" class="tw3">✦</text>
+        <text x="542" y="52"  font-size="12" fill="white" opacity="0.65" class="tw2">✦</text>
+        <text x="232" y="145" font-size="8"  fill="#e0d7ff" opacity="0.5" class="tw1">✦</text>
+        <text x="668" y="138" font-size="10" fill="#fef3c7" opacity="0.55" class="tw3">✦</text>
+
+        <!-- MOON (crescent, top-right) -->
+        <circle cx="700" cy="50" r="26" fill="#fef9e7" opacity="0.92" filter="url(#glow1)"/>
+        <circle cx="714" cy="44" r="21" fill="#0d0520" opacity="0.95"/>
+
+        <!-- GROUND at bottom -->
+        <rect x="0" y="728" width="750" height="32" fill="#1a0c02" rx="0"/>
+        <path d="M0,722 Q80,715 160,722 Q240,730 320,720 Q400,712 480,722 Q560,730 640,718 Q700,710 750,720 L750,728 L0,728 Z" fill="#2d1606" opacity="0.95"/>
+        <!-- Small ground detail -->
+        <path d="M0,726 Q40,721 80,726 Q120,730 160,724" stroke="#3d2006" stroke-width="1" fill="none" opacity="0.6"/>
+        <!-- Tiny grass tufts -->
+        <text x="38"  y="728" font-size="11" opacity="0.45">🌿</text>
+        <text x="130" y="726" font-size="9"  opacity="0.35">🌱</text>
+        <text x="580" y="728" font-size="11" opacity="0.4">🌿</text>
+        <text x="680" y="726" font-size="9"  opacity="0.35">🌱</text>
+
+        <!-- ── CONSTELLATION LINES (bottom-to-top) ── -->
+        <!-- Admission → Lab Exploration -->
+        <line x1="375" y1="648" x2="375" y2="528" stroke="rgba(196,160,255,0.35)" stroke-width="1.8"/>
+        <!-- Lab Exploration → Lab Selection -->
+        <line x1="375" y1="490" x2="175" y2="370" stroke="rgba(196,160,255,0.28)" stroke-width="1.8"/>
+        <!-- Lab Exploration → Research Focus (active path) -->
+        <line x1="375" y1="490" x2="375" y2="370" stroke="rgba(244,114,182,0.45)" stroke-width="2" stroke-dasharray="7,5"/>
+        <!-- Lab Exploration → Conference -->
+        <line x1="375" y1="490" x2="575" y2="370" stroke="rgba(196,160,255,0.28)" stroke-width="1.8"/>
+        <!-- Research Focus → First Paper -->
+        <line x1="375" y1="332" x2="270" y2="215" stroke="rgba(196,160,255,0.32)" stroke-width="1.8" stroke-dasharray="6,5"/>
+        <!-- Research Focus → Internship -->
+        <line x1="375" y1="332" x2="478" y2="215" stroke="rgba(196,160,255,0.28)" stroke-width="1.8"/>
+        <!-- First Paper → Expert Interview -->
+        <line x1="270" y1="177" x2="375" y2="88"  stroke="rgba(253,230,138,0.5)" stroke-width="1.8" stroke-dasharray="5,5"/>
+        <!-- Internship → Expert Interview -->
+        <line x1="478" y1="177" x2="375" y2="88"  stroke="rgba(196,160,255,0.28)" stroke-width="1.8"/>
+
+        <!-- ── NODES (bottom = ground → top = sky) ── -->
+
+        <!-- ① ADMISSION — ground level, warm amber -->
+        <g style="cursor:pointer" onclick="openQuestModal('admission')">
+          <circle cx="375" cy="682" r="36" fill="url(#gAdmit)" filter="url(#glow1)"/>
+          <text x="375" y="675" text-anchor="middle" font-size="17" fill="white">🎓</text>
+          <text x="375" y="689" text-anchor="middle" font-size="11" fill="white" font-weight="800">Admission</text>
+          <!-- Q button -->
+          <circle cx="406" cy="654" r="13" fill="rgba(255,255,255,0.9)" stroke="#f59e0b" stroke-width="1.5"/>
+          <text x="406" y="658" text-anchor="middle" font-size="10" fill="#b45309" font-weight="800">Q</text>
         </g>
 
-        <!-- ③ 랩 조인 (locked) -->
-        <g style="cursor:pointer" onclick="openQuestModal('join',event)">
-          <circle cx="175" cy="388" r="34" fill="url(#gLock)"/>
-          <text x="175" y="380" text-anchor="middle" font-size="17" fill="#9b6dff">🏠</text>
-          <text x="175" y="396" text-anchor="middle" font-size="11" fill="#9b89b4" font-weight="700">랩 조인</text>
-          <circle cx="203" cy="360" r="12" fill="white" stroke="#c4a0ff" stroke-width="1.5"/>
-          <text x="203" y="364" text-anchor="middle" font-size="10" fill="#c4a0ff" font-weight="800">Q</text>
+        <!-- ② LAB EXPLORATION — sunset/dusk area, purple (done) -->
+        <g style="cursor:pointer" onclick="openQuestModal('lab')">
+          <circle cx="375" cy="509" r="42" fill="url(#gDone)" filter="url(#glow1)"/>
+          <text x="375" y="500" text-anchor="middle" font-size="18" fill="white">🔭</text>
+          <text x="375" y="514" text-anchor="middle" font-size="11" fill="white" font-weight="800">Lab</text>
+          <text x="375" y="527" text-anchor="middle" font-size="10" fill="rgba(255,255,255,0.85)">Exploration</text>
+          <circle cx="413" cy="478" r="13" fill="rgba(255,255,255,0.9)" stroke="#9b6dff" stroke-width="1.5"/>
+          <text x="413" y="482" text-anchor="middle" font-size="10" fill="#6d28d9" font-weight="800">Q</text>
         </g>
 
-        <!-- ④ 연구 주제 구체화 (ACTIVE) -->
-        <g style="cursor:pointer" onclick="openQuestModal('topic',event)">
-          <circle cx="375" cy="388" r="44" fill="url(#gActive)" filter="url(#soft)"/>
-          <text x="375" y="378" text-anchor="middle" font-size="20" fill="white">💡</text>
-          <text x="375" y="394" text-anchor="middle" font-size="12" fill="white" font-weight="800">연구 주제</text>
-          <text x="375" y="407" text-anchor="middle" font-size="11" fill="rgba(255,255,255,0.88)">구체화</text>
-          <!-- pulse -->
-          <circle cx="375" cy="388" r="52" fill="none" stroke="#f472b6" stroke-width="2" opacity="0.5" stroke-dasharray="5,4">
-            <animate attributeName="r" values="52;62;52" dur="2.2s" repeatCount="indefinite"/>
-            <animate attributeName="opacity" values="0.5;0.1;0.5" dur="2.2s" repeatCount="indefinite"/>
+        <!-- ③ LAB SELECTION — twilight, locked -->
+        <g style="cursor:pointer" onclick="openQuestModal('join')">
+          <circle cx="175" cy="351" r="35" fill="url(#gLock)" opacity="0.85"/>
+          <text x="175" y="343" text-anchor="middle" font-size="16" fill="white">🏠</text>
+          <text x="175" y="356" text-anchor="middle" font-size="10" fill="rgba(255,255,255,0.85)" font-weight="700">Lab</text>
+          <text x="175" y="368" text-anchor="middle" font-size="10" fill="rgba(255,255,255,0.7)">Selection</text>
+          <circle cx="203" cy="322" r="13" fill="rgba(255,255,255,0.9)" stroke="#c4a0ff" stroke-width="1.5"/>
+          <text x="203" y="326" text-anchor="middle" font-size="10" fill="#8b5cf6" font-weight="800">Q</text>
+        </g>
+
+        <!-- ④ RESEARCH FOCUS — twilight/purple, ACTIVE -->
+        <g style="cursor:pointer" onclick="openQuestModal('topic')">
+          <circle cx="375" cy="351" r="46" fill="url(#gActive)" filter="url(#glow1)"/>
+          <text x="375" y="341" text-anchor="middle" font-size="20" fill="white">💡</text>
+          <text x="375" y="357" text-anchor="middle" font-size="11" fill="white" font-weight="800">Research</text>
+          <text x="375" y="370" text-anchor="middle" font-size="10" fill="rgba(255,255,255,0.88)">Focus</text>
+          <!-- Pulse ring -->
+          <circle cx="375" cy="351" r="54" fill="none" stroke="#f472b6" stroke-width="2" opacity="0.5" stroke-dasharray="5,4">
+            <animate attributeName="r" values="54;66;54" dur="2.4s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.5;0.08;0.5" dur="2.4s" repeatCount="indefinite"/>
           </circle>
-          <circle cx="416" cy="352" r="14" fill="white" stroke="#f472b6" stroke-width="1.8"/>
-          <text x="416" y="357" text-anchor="middle" font-size="10" fill="#f472b6" font-weight="800">Q</text>
+          <circle cx="416" cy="318" r="14" fill="rgba(255,255,255,0.92)" stroke="#f472b6" stroke-width="2"/>
+          <text x="416" y="323" text-anchor="middle" font-size="10" fill="#be185d" font-weight="800">Q</text>
         </g>
-        <text x="427" y="338" font-size="11" fill="#f472b6" font-weight="800">← 현재 위치</text>
+        <!-- "Now" label -->
+        <text x="428" y="305" font-size="10" fill="#f9a8d4" font-weight="800">← Now</text>
 
-        <!-- ⑤ 학회 네트워크 (locked) -->
-        <g style="cursor:pointer" onclick="openQuestModal('conf',event)">
-          <circle cx="575" cy="388" r="34" fill="url(#gLock)"/>
-          <text x="575" y="380" text-anchor="middle" font-size="17" fill="#9b6dff">🌐</text>
-          <text x="575" y="396" text-anchor="middle" font-size="11" fill="#9b89b4" font-weight="700">학회 네트워크</text>
-          <circle cx="603" cy="360" r="12" fill="white" stroke="#c4a0ff" stroke-width="1.5"/>
-          <text x="603" y="364" text-anchor="middle" font-size="10" fill="#c4a0ff" font-weight="800">Q</text>
-        </g>
-
-        <!-- ⑥ 첫 논문 (semi) -->
-        <g style="cursor:pointer" onclick="openQuestModal('paper',event)">
-          <circle cx="275" cy="547" r="34" fill="url(#gLock)" stroke="#c4a0ff" stroke-width="2"/>
-          <text x="275" y="539" text-anchor="middle" font-size="17" fill="#9b6dff">📄</text>
-          <text x="275" y="555" text-anchor="middle" font-size="11" fill="#9b89b4" font-weight="700">첫 논문 제출</text>
-          <circle cx="303" cy="520" r="12" fill="white" stroke="#c4a0ff" stroke-width="1.5"/>
-          <text x="303" y="524" text-anchor="middle" font-size="10" fill="#c4a0ff" font-weight="800">Q</text>
+        <!-- ⑤ CONFERENCE NETWORK — twilight, locked -->
+        <g style="cursor:pointer" onclick="openQuestModal('conf')">
+          <circle cx="575" cy="351" r="35" fill="url(#gLock)" opacity="0.85"/>
+          <text x="575" y="343" text-anchor="middle" font-size="16" fill="white">🌐</text>
+          <text x="575" y="356" text-anchor="middle" font-size="10" fill="rgba(255,255,255,0.85)" font-weight="700">Conference</text>
+          <text x="575" y="368" text-anchor="middle" font-size="10" fill="rgba(255,255,255,0.7)">Network</text>
+          <circle cx="603" cy="322" r="13" fill="rgba(255,255,255,0.9)" stroke="#c4a0ff" stroke-width="1.5"/>
+          <text x="603" y="326" text-anchor="middle" font-size="10" fill="#8b5cf6" font-weight="800">Q</text>
         </g>
 
-        <!-- ⑦ 인턴·협업 (locked) -->
-        <g style="cursor:pointer" onclick="openQuestModal('intern',event)">
-          <circle cx="475" cy="547" r="34" fill="url(#gLock)"/>
-          <text x="475" y="539" text-anchor="middle" font-size="17" fill="#9b6dff">💼</text>
-          <text x="475" y="555" text-anchor="middle" font-size="11" fill="#9b89b4" font-weight="700">인턴·협업</text>
-          <circle cx="503" cy="520" r="12" fill="white" stroke="#c4a0ff" stroke-width="1.5"/>
-          <text x="503" y="524" text-anchor="middle" font-size="10" fill="#c4a0ff" font-weight="800">Q</text>
+        <!-- ⑥ FIRST PAPER — deep sky, indigo -->
+        <g style="cursor:pointer" onclick="openQuestModal('paper')">
+          <circle cx="270" cy="196" r="35" fill="url(#gSky)" opacity="0.9" filter="url(#glow1)"/>
+          <text x="270" y="188" text-anchor="middle" font-size="16" fill="white">📄</text>
+          <text x="270" y="201" text-anchor="middle" font-size="10" fill="white" font-weight="700">First</text>
+          <text x="270" y="213" text-anchor="middle" font-size="10" fill="rgba(255,255,255,0.8)">Paper</text>
+          <circle cx="298" cy="168" r="13" fill="rgba(255,255,255,0.9)" stroke="#818cf8" stroke-width="1.5"/>
+          <text x="298" y="172" text-anchor="middle" font-size="10" fill="#3730a3" font-weight="800">Q</text>
         </g>
 
-        <!-- ⑧ 전문가 인터뷰 (gold) -->
-        <g style="cursor:pointer" onclick="openQuestModal('expert',event)">
-          <circle cx="375" cy="688" r="38" fill="url(#gGold)" filter="url(#softG)"/>
-          <text x="375" y="678" text-anchor="middle" font-size="19" fill="white">🏆</text>
-          <text x="375" y="695" text-anchor="middle" font-size="12" fill="white" font-weight="800">전문가 인터뷰</text>
-          <circle cx="410" cy="658" r="12" fill="white" stroke="#f59e0b" stroke-width="1.5"/>
-          <text x="410" y="662" text-anchor="middle" font-size="10" fill="#f59e0b" font-weight="800">Q</text>
+        <!-- ⑦ INTERNSHIP — deep sky, indigo -->
+        <g style="cursor:pointer" onclick="openQuestModal('intern')">
+          <circle cx="478" cy="196" r="35" fill="url(#gSky)" opacity="0.9" filter="url(#glow1)"/>
+          <text x="478" y="188" text-anchor="middle" font-size="16" fill="white">💼</text>
+          <text x="478" y="201" text-anchor="middle" font-size="10" fill="white" font-weight="700">Internship</text>
+          <text x="478" y="213" text-anchor="middle" font-size="10" fill="rgba(255,255,255,0.8)">& Collab</text>
+          <circle cx="506" cy="168" r="13" fill="rgba(255,255,255,0.9)" stroke="#818cf8" stroke-width="1.5"/>
+          <text x="506" y="172" text-anchor="middle" font-size="10" fill="#3730a3" font-weight="800">Q</text>
         </g>
+
+        <!-- ⑧ EXPERT INTERVIEW — deepest sky, golden star -->
+        <g style="cursor:pointer" onclick="openQuestModal('expert')">
+          <circle cx="375" cy="70"  r="42" fill="url(#gGold)" filter="url(#glow3)"/>
+          <text x="375" y="60"  text-anchor="middle" font-size="20" fill="white">🏆</text>
+          <text x="375" y="75"  text-anchor="middle" font-size="11" fill="white" font-weight="800">Expert</text>
+          <text x="375" y="88"  text-anchor="middle" font-size="10" fill="rgba(255,255,255,0.88)">Interview</text>
+          <!-- Extra glow ring for star effect -->
+          <circle cx="375" cy="70" r="50" fill="none" stroke="#fef08a" stroke-width="1" opacity="0.4">
+            <animate attributeName="r" values="50;60;50" dur="3s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.4;0.05;0.4" dur="3s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="410" cy="40" r="13" fill="rgba(255,255,255,0.92)" stroke="#ca8a04" stroke-width="1.5"/>
+          <text x="410" y="44" text-anchor="middle" font-size="10" fill="#92400e" font-weight="800">Q</text>
+        </g>
+
+        <!-- Journey direction label -->
+        <text x="18" y="680" font-size="9" fill="rgba(255,200,100,0.6)" font-weight="700">🌱 Start</text>
+        <text x="14" y="85"  font-size="9" fill="rgba(253,230,138,0.7)" font-weight="700">⭐ Future</text>
       </svg>
     </div>
 
     <div class="ms-strip">
-      <div class="ms done">✅ 교수 미팅 3회</div>
-      <div class="ms done">✅ 연구실 탐색 완료</div>
-      <div class="ms now">🌸 연구 주제 탐색 중</div>
-      <div class="ms">🔒 첫 논문 제출</div>
-      <div class="ms">🔒 학회 발표</div>
+      <div class="ms done">✅ 3 Prof. Meetings</div>
+      <div class="ms done">✅ Lab Exploration</div>
+      <div class="ms now">🌸 Research Focus</div>
+      <div class="ms">🔒 First Paper</div>
+      <div class="ms">🔒 Conference Talk</div>
     </div>
   </main>
 
-  <!-- RIGHT -->
-  <aside class="panel-right">
+  <!-- RIGHT PANEL -->
+  <aside class="panel-right" id="rightPanel">
 
-    <!-- future self -->
     <div>
-      <div class="sec-label">✨ 미래의 내 모습</div>
+      <div class="sec-label">✨ Your Future Self</div>
       <div class="future-card" id="futureCard">
         <div class="future-deco">🔮</div>
-        <div class="future-chip" id="futureChip">3년 후 시뮬레이션</div>
-        <div class="future-role" id="futureRole">조교수 / 교수 트랙</div>
-        <div class="future-org"  id="futureOrg">Stanford · KAIST · 국내외 대학</div>
+        <div class="future-chip" id="futureChip">3-Year Simulation</div>
+        <div class="future-role" id="futureRole">Assistant Professor</div>
+        <div class="future-org"  id="futureOrg">Stanford · KAIST · Top Research Universities</div>
         <div id="futureProbs"></div>
-        <div class="future-tip" id="futureTip">퀘스트 <strong>2개</strong>를 더 완료하면 이 트랙 달성 확률이 <strong>+15%</strong> 올라가요 🌟</div>
+        <div class="future-tip" id="futureTip">Complete <strong>2 more quests</strong> to raise your Professor Track probability by <strong>+15%</strong> 🌟</div>
       </div>
     </div>
 
-    <!-- linkedin -->
     <div>
-      <div class="sec-label">🔗 지금 단계 링크드인 추천</div>
+      <div class="sec-label">🔗 LinkedIn Connections — This Stage</div>
       <div class="linkedin-card">
         <div class="li-item">
           <div class="li-ava" style="background:linear-gradient(135deg,#9b6dff,#c4a0ff)">S</div>
-          <div><div class="li-name">Sarah Chen</div><div class="li-role">PhD 3년차 · Stanford AI Lab</div><div class="li-why">같은 탐색 단계 경험자</div><button class="btn-li">LinkedIn →</button></div>
+          <div><div class="li-name">Sarah Chen</div><div class="li-role">PhD Year 3 · Stanford AI Lab</div><div class="li-why">Went through same exploration phase</div><button class="btn-li">LinkedIn →</button></div>
         </div>
         <div class="li-item">
           <div class="li-ava" style="background:linear-gradient(135deg,#f472b6,#db2777)">M</div>
-          <div><div class="li-name">Min-jun Oh</div><div class="li-role">포닥 · MIT CSAIL</div><div class="li-why">주제 구체화 조언 가능</div><button class="btn-li">LinkedIn →</button></div>
+          <div><div class="li-name">Min-jun Oh</div><div class="li-role">Postdoc · MIT CSAIL</div><div class="li-why">Can advise on narrowing research topic</div><button class="btn-li">LinkedIn →</button></div>
         </div>
         <div class="li-item">
           <div class="li-ava" style="background:linear-gradient(135deg,#34d399,#059669)">A</div>
-          <div><div class="li-name">Aisha Patel</div><div class="li-role">Research Scientist · Google Brain</div><div class="li-why">산업 전환 경험 공유</div><button class="btn-li">LinkedIn →</button></div>
+          <div><div class="li-name">Aisha Patel</div><div class="li-role">Research Scientist · Google Brain</div><div class="li-why">Shares industry transition experience</div><button class="btn-li">LinkedIn →</button></div>
         </div>
       </div>
     </div>
 
-    <!-- alumni SPLIT -->
     <div>
-      <div class="sec-label">💌 비슷한 길 vs 다른 길 선배</div>
+      <div class="sec-label">💌 Peers on Similar vs. Different Paths</div>
       <div class="alumni-tabs">
-        <button class="alumni-tab active" onclick="switchAlumni(this,'same')">✅ 비슷한 길</button>
-        <button class="alumni-tab" onclick="switchAlumni(this,'diff')">🔀 다른 길 선택</button>
+        <button class="alumni-tab active" onclick="switchAlumni(this,'same')">✅ Similar Path</button>
+        <button class="alumni-tab" onclick="switchAlumni(this,'diff')">🔀 Different Choice</button>
       </div>
-
-      <!-- SAME PATH -->
       <div class="alumni-panel active" id="panel-same">
         <div class="alumni-item">
           <div class="alumni-ava" style="background:linear-gradient(135deg,#9b6dff,#c4a0ff)">P</div>
-          <div>
-            <div class="alumni-name">Park S. · PhD 4년차</div>
-            <div class="alumni-desc">교수 트랙 · 연구 주제 탐색 후 NeurIPS 논문 → 교수 임용 진행 중</div>
-            <span class="alumni-tag tag-same">교수 트랙 동행</span>
-          </div>
+          <div><div class="alumni-name">Park S. · PhD Year 4</div><div class="alumni-desc">Prof. track · Research exploration → NeurIPS paper → tenure-track in progress</div><span class="alumni-tag tag-same">Same: Professor Track</span></div>
         </div>
         <div class="alumni-item">
           <div class="alumni-ava" style="background:linear-gradient(135deg,#f472b6,#db2777)">K</div>
-          <div>
-            <div class="alumni-name">Kim H. · PhD 3년차</div>
-            <div class="alumni-desc">교수 트랙 · 연구 주제 전환 후 CMU 교수 트랙 진입 성공</div>
-            <span class="alumni-tag tag-same">교수 트랙 동행</span>
-          </div>
+          <div><div class="alumni-name">Kim H. · PhD Year 3</div><div class="alumni-desc">Prof. track · Pivoted research topic → landed CMU professor track</div><span class="alumni-tag tag-same">Same: Professor Track</span></div>
         </div>
         <div class="alumni-item">
           <div class="alumni-ava" style="background:linear-gradient(135deg,#c4a0ff,#9b6dff)">W</div>
-          <div>
-            <div class="alumni-name">Wang Y. · 졸업</div>
-            <div class="alumni-desc">교수 트랙 · ICML 2편 → UC Berkeley 조교수 부임</div>
-            <span class="alumni-tag tag-same">교수 트랙 동행</span>
-          </div>
+          <div><div class="alumni-name">Wang Y. · Graduated</div><div class="alumni-desc">Prof. track · 2 ICML papers → UC Berkeley asst. professor</div><span class="alumni-tag tag-same">Same: Professor Track</span></div>
         </div>
       </div>
-
-      <!-- DIFF PATH -->
       <div class="alumni-panel" id="panel-diff">
         <div class="alumni-item">
           <div class="alumni-ava" style="background:linear-gradient(135deg,#34d399,#059669)">L</div>
-          <div>
-            <div class="alumni-name">Lee J. · 졸업</div>
-            <div class="alumni-desc">교수 TO 없음 → 조기 졸업 선택 → 스타트업 CTO 창업 성공</div>
-            <span class="alumni-tag tag-diff">🚀 스타트업으로 전환</span>
-          </div>
+          <div><div class="alumni-name">Lee J. · Graduated</div><div class="alumni-desc">No faculty TO → early graduation → co-founded AI startup (Series A)</div><span class="alumni-tag tag-diff">🚀 Switched to Startup</span></div>
         </div>
         <div class="alumni-item">
           <div class="alumni-ava" style="background:linear-gradient(135deg,#f59e0b,#b45309)">R</div>
-          <div>
-            <div class="alumni-name">Ryu M. · PhD 5년차</div>
-            <div class="alumni-desc">교수 트랙 → Google DeepMind 리서처로 전환, 논문 5편 발표</div>
-            <span class="alumni-tag tag-diff">🏢 테크 기업으로 전환</span>
-          </div>
+          <div><div class="alumni-name">Ryu M. · PhD Year 5</div><div class="alumni-desc">Prof. track → pivoted to Google DeepMind researcher, 5 papers</div><span class="alumni-tag tag-diff">🏢 Switched to Industry</span></div>
         </div>
         <div class="alumni-item">
           <div class="alumni-ava" style="background:linear-gradient(135deg,#60a5fa,#3b82f6)">C</div>
-          <div>
-            <div class="alumni-name">Choi S. · 졸업</div>
-            <div class="alumni-desc">연구 방향 전환 → AI 정책 연구소로 이동, 커리어 피봇 성공</div>
-            <span class="alumni-tag tag-diff">🌐 정책·연구소 전환</span>
-          </div>
+          <div><div class="alumni-name">Choi S. · Graduated</div><div class="alumni-desc">Research pivot → AI policy institute, successful career switch</div><span class="alumni-tag tag-diff">🌐 Switched to Policy</span></div>
         </div>
       </div>
     </div>
 
-    <!-- expert -->
     <div>
-      <div class="sec-label">🌟 전문가 퀘스트</div>
+      <div class="sec-label">🌟 Expert Quest</div>
       <div class="expert-card" id="expertCard">
-        <div class="lock-tag" id="lockTag">🔒 잠금 중</div>
-        <div class="expert-title">Prof. Andrew Ng 부여 퀘스트</div>
-        <div class="expert-desc">오늘의 퀘스트를 완료하면 해금돼요.<br>완료 시 1:1 커피챗 기회가 주어집니다 ☕</div>
+        <div class="lock-tag" id="lockTag">🔒 Locked</div>
+        <div class="expert-title">Quest from Prof. Andrew Ng</div>
+        <div class="expert-desc">Complete today's quest to unlock.<br>Reward: 1:1 coffee chat opportunity ☕</div>
       </div>
     </div>
 
   </aside>
 </div>
 
-<!-- ── QUEST POPUP MODAL ── -->
-<div class="modal-overlay" id="questModal" onclick="closeModalOutside(event,'questModal')">
+<!-- QUEST MODAL -->
+<div class="modal-overlay" id="questModal" onclick="closeModalOut(event,'questModal')">
   <div class="modal">
     <div class="modal-close" onclick="closeModal('questModal')">✕</div>
     <div class="qm-header">
@@ -536,48 +615,44 @@
   </div>
 </div>
 
-<!-- ── ROLE MODEL MODAL ── -->
-<div class="modal-overlay" id="rmModal" onclick="closeModalOutside(event,'rmModal')">
+<!-- ROLE MODEL MODAL -->
+<div class="modal-overlay" id="rmModal" onclick="closeModalOut(event,'rmModal')">
   <div class="modal">
     <div class="modal-close" onclick="closeModal('rmModal')">✕</div>
-    <h2>🌟 롤모델 커리어패스</h2>
-    <div class="modal-sub">클릭해서 나와 비슷한 여정을 걸은 롤모델을 살펴보세요</div>
+    <h2>🌟 Role Model Career Paths</h2>
+    <div class="modal-sub">Click a card to explore someone whose journey mirrors yours</div>
     <div class="rm-grid">
       <div class="rm-card" onclick="selectRM(this,0)">
-        <div class="rm-head"><div class="rm-ava" style="background:linear-gradient(135deg,#9b6dff,#c4a0ff)">AN</div><div><div class="rm-name">Andrew Ng</div><div class="rm-title-sm">Coursera · Stanford 교수</div></div></div>
+        <div class="rm-head"><div class="rm-ava" style="background:linear-gradient(135deg,#9b6dff,#c4a0ff)">AN</div><div><div class="rm-name">Andrew Ng</div><div class="rm-title-sm">Coursera · Stanford Professor</div></div></div>
         <div class="rm-path">
           <div class="rm-step hl"><span class="rm-step-dot" style="background:var(--purple)"></span>MIT → UC Berkeley PhD</div>
-          <div class="rm-step"><span class="rm-step-dot"></span>Stanford 교수 · Google Brain 창설</div>
-          <div class="rm-step"><span class="rm-step-dot"></span>Coursera 창업 · AI Fund</div>
-        </div>
-        <span class="rm-tag">교수 + 창업</span>
+          <div class="rm-step"><span class="rm-step-dot"></span>Stanford Prof. · Founded Google Brain</div>
+          <div class="rm-step"><span class="rm-step-dot"></span>Coursera, deeplearning.ai, AI Fund</div>
+        </div><span class="rm-tag">Professor + Startup</span>
       </div>
       <div class="rm-card" onclick="selectRM(this,1)">
-        <div class="rm-head"><div class="rm-ava" style="background:linear-gradient(135deg,#f472b6,#db2777)">FL</div><div><div class="rm-name">Fei-Fei Li</div><div class="rm-title-sm">Stanford HAI 공동 소장</div></div></div>
+        <div class="rm-head"><div class="rm-ava" style="background:linear-gradient(135deg,#f472b6,#db2777)">FL</div><div><div class="rm-name">Fei-Fei Li</div><div class="rm-title-sm">Stanford HAI Co-Director</div></div></div>
         <div class="rm-path">
           <div class="rm-step hl"><span class="rm-step-dot" style="background:var(--pink)"></span>Caltech → Princeton PhD</div>
-          <div class="rm-step"><span class="rm-step-dot"></span>Stanford 교수 · ImageNet 창시</div>
+          <div class="rm-step"><span class="rm-step-dot"></span>Stanford Prof. · Created ImageNet</div>
           <div class="rm-step"><span class="rm-step-dot"></span>Google Cloud AI Chief Scientist</div>
-        </div>
-        <span class="rm-tag">교수 트랙</span>
+        </div><span class="rm-tag">Professor Track</span>
       </div>
       <div class="rm-card" onclick="selectRM(this,2)">
-        <div class="rm-head"><div class="rm-ava" style="background:linear-gradient(135deg,#34d399,#059669)">AK</div><div><div class="rm-name">Andrej Karpathy</div><div class="rm-title-sm">전 Tesla AI 총괄</div></div></div>
+        <div class="rm-head"><div class="rm-ava" style="background:linear-gradient(135deg,#34d399,#059669)">AK</div><div><div class="rm-name">Andrej Karpathy</div><div class="rm-title-sm">Former Tesla AI Director</div></div></div>
         <div class="rm-path">
           <div class="rm-step hl"><span class="rm-step-dot" style="background:var(--mint)"></span>Toronto → Stanford PhD</div>
-          <div class="rm-step"><span class="rm-step-dot"></span>OpenAI 창업 멤버 · Tesla AI 총괄</div>
-          <div class="rm-step"><span class="rm-step-dot"></span>독립 연구자 · 교육 콘텐츠</div>
-        </div>
-        <span class="rm-tag">테크 기업 트랙</span>
+          <div class="rm-step"><span class="rm-step-dot"></span>OpenAI founding team · Tesla AI</div>
+          <div class="rm-step"><span class="rm-step-dot"></span>Independent researcher & educator</div>
+        </div><span class="rm-tag">Tech Industry Track</span>
       </div>
       <div class="rm-card" onclick="selectRM(this,3)">
-        <div class="rm-head"><div class="rm-ava" style="background:linear-gradient(135deg,#f59e0b,#b45309)">IS</div><div><div class="rm-name">Ilya Sutskever</div><div class="rm-title-sm">OpenAI 공동창업자</div></div></div>
+        <div class="rm-head"><div class="rm-ava" style="background:linear-gradient(135deg,#f59e0b,#b45309)">IS</div><div><div class="rm-name">Ilya Sutskever</div><div class="rm-title-sm">OpenAI Co-founder</div></div></div>
         <div class="rm-path">
-          <div class="rm-step hl"><span class="rm-step-dot" style="background:var(--gold)"></span>Toronto PhD (Hinton 랩)</div>
+          <div class="rm-step hl"><span class="rm-step-dot" style="background:var(--gold)"></span>U of Toronto PhD (Hinton lab)</div>
           <div class="rm-step"><span class="rm-step-dot"></span>Google Brain → OpenAI Chief Scientist</div>
-          <div class="rm-step"><span class="rm-step-dot"></span>SSI 창업 (2024)</div>
-        </div>
-        <span class="rm-tag">연구소 + 창업</span>
+          <div class="rm-step"><span class="rm-step-dot"></span>Founded SSI (2024)</div>
+        </div><span class="rm-tag">Research Lab + Startup</span>
       </div>
     </div>
     <div class="rm-detail" id="rmDetail">
@@ -590,52 +665,49 @@
 <!-- NOTIF -->
 <div class="notif" id="notif">
   <div class="notif-icon">🎉</div>
-  <div><div class="notif-strong" id="notifStrong">퀘스트 완료!</div><div class="notif-sub" id="notifSub">+200 별 획득 · 전문가 퀘스트 해금됐어요</div></div>
+  <div><div class="notif-strong" id="notifStrong">Quest Complete!</div><div class="notif-sub" id="notifSub">+200 Stars earned · Expert Quest unlocked</div></div>
 </div>
 
 <script>
-/* ── JOURNEY BANNER ── */
-const steps=[{label:'입학',done:true},{label:'연구실\n탐색',done:true},{label:'연구 주제\n구체화',now:true},{label:'첫 논문\n제출',done:false},{label:'학회\n발표',done:false},{label:'전문가\n인터뷰',done:false}];
+/* JOURNEY BANNER */
+const steps=[{label:'Admission',done:true},{label:'Lab\nExploration',done:true},{label:'Research\nFocus',now:true},{label:'First\nPaper',done:false},{label:'Conference\nTalk',done:false},{label:'Expert\nInterview',done:false}];
 const wrap=document.getElementById('journeySteps');
 steps.forEach((s,i)=>{
   const div=document.createElement('div');div.className='jstep';
   const cls=s.done?'done':s.now?'now':'';
   div.innerHTML=`<div class="jstep-dot"><div class="jstep-circle ${cls}">${s.done?'✓':s.now?'★':i+1}</div><div class="jstep-label ${cls}">${s.label.replace('\n','<br>')}</div></div>`;
   wrap.appendChild(div);
-  if(i<steps.length-1){const line=document.createElement('div');line.className='jstep-line'+(s.done?' done':'');wrap.appendChild(line);}
+  if(i<steps.length-1){const l=document.createElement('div');l.className='jstep-line'+(s.done?' done':'');wrap.appendChild(l);}
 });
 
-/* ── TRACK DATA ── */
+/* TRACK DATA */
 const trackData={
-  prof:{name:'🎓 교수 트랙',role:'조교수 / 교수 트랙',org:'Stanford · KAIST · 국내외 대학',chipBg:'background:var(--purple-pale);color:var(--purple)',cardBg:'background:linear-gradient(145deg,#f3eaff,#fce7f3)',probs:[{label:'🎓 교수 부임 (조교수)',pct:52,bar:'linear-gradient(90deg,#9b6dff,#c4a0ff)'},{label:'🏢 산업계 연구소',pct:35,bar:'linear-gradient(90deg,#f472b6,#fca5a5)'},{label:'🚀 창업·독립 연구',pct:13,bar:'linear-gradient(90deg,#f59e0b,#fde68a)'}],tip:'퀘스트 <strong>2개</strong>를 더 완료하면 교수 트랙 달성 확률이 <strong>+15%</strong> 올라가요 🌟'},
-  tech:{name:'🏢 테크 기업 연구소',role:'Research Scientist',org:'Google DeepMind · OpenAI · Meta AI',chipBg:'background:#d1fae5;color:#065f46',cardBg:'background:linear-gradient(145deg,#d1fae5,#fce7f3)',probs:[{label:'🏢 테크 기업 리서처',pct:65,bar:'linear-gradient(90deg,#34d399,#a7f3d0)'},{label:'🎓 겸직 교수·강의',pct:22,bar:'linear-gradient(90deg,#9b6dff,#c4a0ff)'},{label:'🚀 스핀오프 창업',pct:13,bar:'linear-gradient(90deg,#f59e0b,#fde68a)'}],tip:'인턴 퀘스트를 완료하면 기업 리서처 트랙 확률이 <strong>+20%</strong> 올라가요 🌟'},
-  startup:{name:'🚀 스타트업 창업',role:'창업자 / CTO',org:'AI 스타트업 · 딥테크 창업',chipBg:'background:var(--gold-pale);color:#92400e',cardBg:'background:linear-gradient(145deg,#fef3c7,#fce7f3)',probs:[{label:'🚀 창업 성공·시리즈A',pct:38,bar:'linear-gradient(90deg,#f59e0b,#fde68a)'},{label:'🏢 테크 기업 합류',pct:42,bar:'linear-gradient(90deg,#34d399,#a7f3d0)'},{label:'🎓 교수 트랙 복귀',pct:20,bar:'linear-gradient(90deg,#9b6dff,#c4a0ff)'}],tip:'네트워킹 퀘스트를 완료하면 창업 성공 확률이 <strong>+12%</strong> 올라가요 🌟'},
+  prof:{name:'🎓 Professor Track',role:'Assistant / Tenured Professor',org:'Stanford · KAIST · Top Universities',chipBg:'background:var(--purple-pale);color:var(--purple)',cardBg:'background:linear-gradient(145deg,#f3eaff,#fce7f3)',probs:[{label:'🎓 Faculty position',pct:52,bar:'linear-gradient(90deg,#9b6dff,#c4a0ff)'},{label:'🏢 Industry research lab',pct:35,bar:'linear-gradient(90deg,#f472b6,#fca5a5)'},{label:'🚀 Startup / independent',pct:13,bar:'linear-gradient(90deg,#f59e0b,#fde68a)'}],tip:'Complete <strong>2 more quests</strong> to raise Professor Track probability by <strong>+15%</strong> 🌟'},
+  tech:{name:'🏢 Tech Research Lab',role:'Research Scientist',org:'Google DeepMind · OpenAI · Meta AI',chipBg:'background:#d1fae5;color:#065f46',cardBg:'background:linear-gradient(145deg,#d1fae5,#fce7f3)',probs:[{label:'🏢 Tech research scientist',pct:65,bar:'linear-gradient(90deg,#34d399,#a7f3d0)'},{label:'🎓 Adjunct / teaching role',pct:22,bar:'linear-gradient(90deg,#9b6dff,#c4a0ff)'},{label:'🚀 Spinoff startup',pct:13,bar:'linear-gradient(90deg,#f59e0b,#fde68a)'}],tip:'Complete the internship quest to raise Tech Researcher probability by <strong>+20%</strong> 🌟'},
+  startup:{name:'🚀 Startup Founder',role:'Founder / CTO',org:'AI Startups · Deep Tech Ventures',chipBg:'background:var(--gold-pale);color:#92400e',cardBg:'background:linear-gradient(145deg,#fef3c7,#fce7f3)',probs:[{label:'🚀 Startup (Series A)',pct:38,bar:'linear-gradient(90deg,#f59e0b,#fde68a)'},{label:'🏢 Join tech company',pct:42,bar:'linear-gradient(90deg,#34d399,#a7f3d0)'},{label:'🎓 Return to academia',pct:20,bar:'linear-gradient(90deg,#9b6dff,#c4a0ff)'}],tip:'Complete the networking quest to raise Startup success probability by <strong>+12%</strong> 🌟'},
 };
 let currentTrack='prof';
-
 function renderFuture(key){
   const d=trackData[key];
   const fc=document.getElementById('futureCard');
   fc.style.cssText=d.cardBg+';border-radius:16px;padding:1.1rem;border:1.5px solid var(--border);position:relative;overflow:hidden;transition:all 0.4s;';
   const chip=document.getElementById('futureChip');
   chip.style.cssText=d.chipBg+';font-size:0.58rem;font-weight:800;letter-spacing:0.08em;border-radius:5px;padding:2px 7px;display:inline-block;margin-bottom:0.65rem;';
-  chip.textContent='3년 후 시뮬레이션';
+  chip.textContent='3-Year Simulation';
   document.getElementById('futureRole').textContent=d.role;
   document.getElementById('futureOrg').textContent=d.org;
   document.getElementById('futureTip').innerHTML=d.tip;
   document.getElementById('futureProbs').innerHTML=d.probs.map(p=>`<div class="prob-wrap"><div class="prob-top"><span>${p.label}</span><span>${p.pct}%</span></div><div class="prob-bar"><div class="prob-fill" style="width:${p.pct}%;background:${p.bar}"></div></div></div>`).join('');
 }
 renderFuture('prof');
-
 function setRoute(el,name,key){
   document.querySelectorAll('.route-item').forEach(r=>r.classList.remove('active'));
   el.classList.add('active');
   document.getElementById('bannerTrack').textContent=name;
-  currentTrack=key;
-  renderFuture(key);
+  currentTrack=key; renderFuture(key);
 }
 
-/* ── ALUMNI TABS ── */
+/* ALUMNI TABS */
 function switchAlumni(btn,id){
   document.querySelectorAll('.alumni-tab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.alumni-panel').forEach(p=>p.classList.remove('active'));
@@ -643,135 +715,122 @@ function switchAlumni(btn,id){
   document.getElementById('panel-'+id).classList.add('active');
 }
 
-/* ── QUEST DATA ── */
+/* PANEL TOGGLES */
+function togglePanel(side){
+  const panel=document.getElementById(side+'Panel');
+  const btn=document.getElementById(side+'Toggle');
+  panel.classList.toggle('hidden');
+  const hidden=panel.classList.contains('hidden');
+  if(side==='left') btn.textContent=hidden?'›':'‹';
+  else btn.textContent=hidden?'‹':'›';
+}
+
+/* QUEST DATA */
 const questData={
-  admission:{icon:'🎓',iconBg:'background:linear-gradient(135deg,#9b6dff,#c4a0ff)',title:'입학',node:'✅ 완료된 단계',quests:[
-    {name:'입학 서류 완성',stars:2,done:true,desc:'SOP·추천서·성적표를 완벽하게 준비했어요.',time:'완료',type:'행정',reward:[{icon:'⭐',txt:'+100 별 획득'},{icon:'🗺️',txt:'탐험가 뱃지 해금'}]},
-    {name:'비자·학교 시스템 셋업',stars:1,done:true,desc:'비자 발급, 학교 ID·메일·시스템 등록 완료.',time:'완료',type:'행정',reward:[{icon:'⭐',txt:'+50 별 획득'}]},
+  admission:{icon:'🎓',iconBg:'background:linear-gradient(135deg,#f59e0b,#b45309)',title:'Admission',node:'✅ Completed stage',quests:[
+    {name:'Complete Application Package',stars:2,done:true,desc:'SOP, recommendation letters, and transcripts fully prepared.',time:'Done',type:'Admin',reward:[{icon:'⭐',txt:'+100 Stars'},{icon:'🗺️',txt:'Pioneer Badge unlocked'}]},
+    {name:'Visa & System Setup',stars:1,done:true,desc:'Visa issued, school ID, email, and systems registered.',time:'Done',type:'Admin',reward:[{icon:'⭐',txt:'+50 Stars'}]},
   ]},
-  lab:{icon:'🔭',iconBg:'background:linear-gradient(135deg,#9b6dff,#c4a0ff)',title:'연구실 탐색',node:'✅ 완료된 단계',quests:[
-    {name:'교수 미팅 3회 이상',stars:2,done:true,desc:'관심 분야 교수님들과 미팅 일정 잡고 진행.',time:'완료',type:'네트워킹',reward:[{icon:'⭐',txt:'+150 별 획득'},{icon:'☕',txt:'미팅 마스터 뱃지'}]},
-    {name:'랩 방문·세미나 참석',stars:2,done:true,desc:'최소 2개 랩의 세미나에 참석해 분위기 파악.',time:'완료',type:'탐색',reward:[{icon:'⭐',txt:'+100 별 획득'}]},
-    {name:'랩 학생들과 비공식 대화',stars:3,done:false,desc:'재학 중인 PhD 학생들과 직접 이야기하며 리얼한 랩 문화 파악.',time:'1~2주',type:'네트워킹',reward:[{icon:'⭐',txt:'+200 별 획득'},{icon:'🔓',txt:'랩 조인 노드 해금'}]},
+  lab:{icon:'🔭',iconBg:'background:linear-gradient(135deg,#9b6dff,#c4a0ff)',title:'Lab Exploration',node:'✅ Completed stage',quests:[
+    {name:'3+ Professor Meetings',stars:2,done:true,desc:'Schedule and conduct meetings with professors in your area of interest.',time:'Done',type:'Networking',reward:[{icon:'⭐',txt:'+150 Stars'},{icon:'☕',txt:'Meeting Pro Badge'}]},
+    {name:'Attend Lab Seminars',stars:2,done:true,desc:'Visit seminars of at least 2 labs to get a feel for the culture.',time:'Done',type:'Exploration',reward:[{icon:'⭐',txt:'+100 Stars'}]},
+    {name:'Informal Chats with PhD Students',stars:3,done:false,desc:'Talk directly with current PhD students to get an honest view of lab life.',time:'1–2 weeks',type:'Networking',reward:[{icon:'⭐',txt:'+200 Stars'},{icon:'🔓',txt:'Lab Selection node unlocked'}]},
   ]},
-  join:{icon:'🏠',iconBg:'background:linear-gradient(135deg,#c4a0ff,#9b6dff)',title:'랩 조인 결정',node:'🔒 연구실 탐색 완료 후 해금',quests:[
-    {name:'지도교수 최종 확정',stars:4,done:false,desc:'연구 방향·TO·지원 규모를 확인하고 지도교수를 최종 결정.',time:'1개월',type:'결정',reward:[{icon:'⭐',txt:'+300 별 획득'},{icon:'🏠',txt:'랩 조인 뱃지'},{icon:'🔓',txt:'연구 주제 구체화 해금'}]},
-    {name:'첫 랩 미팅 발표',stars:3,done:false,desc:'랩 미팅에서 자기소개·관심 주제 5분 발표.',time:'2주',type:'발표',reward:[{icon:'⭐',txt:'+150 별 획득'}]},
+  join:{icon:'🏠',iconBg:'background:linear-gradient(135deg,#c4a0ff,#9b6dff)',title:'Lab Selection',node:'🔒 Unlocks after Lab Exploration',quests:[
+    {name:'Confirm Advisor',stars:4,done:false,desc:'Verify research direction, faculty openings (TO), and funding before finalizing.',time:'1 month',type:'Decision',reward:[{icon:'⭐',txt:'+300 Stars'},{icon:'🏠',txt:'Lab Member Badge'},{icon:'🔓',txt:'Research Focus unlocked'}]},
+    {name:'First Lab Meeting Presentation',stars:3,done:false,desc:'Introduce yourself and your research interests in a 5-minute lab meeting talk.',time:'2 weeks',type:'Presentation',reward:[{icon:'⭐',txt:'+150 Stars'}]},
   ]},
-  topic:{icon:'💡',iconBg:'background:linear-gradient(135deg,#f472b6,#db2777)',title:'연구 주제 구체화',node:'🌸 현재 진행 중인 단계',quests:[
-    {name:'관심 논문 3편 요약',stars:2,done:false,desc:'핵심 논문 3편을 읽고 연구 방향과의 연결고리를 정리.',time:'1~2주',type:'리서치',reward:[{icon:'⭐',txt:'+200 별 획득'},{icon:'🔓',txt:'전문가 퀘스트 해금'}]},
-    {name:'연구 갭(gap) 1개 발굴',stars:4,done:false,desc:'기존 연구에서 아직 해결되지 않은 문제를 한 가지 명확히 정의.',time:'3~4주',type:'리서치',reward:[{icon:'⭐',txt:'+400 별 획득'},{icon:'💡',txt:'주제 탐험가 뱃지'},{icon:'🔓',txt:'첫 논문 노드 해금'}]},
-    {name:'교수님 피드백 세션',stars:3,done:false,desc:'도출한 연구 갭을 교수님께 발표하고 피드백 반영.',time:'2주',type:'발표',reward:[{icon:'⭐',txt:'+250 별 획득'},{icon:'📈',txt:'성장 점수 +10'}]},
+  topic:{icon:'💡',iconBg:'background:linear-gradient(135deg,#f472b6,#db2777)',title:'Research Focus',node:'🌸 Currently in progress',quests:[
+    {name:'Summarize 3 Key Papers',stars:2,done:false,desc:'Read 3 foundational papers and write a 1–2 paragraph summary + connection to your interest.',time:'1–2 weeks',type:'Research',reward:[{icon:'⭐',txt:'+200 Stars'},{icon:'🔓',txt:'Expert Quest unlocked'}]},
+    {name:'Identify a Research Gap',stars:4,done:false,desc:'Find one clearly unsolved problem in existing literature and articulate it precisely.',time:'3–4 weeks',type:'Research',reward:[{icon:'⭐',txt:'+400 Stars'},{icon:'💡',txt:'Explorer Badge'},{icon:'🔓',txt:'First Paper node unlocked'}]},
+    {name:'Advisor Feedback Session',stars:3,done:false,desc:'Present your identified research gap to your advisor and incorporate their feedback.',time:'2 weeks',type:'Presentation',reward:[{icon:'⭐',txt:'+250 Stars'},{icon:'📈',txt:'Growth Score +10'}]},
   ]},
-  conf:{icon:'🌐',iconBg:'background:linear-gradient(135deg,#c4a0ff,#9b6dff)',title:'학회 네트워크',node:'🔒 연구 주제 구체화 후 해금',quests:[
-    {name:'학회 논문 리뷰 신청',stars:3,done:false,desc:'NeurIPS·ICML 등 리뷰어로 신청해 최신 연구 흐름 파악.',time:'2개월',type:'리뷰',reward:[{icon:'⭐',txt:'+300 별 획득'},{icon:'🌐',txt:'리뷰어 뱃지'}]},
-    {name:'학회 세션 참석·명함 교환',stars:2,done:false,desc:'오프라인 학회에서 발표자·연구자와 직접 대화.',time:'학회 일정',type:'네트워킹',reward:[{icon:'⭐',txt:'+200 별 획득'},{icon:'🤝',txt:'네트워커 뱃지'}]},
+  conf:{icon:'🌐',iconBg:'background:linear-gradient(135deg,#c4a0ff,#9b6dff)',title:'Conference Network',node:'🔒 Unlocks after Research Focus',quests:[
+    {name:'Apply as Paper Reviewer',stars:3,done:false,desc:'Apply to review for NeurIPS, ICML, or ICLR to stay current on cutting-edge research.',time:'2 months',type:'Review',reward:[{icon:'⭐',txt:'+300 Stars'},{icon:'🌐',txt:'Reviewer Badge'}]},
+    {name:'Attend & Network at a Conference',stars:2,done:false,desc:'Attend a conference in person, talk with presenters, and exchange contacts.',time:'Per schedule',type:'Networking',reward:[{icon:'⭐',txt:'+200 Stars'},{icon:'🤝',txt:'Networker Badge'}]},
   ]},
-  paper:{icon:'📄',iconBg:'background:linear-gradient(135deg,#c4a0ff,#9b6dff)',title:'첫 논문 제출',node:'🔒 연구 갭 발굴 퀘스트 완료 후 해금',quests:[
-    {name:'논문 초안 (draft) 완성',stars:4,done:false,desc:'실험 결과를 포함한 논문 초안을 교수님께 제출.',time:'2~3개월',type:'집필',reward:[{icon:'⭐',txt:'+500 별 획득'},{icon:'📄',txt:'첫 논문 뱃지'},{icon:'🔓',txt:'학회 발표 노드 해금'}]},
-    {name:'동료 리뷰 (peer review)',stars:3,done:false,desc:'랩 내 동료 박사생에게 논문 피드백 요청 후 수정.',time:'2주',type:'리뷰',reward:[{icon:'⭐',txt:'+150 별 획득'}]},
-    {name:'Top-tier 학회 submit',stars:5,done:false,desc:'NeurIPS·ICML·ICLR 중 한 곳에 논문 제출.',time:'마감일',type:'제출',reward:[{icon:'⭐',txt:'+800 별 획득'},{icon:'🏅',txt:'연구자 뱃지'},{icon:'🏆',txt:'전문가 인터뷰 기회'}]},
+  paper:{icon:'📄',iconBg:'background:linear-gradient(135deg,#818cf8,#3730a3)',title:'First Paper',node:'🔒 Unlocks after Research Gap quest',quests:[
+    {name:'Complete Paper Draft',stars:4,done:false,desc:'Write a full paper draft including experimental results and submit to your advisor.',time:'2–3 months',type:'Writing',reward:[{icon:'⭐',txt:'+500 Stars'},{icon:'📄',txt:'First Paper Badge'},{icon:'🔓',txt:'Conference Talk unlocked'}]},
+    {name:'Peer Review within Lab',stars:3,done:false,desc:'Ask a fellow PhD student to review your draft and revise accordingly.',time:'2 weeks',type:'Review',reward:[{icon:'⭐',txt:'+150 Stars'}]},
+    {name:'Submit to Top-tier Venue',stars:5,done:false,desc:'Submit your paper to NeurIPS, ICML, or ICLR.',time:'Deadline',type:'Submission',reward:[{icon:'⭐',txt:'+800 Stars'},{icon:'🏅',txt:'Researcher Badge'},{icon:'🏆',txt:'Expert Interview opportunity'}]},
   ]},
-  intern:{icon:'💼',iconBg:'background:linear-gradient(135deg,#c4a0ff,#9b6dff)',title:'인턴·산학협력',node:'🔒 첫 논문 제출 후 해금',quests:[
-    {name:'인턴 지원서 3곳 제출',stars:3,done:false,desc:'Google·OpenAI·Meta 중 관심 기업에 리서치 인턴 지원.',time:'1개월',type:'지원',reward:[{icon:'⭐',txt:'+300 별 획득'}]},
-    {name:'인턴 최종 합격·온보딩',stars:5,done:false,desc:'인턴십 수락 후 프로젝트 착수.',time:'학기 중/방학',type:'산업 경험',reward:[{icon:'⭐',txt:'+600 별 획득'},{icon:'💼',txt:'산업 경험 뱃지'},{icon:'📈',txt:'테크 기업 트랙 확률 +20%'}]},
+  intern:{icon:'💼',iconBg:'background:linear-gradient(135deg,#818cf8,#3730a3)',title:'Internship & Collaboration',node:'🔒 Unlocks after First Paper',quests:[
+    {name:'Apply to 3 Research Internships',stars:3,done:false,desc:'Apply to research intern positions at Google, OpenAI, Meta AI, or similar.',time:'1 month',type:'Application',reward:[{icon:'⭐',txt:'+300 Stars'}]},
+    {name:'Accept Offer & Onboard',stars:5,done:false,desc:'Accept an internship and start the project.',time:'Summer / semester',type:'Industry Exp.',reward:[{icon:'⭐',txt:'+600 Stars'},{icon:'💼',txt:'Industry Exp. Badge'},{icon:'📈',txt:'Tech Researcher probability +20%'}]},
   ]},
-  expert:{icon:'🏆',iconBg:'background:linear-gradient(135deg,#fde68a,#f59e0b)',title:'전문가 인터뷰',node:'✨ 퀘스트 달성 최종 리워드',quests:[
-    {name:'1:1 전문가 커피챗',stars:5,done:false,desc:'달성한 퀘스트를 기반으로 해당 분야 전문가와 1:1 인터뷰 기회.',time:'30~60분',type:'리워드',reward:[{icon:'🏆',txt:'전문가 인터뷰 뱃지'},{icon:'🌟',txt:'프리미엄 멘토링 연결'},{icon:'⭐',txt:'+1000 별 획득'}]},
+  expert:{icon:'🏆',iconBg:'background:linear-gradient(135deg,#fef08a,#ca8a04)',title:'Expert Interview',node:'✨ Final reward for quest completion',quests:[
+    {name:'1:1 Expert Coffee Chat',stars:5,done:false,desc:'Earn a 1:1 session with a leading expert in your field based on your quest achievements.',time:'30–60 min',type:'Reward',reward:[{icon:'🏆',txt:'Expert Interview Badge'},{icon:'🌟',txt:'Premium mentoring connection'},{icon:'⭐',txt:'+1,000 Stars'}]},
   ]},
 };
-
 const completedQ=new Set();
 
 function openQuestModal(key){
-  const d=questData[key];
-  if(!d)return;
-  document.getElementById('qmIcon').style.cssText=d.iconBg+';width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;';
+  const d=questData[key];if(!d)return;
+  document.getElementById('qmIcon').style.cssText=d.iconBg+';width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:1.35rem;flex-shrink:0;';
   document.getElementById('qmIcon').textContent=d.icon;
-  document.getElementById('qmTitle').textContent=d.title+' 퀘스트';
+  document.getElementById('qmTitle').textContent=d.title+' Quests';
   document.getElementById('qmNode').textContent=d.node;
-
-  const list=document.getElementById('questList');
-  list.innerHTML=d.quests.map((q,i)=>{
+  document.getElementById('questList').innerHTML=d.quests.map((q,i)=>{
     const qId=key+'_'+i;
     const isDone=q.done||completedQ.has(qId);
-    const stars='★'.repeat(q.stars)+'☆'.repeat(5-q.stars);
-    return `<div class="q-item${isDone?' done-q':''}" id="qi-${qId}">
-      <div class="q-top">
-        <div class="q-name">${isDone?'✅ ':''} ${q.name}</div>
-        <div class="q-stars" title="난이도 ${q.stars}/5">${stars}</div>
-      </div>
+    return`<div class="q-item${isDone?' done-q':''}" id="qi-${qId}">
+      <div class="q-top"><div class="q-name">${isDone?'✅ ':''} ${q.name}</div><div class="q-stars" title="Difficulty ${q.stars}/5">${'★'.repeat(q.stars)+'☆'.repeat(5-q.stars)}</div></div>
       <div class="q-desc">${q.desc}</div>
-      <div class="q-meta">
-        <span class="q-chip chip-time">⏱ ${q.time}</span>
-        <span class="q-chip chip-type">🏷 ${q.type}</span>
-        <span class="q-chip" style="background:#f3f4f6;color:#6b7280;">난이도 ${'⬛'.repeat(q.stars)}${'⬜'.repeat(5-q.stars)}</span>
-      </div>
-      <div class="q-reward-box">
-        <div class="q-reward-title">🎁 달성 리워드</div>
-        <div class="q-reward-list">${q.reward.map(r=>`<div class="q-reward-item">${r.icon} ${r.txt}</div>`).join('')}</div>
-      </div>
-      ${isDone
-        ?`<button class="btn-complete btn-done" disabled>✅ 완료됨</button>`
-        :`<button class="btn-complete" onclick="completeNodeQuest('${key}',${i},'${qId}')">달성 완료하기 ✓</button>`}
+      <div class="q-meta"><span class="q-chip chip-time">⏱ ${q.time}</span><span class="q-chip chip-type">🏷 ${q.type}</span><span class="q-chip chip-diff">Difficulty: ${'⬛'.repeat(q.stars)}${'⬜'.repeat(5-q.stars)}</span></div>
+      <div class="q-reward-box"><div class="q-reward-title">🎁 Completion Rewards</div><div class="q-reward-list">${q.reward.map(r=>`<div class="q-reward-item">${r.icon} ${r.txt}</div>`).join('')}</div></div>
+      ${isDone?`<button class="btn-complete btn-done" disabled>✅ Completed</button>`:`<button class="btn-complete" onclick="completeNodeQuest('${key}',${i},'${qId}')">Mark as Complete ✓</button>`}
     </div>`;
   }).join('');
-
   openModal('questModal');
 }
-
 function completeNodeQuest(key,idx,qId){
   completedQ.add(qId);
   const q=questData[key].quests[idx];
   const card=document.getElementById('qi-'+qId);
-  card.classList.add('done-q');
-  card.querySelector('.btn-complete').outerHTML=`<button class="btn-complete btn-done" disabled>✅ 완료됨</button>`;
-  card.querySelector('.q-name').textContent='✅ '+q.name;
-
-  const starEarned=q.reward.find(r=>r.txt.includes('별'));
-  if(starEarned){
-    const num=parseInt(starEarned.txt.replace(/[^0-9]/g,''))||100;
-    const cur=parseInt(document.getElementById('starBadge').textContent.replace(/[^0-9]/g,''))||1240;
-    document.getElementById('starBadge').textContent='⭐ '+(cur+num).toLocaleString()+' 별';
+  if(card){
+    card.classList.add('done-q');
+    card.querySelector('.btn-complete').outerHTML=`<button class="btn-complete btn-done" disabled>✅ Completed</button>`;
+    card.querySelector('.q-name').textContent='✅ '+q.name;
   }
-  document.getElementById('notifStrong').textContent=q.name+' 완료!';
+  const starR=q.reward.find(r=>r.txt.includes('Stars'));
+  if(starR){
+    const num=parseInt(starR.txt.replace(/[^0-9]/g,''))||100;
+    const cur=parseInt(document.getElementById('starBadge').textContent.replace(/[^0-9,]/g,'').replace(',',''))||1240;
+    document.getElementById('starBadge').textContent='⭐ '+(cur+num).toLocaleString()+' Stars';
+  }
+  document.getElementById('notifStrong').textContent=q.name+' Complete!';
   document.getElementById('notifSub').textContent=q.reward.map(r=>r.txt).join(' · ');
   const n=document.getElementById('notif');n.classList.add('show');setTimeout(()=>n.classList.remove('show'),3500);
-
   if(key==='topic'&&idx===0){
-    document.getElementById('lockTag').textContent='✨ 해금!';
-    document.getElementById('lockTag').style.background='#d1fae5';
-    document.getElementById('lockTag').style.color='#065f46';
+    const lt=document.getElementById('lockTag');lt.textContent='✨ Unlocked!';lt.style.background='#d1fae5';lt.style.color='#065f46';
   }
 }
-
 function completeQuest(){
   completeNodeQuest('topic',0,'topic_0');
-  document.getElementById('questBtn').textContent='✅ 완료했어요!';
-  document.getElementById('questBtn').style.background='linear-gradient(135deg,#34d399,#059669)';
+  const btn=document.getElementById('questBtn');
+  btn.textContent='✅ Completed!';btn.style.background='linear-gradient(135deg,#34d399,#059669)';
 }
 
-/* ── MODALS ── */
+/* MODALS */
 function openModal(id){document.getElementById(id).classList.add('open');}
-function closeModal(id){document.getElementById(id).classList.remove('open');document.querySelectorAll('.rm-card').forEach(c=>c.classList.remove('sel'));document.getElementById('rmDetail')&&document.getElementById('rmDetail').classList.remove('open');}
-function closeModalOutside(e,id){if(e.target===document.getElementById(id))closeModal(id);}
+function closeModal(id){document.getElementById(id).classList.remove('open');document.querySelectorAll('.rm-card').forEach(c=>c.classList.remove('sel'));const rd=document.getElementById('rmDetail');if(rd)rd.classList.remove('open');}
+function closeModalOut(e,id){if(e.target===document.getElementById(id))closeModal(id);}
 
-/* ── ROLE MODELS ── */
+/* ROLE MODELS */
 const rmDetails=[
-  {name:'Andrew Ng의 커리어패스',body:`<strong>PhD 시절:</strong> UC Berkeley에서 강화학습·신경망 연구. 지도교수와의 긴밀한 협업으로 첫 논문 2편 출판.<br><br><strong>교수 → 산업:</strong> Stanford 교수 재직 중 Google Brain을 창설해 딥러닝 인프라를 구축.<br><br><strong>창업:</strong> Coursera, deeplearning.ai, AI Fund 등을 통해 AI 교육과 벤처 생태계를 함께 키워나감.<br><br><strong>핵심 인사이트:</strong> "교수 TO가 부족하다면, 산업과 교육을 연결하는 새로운 역할을 만들 수 있다."`},
-  {name:'Fei-Fei Li의 커리어패스',body:`<strong>PhD 시절:</strong> Princeton에서 시각 인지 연구. 데이터셋의 중요성에 주목해 ImageNet을 직접 구축.<br><br><strong>교수 트랙:</strong> Stanford 교수로 컴퓨터 비전 분야를 개척. 단순 기술이 아닌 인간 중심 AI를 강조.<br><br><strong>산업 경험:</strong> Google Cloud AI 수석 과학자로 2년간 근무 후 학계로 복귀.<br><br><strong>핵심 인사이트:</strong> "연구 방향이 바뀌는 건 실패가 아니라 성장이다. 나도 물리학에서 AI로 완전히 전환했다."`},
-  {name:'Andrej Karpathy의 커리어패스',body:`<strong>PhD 시절:</strong> Stanford에서 Fei-Fei Li 지도 아래 이미지 캡셔닝 연구. 블로그·오픈소스로 지식 공유 시작.<br><br><strong>산업 진출:</strong> OpenAI 창업 멤버로 합류 후 Tesla로 이동해 자율주행 AI 총괄.<br><br><strong>독립 연구자:</strong> Tesla 퇴직 후 독립 연구자·교육자로 전환.<br><br><strong>핵심 인사이트:</strong> "교수가 되지 않아도 된다. 산업에서 가장 어려운 문제를 풀면서 학계보다 빠르게 성장할 수 있다."`},
-  {name:'Ilya Sutskever의 커리어패스',body:`<strong>PhD 시절:</strong> U of Toronto에서 Geoffrey Hinton 지도 아래 딥러닝 핵심 연구. AlexNet 공동 저자.<br><br><strong>산업 진출:</strong> Google Brain 합류 후 OpenAI 공동창업. 7년간 Chief Scientist로 GPT 시리즈 총괄.<br><br><strong>재창업:</strong> 2024년 SSI(Safe Superintelligence Inc.) 창업.<br><br><strong>핵심 인사이트:</strong> "지도교수 선택이 전부다. TO가 없다고 느낀다면 분야를 넓혀라."`},
+  {name:"Andrew Ng's Career Path",body:`<strong>During PhD:</strong> Researched reinforcement learning & neural networks at UC Berkeley. Published first 2 papers through close collaboration with his advisor.<br><br><strong>Professor → Industry:</strong> While at Stanford, founded Google Brain to build deep learning infrastructure — all while keeping his faculty position.<br><br><strong>Entrepreneurship:</strong> Built Coursera, deeplearning.ai, and AI Fund to grow AI education and the venture ecosystem.<br><br><strong>Key insight:</strong> "If faculty positions feel limited, create a new role that bridges industry and education."`},
+  {name:"Fei-Fei Li's Career Path",body:`<strong>During PhD:</strong> Studied visual cognition at Princeton. Recognized the importance of data and personally built ImageNet from scratch.<br><br><strong>Professor Track:</strong> Pioneered computer vision at Stanford while advocating for human-centered AI beyond just the technology.<br><br><strong>Industry detour:</strong> Served as Google Cloud AI Chief Scientist for 2 years, then returned to academia — experiencing both worlds.<br><br><strong>Key insight:</strong> "Changing your research direction is not failure — it's growth. I completely pivoted from physics to AI."`},
+  {name:"Andrej Karpathy's Career Path",body:`<strong>During PhD:</strong> Researched image captioning under Fei-Fei Li at Stanford. Started sharing knowledge through blogs and open source from early on.<br><br><strong>Into industry:</strong> Joined OpenAI as a founding team member, then moved to Tesla to lead autonomous driving AI.<br><br><strong>Independent researcher:</strong> Left Tesla to become an independent researcher and educator — reaching millions through YouTube.<br><br><strong>Key insight:</strong> "You don't have to become a professor. Solving the hardest problems in industry can be faster growth than academia."`},
+  {name:"Ilya Sutskever's Career Path",body:`<strong>During PhD:</strong> Studied deep learning under Geoffrey Hinton at U of Toronto. Co-authored AlexNet.<br><br><strong>Into industry:</strong> Joined Google Brain, then co-founded OpenAI and served as Chief Scientist overseeing the GPT series for 7 years.<br><br><strong>New venture:</strong> Founded SSI (Safe Superintelligence Inc.) in 2024, focused purely on AI safety.<br><br><strong>Key insight:</strong> "Your advisor choice matters most. If you feel the TO is limited, broaden your field — the AGI era keeps creating new openings."`},
 ];
 function selectRM(el,idx){
   document.querySelectorAll('.rm-card').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');
-  const d=rmDetails[idx];
-  document.getElementById('rmDetailName').textContent=d.name;
-  document.getElementById('rmDetailBody').innerHTML=d.body;
+  document.getElementById('rmDetailName').textContent=rmDetails[idx].name;
+  document.getElementById('rmDetailBody').innerHTML=rmDetails[idx].body;
   document.getElementById('rmDetail').classList.add('open');
 }
 
-/* ── INIT ── */
+/* INIT */
 window.addEventListener('load',()=>{setTimeout(()=>{document.getElementById('gFill').style.width='38%';},400);});
 </script>
 </body>
