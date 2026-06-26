@@ -51,13 +51,13 @@
 
     /* SIDE PANELS — transparent over unified bg */
     .panel-left,.panel-right{overflow:hidden;transition:width 0.38s cubic-bezier(0.4,0,0.2,1),min-width 0.38s,padding 0.38s,opacity 0.25s;display:flex;flex-direction:column;gap:1.1rem;}
-    .panel-left{width:270px;min-width:270px;padding:1.2rem;border:none;background:transparent;overflow-y:auto;}
-    .panel-right{width:262px;min-width:262px;padding:1.2rem;border:none;background:transparent;overflow-y:auto;}
+    .panel-left{width:270px;min-width:270px;padding:1.2rem;border:none;background:rgba(3,0,18,0.45);backdrop-filter:blur(18px);overflow-y:auto;}
+    .panel-right{width:262px;min-width:262px;padding:1.2rem;border:none;background:rgba(3,0,18,0.45);backdrop-filter:blur(18px);overflow-y:auto;}
     .panel-left.hidden{width:0;min-width:0;padding:0;opacity:0;border:none;}
     .panel-right.hidden{width:0;min-width:0;padding:0;opacity:0;border:none;}
 
     /* TOGGLE TABS on center panel edges */
-    .panel-center{flex:1;overflow:auto;position:relative;display:flex;flex-direction:column;align-items:center;background:transparent;}
+    .panel-center{flex:1;overflow:hidden;position:relative;background:transparent;}
     .toggle-tab{position:absolute;top:50%;transform:translateY(-50%);width:18px;height:52px;background:rgba(255,255,255,0.12);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,0.18);cursor:pointer;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.75);font-size:0.65rem;z-index:20;transition:background 0.2s;font-family:inherit;}
     .toggle-tab:hover{background:rgba(255,255,255,0.22);}
     .toggle-tab.left-tab{left:0;border-radius:0 7px 7px 0;}
@@ -67,8 +67,9 @@
     .tree-header{text-align:center;padding-top:1.2rem;margin-bottom:0.8rem;}
     .tree-header h2{font-size:1.05rem;font-weight:800;color:white;margin-bottom:0.18rem;text-shadow:0 0 20px rgba(196,160,255,0.5);}
     .tree-header p{font-size:0.68rem;color:rgba(255,255,255,0.55);}
-    .tree-svg-wrap{width:100%;max-width:720px;padding:0 0.5rem;}
-    svg.tree{width:100%;height:auto;overflow:visible;}
+    .tree-svg-wrap{position:absolute;inset:0;}
+    svg.tree{width:100%;height:100%;overflow:visible;display:block;}
+    .ms-strip{position:absolute;bottom:0;left:0;right:0;display:flex;gap:0.45rem;flex-wrap:wrap;justify-content:center;padding:0.6rem 0.5rem;background:linear-gradient(to top,rgba(3,0,18,0.5) 0%,transparent 100%);}
     .ms-strip{display:flex;gap:0.45rem;flex-wrap:wrap;justify-content:center;max-width:720px;padding:0.8rem 0.5rem 1.2rem;}
     .ms{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.18);border-radius:99px;padding:0.3rem 0.75rem;font-size:0.65rem;color:rgba(255,255,255,0.6);font-weight:600;}
     .ms.done{border-color:var(--mint);color:#6ee7b7;background:rgba(52,211,153,0.12);}
@@ -266,7 +267,7 @@
 <div class="main">
 
   <!-- LEFT PANEL -->
-  <aside class="panel-left" id="leftPanel">
+  <aside class="panel-left hidden" id="leftPanel">
     <div class="profile-card">
       <div class="profile-ava">J</div>
       <div class="profile-name">Jiyeon Kim</div>
@@ -318,11 +319,6 @@
     <button class="toggle-tab left-tab" id="leftToggle" onclick="togglePanel('left')" title="Toggle left panel">◀</button>
     <!-- Right toggle -->
     <button class="toggle-tab right-tab" id="rightToggle" onclick="togglePanel('right')" title="Toggle right panel">▶</button>
-
-    <div class="tree-header">
-      <h2>✦ Your Career Constellation</h2>
-      <p>Click any star to see details & quests · Rise from the ground to the night sky</p>
-    </div>
 
     <div class="tree-svg-wrap">
       <svg class="tree" viewBox="0 0 750 760" xmlns="http://www.w3.org/2000/svg">
@@ -579,8 +575,6 @@
         <text x="18" y="680" font-size="9" fill="rgba(255,200,100,0.6)" font-weight="700">🌱 Start</text>
         <text x="14" y="85"  font-size="9" fill="rgba(253,230,138,0.7)" font-weight="700">⭐ Future</text>
       </svg>
-    </div>
-
     <div class="ms-strip">
       <div class="ms done">✅ 3 Prof. Meetings</div>
       <div class="ms done">✅ Lab Exploration</div>
@@ -588,10 +582,11 @@
       <div class="ms">🔒 First Paper</div>
       <div class="ms">🔒 Conference Talk</div>
     </div>
+    </div>
   </main>
 
   <!-- RIGHT PANEL -->
-  <aside class="panel-right" id="rightPanel">
+  <aside class="panel-right hidden" id="rightPanel">
 
     <div>
       <div class="sec-label">✨ Your Future Self</div>
