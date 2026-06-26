@@ -1,459 +1,702 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GrowthTree — Stanford PhD Journey</title>
+  <title>GrowthTree — Your PhD Journey, Unlocked</title>
   <style>
-    /* ── Reset & Base ── */
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --cardinal:   #8C1515;
-      --cardinal-d: #6A0F0F;
-      --cardinal-l: #B83A3A;
-      --sand:       #F4F0E8;
-      --sand-d:     #E8E0D0;
-      --cool-grey:  #4D4F53;
-      --white:      #FFFFFF;
-      --text:       #1A1A1A;
-      --text-muted: #6B6B6B;
+      --red:    #8C1515;
+      --red-d:  #6A0F0F;
+      --gold:   #FFCC00;
+      --sand:   #F5F0E8;
+      --grey:   #4D4F53;
+      --light:  #FAFAFA;
+      --text:   #111111;
+      --muted:  #666666;
+      --white:  #FFFFFF;
+      --radius: 16px;
     }
 
     html { scroll-behavior: smooth; }
 
     body {
-      font-family: 'Georgia', 'Times New Roman', serif;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
       background: var(--white);
       color: var(--text);
-      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(32px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50%       { transform: translateY(-10px); }
+    }
+    @keyframes pulse-ring {
+      0%   { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(140,21,21,0.35); }
+      70%  { transform: scale(1);    box-shadow: 0 0 0 14px rgba(140,21,21,0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(140,21,21,0); }
+    }
+    @keyframes shimmer {
+      0%   { background-position: -200% center; }
+      100% { background-position:  200% center; }
+    }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(-20px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes barFill {
+      from { width: 0%; }
+      to   { width: var(--target); }
+    }
+
+    .anim-fadeup  { animation: fadeUp  0.7s ease both; }
+    .anim-fadein  { animation: fadeIn  0.6s ease both; }
+    .delay-1 { animation-delay: 0.15s; }
+    .delay-2 { animation-delay: 0.30s; }
+    .delay-3 { animation-delay: 0.45s; }
+    .delay-4 { animation-delay: 0.60s; }
+    .delay-5 { animation-delay: 0.75s; }
+
+    /* ── Scroll-reveal (JS-driven) ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     /* ── Nav ── */
     nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      background: var(--cardinal);
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      background: var(--red);
       display: flex; align-items: center; justify-content: space-between;
-      padding: 0 2rem; height: 56px;
+      padding: 0 1.5rem; height: 54px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.18);
     }
-
-    .nav-logo {
-      display: flex; align-items: center; gap: 10px;
-      text-decoration: none;
-    }
-
-    /* Stanford block S mark */
+    .nav-logo { display: flex; align-items: center; gap: 9px; text-decoration: none; }
     .s-mark {
-      width: 36px; height: 36px;
-      background: var(--white);
+      width: 34px; height: 34px;
+      background: var(--white); color: var(--red);
+      font-family: Georgia, serif;
+      font-size: 1.15rem; font-weight: 700;
+      border-radius: 4px;
       display: flex; align-items: center; justify-content: center;
-      font-family: 'Georgia', serif;
-      font-size: 1.25rem; font-weight: 700;
-      color: var(--cardinal);
-      border-radius: 3px;
-      flex-shrink: 0;
     }
-
-    .nav-brand {
-      font-size: 1.1rem; font-weight: 600;
-      color: var(--white); letter-spacing: 0.02em;
-    }
-
+    .nav-brand { color: var(--white); font-size: 1rem; font-weight: 700; letter-spacing: 0.03em; }
     .nav-cta {
-      background: var(--white);
-      color: var(--cardinal);
-      border: none; border-radius: 6px;
-      padding: 0.45rem 1.1rem;
-      font-size: 0.85rem; font-weight: 700;
-      cursor: pointer; transition: opacity 0.2s;
-      font-family: inherit;
+      background: var(--gold); color: var(--red);
+      border: none; border-radius: 8px;
+      padding: 0.4rem 1.1rem;
+      font-size: 0.82rem; font-weight: 800;
+      cursor: pointer; letter-spacing: 0.02em;
+      transition: transform 0.15s, box-shadow 0.15s;
     }
-    .nav-cta:hover { opacity: 0.85; }
+    .nav-cta:hover { transform: scale(1.05); box-shadow: 0 3px 12px rgba(0,0,0,0.2); }
 
     /* ── Hero ── */
     .hero {
-      background: var(--cardinal);
+      background: var(--red);
       min-height: 100vh;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
       text-align: center;
-      padding: 80px 1.5rem 4rem;
+      padding: 90px 1.5rem 5rem;
       position: relative; overflow: hidden;
     }
 
-    /* subtle tree silhouette watermark */
-    .hero::before {
-      content: '';
-      position: absolute; bottom: -40px; right: -40px;
-      width: 340px; height: 340px;
-      background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
+    /* animated background blobs */
+    .blob {
+      position: absolute;
       border-radius: 50%;
+      filter: blur(60px);
       pointer-events: none;
+      animation: float 6s ease-in-out infinite;
+    }
+    .blob-1 {
+      width: 320px; height: 320px;
+      background: rgba(255,204,0,0.12);
+      top: -80px; right: -80px;
+      animation-delay: 0s;
+    }
+    .blob-2 {
+      width: 260px; height: 260px;
+      background: rgba(255,255,255,0.06);
+      bottom: 40px; left: -60px;
+      animation-delay: 2s;
     }
 
-    .hero-tag {
-      display: inline-block;
-      background: rgba(255,255,255,0.15);
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
       color: rgba(255,255,255,0.9);
-      border: 1px solid rgba(255,255,255,0.3);
       border-radius: 100px;
-      font-size: 0.78rem; letter-spacing: 0.08em;
-      padding: 0.35rem 1rem;
-      margin-bottom: 1.8rem;
-      font-family: 'Helvetica Neue', sans-serif;
+      font-size: 0.75rem; font-weight: 600; letter-spacing: 0.06em;
+      padding: 0.3rem 0.9rem;
+      margin-bottom: 2rem;
+    }
+    .badge-dot {
+      width: 7px; height: 7px;
+      background: var(--gold);
+      border-radius: 50%;
+      animation: pulse-ring 2s ease infinite;
+      display: inline-block;
     }
 
     .hero h1 {
-      font-size: clamp(2.2rem, 6vw, 4rem);
+      font-size: clamp(2.4rem, 7vw, 4.4rem);
       color: var(--white);
-      line-height: 1.15;
+      line-height: 1.1;
+      font-weight: 800;
+      letter-spacing: -0.02em;
       margin-bottom: 1.4rem;
-      font-weight: 700;
-      letter-spacing: -0.01em;
     }
+    .hero h1 .gold { color: var(--gold); }
 
-    .hero h1 em {
-      font-style: normal;
-      color: #FFCC00; /* Stanford Gold accent */
-    }
-
-    .hero p {
-      font-size: clamp(1rem, 2.5vw, 1.2rem);
-      color: rgba(255,255,255,0.82);
-      max-width: 560px;
+    .hero-sub {
+      font-size: clamp(1rem, 2.5vw, 1.15rem);
+      color: rgba(255,255,255,0.75);
+      max-width: 520px;
       line-height: 1.7;
-      margin-bottom: 2.6rem;
-      font-family: 'Helvetica Neue', Arial, sans-serif;
+      margin-bottom: 2.8rem;
     }
 
     .hero-btns {
-      display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+      display: flex; gap: 0.9rem; flex-wrap: wrap; justify-content: center;
+      margin-bottom: 3.5rem;
     }
-
-    .btn-primary {
-      background: var(--white); color: var(--cardinal);
-      border: none; border-radius: 8px;
-      padding: 0.85rem 2rem;
-      font-size: 1rem; font-weight: 700;
-      cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
-      font-family: 'Helvetica Neue', sans-serif;
+    .btn-white {
+      background: var(--white); color: var(--red);
+      border: none; border-radius: 10px;
+      padding: 0.9rem 2rem;
+      font-size: 0.95rem; font-weight: 800;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
     }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.25); }
-
-    .btn-ghost {
+    .btn-white:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.25); }
+    .btn-outline {
       background: transparent; color: var(--white);
-      border: 2px solid rgba(255,255,255,0.5);
-      border-radius: 8px;
-      padding: 0.85rem 2rem;
-      font-size: 1rem; font-weight: 600;
-      cursor: pointer; transition: border-color 0.2s, background 0.2s;
-      font-family: 'Helvetica Neue', sans-serif;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-radius: 10px;
+      padding: 0.9rem 2rem;
+      font-size: 0.95rem; font-weight: 600;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
     }
-    .btn-ghost:hover { border-color: var(--white); background: rgba(255,255,255,0.08); }
+    .btn-outline:hover { border-color: var(--white); background: rgba(255,255,255,0.1); }
 
-    /* social proof strip */
-    .hero-proof {
-      margin-top: 3rem;
-      color: rgba(255,255,255,0.55);
-      font-size: 0.82rem;
-      font-family: 'Helvetica Neue', sans-serif;
-      letter-spacing: 0.04em;
+    /* stat pills */
+    .hero-stats {
+      display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center;
     }
-
-    /* ── Moments Section ── */
-    .section { padding: 5rem 1.5rem; }
-
-    .section-inner {
-      max-width: 900px; margin: 0 auto;
-    }
-
-    .section-label {
-      display: block;
-      color: var(--cardinal);
-      font-size: 0.78rem; font-weight: 700;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      font-family: 'Helvetica Neue', sans-serif;
-      margin-bottom: 0.75rem;
-    }
-
-    .section h2 {
-      font-size: clamp(1.6rem, 4vw, 2.4rem);
-      color: var(--text);
-      line-height: 1.25;
-      margin-bottom: 0.8rem;
-    }
-
-    .section-sub {
-      color: var(--text-muted);
-      font-size: 1rem; line-height: 1.65;
-      max-width: 560px;
-      font-family: 'Helvetica Neue', Arial, sans-serif;
-      margin-bottom: 3rem;
-    }
-
-    /* moment cards */
-    .moments {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1.25rem;
-    }
-
-    .moment-card {
-      background: var(--sand);
-      border-radius: 14px;
-      padding: 1.75rem 1.5rem;
-      border-left: 4px solid var(--cardinal);
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .moment-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(140,21,21,0.12); }
-
-    .moment-num {
-      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em;
-      color: var(--cardinal); text-transform: uppercase;
-      font-family: 'Helvetica Neue', sans-serif;
-      margin-bottom: 0.6rem;
-    }
-
-    .moment-title {
-      font-size: 1.1rem; font-weight: 700;
-      color: var(--text); margin-bottom: 0.6rem;
-    }
-
-    .moment-desc {
-      font-size: 0.9rem; color: var(--text-muted);
-      line-height: 1.6;
-      font-family: 'Helvetica Neue', Arial, sans-serif;
-    }
-
-    .moment-time {
-      display: inline-block;
-      margin-top: 0.9rem;
-      background: var(--cardinal);
-      color: var(--white);
-      font-size: 0.72rem; font-weight: 600;
+    .stat-pill {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
       border-radius: 100px;
-      padding: 0.2rem 0.7rem;
-      font-family: 'Helvetica Neue', sans-serif;
+      padding: 0.45rem 1.1rem;
+      color: var(--white);
+      font-size: 0.8rem; font-weight: 600;
     }
+    .stat-pill span { color: var(--gold); font-weight: 800; }
+
+    /* ── Pain Point ── */
+    .pain {
+      background: var(--light);
+      padding: 5.5rem 1.5rem;
+    }
+    .pain-inner { max-width: 860px; margin: 0 auto; }
+
+    .section-chip {
+      display: inline-block;
+      background: rgba(140,21,21,0.1);
+      color: var(--red);
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      border-radius: 100px;
+      padding: 0.3rem 0.85rem;
+      margin-bottom: 1rem;
+    }
+
+    .pain h2 {
+      font-size: clamp(1.7rem, 4vw, 2.6rem);
+      font-weight: 800; line-height: 1.2;
+      margin-bottom: 1rem;
+      letter-spacing: -0.01em;
+    }
+    .pain-desc {
+      color: var(--muted); font-size: 1.05rem; line-height: 1.7;
+      max-width: 540px; margin-bottom: 3rem;
+    }
+
+    .feelings {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 1rem;
+    }
+    .feeling-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 1.4rem;
+      border: 1.5px solid #EBEBEB;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .feeling-card:hover { border-color: var(--red); transform: translateY(-3px); }
+    .feeling-emoji { font-size: 1.5rem; margin-bottom: 0.7rem; }
+    .feeling-card h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.4rem; }
+    .feeling-card p  { font-size: 0.82rem; color: var(--muted); line-height: 1.55; }
 
     /* ── How It Works ── */
-    .how { background: var(--cardinal); padding: 5rem 1.5rem; }
-
-    .how-inner { max-width: 900px; margin: 0 auto; }
-
+    .how {
+      background: var(--white);
+      padding: 5.5rem 1.5rem;
+    }
+    .how-inner { max-width: 860px; margin: 0 auto; }
     .how h2 {
-      font-size: clamp(1.6rem, 4vw, 2.4rem);
-      color: var(--white); margin-bottom: 0.6rem;
+      font-size: clamp(1.7rem, 4vw, 2.6rem);
+      font-weight: 800; line-height: 1.2;
+      margin-bottom: 0.8rem;
+      letter-spacing: -0.01em;
     }
+    .how-desc { color: var(--muted); font-size: 1.05rem; line-height: 1.7; max-width: 500px; margin-bottom: 3.5rem; }
 
-    .how-sub {
-      color: rgba(255,255,255,0.7);
-      font-size: 1rem; line-height: 1.6;
-      font-family: 'Helvetica Neue', Arial, sans-serif;
-      margin-bottom: 3rem;
-      max-width: 520px;
+    .steps { display: flex; flex-direction: column; gap: 0; }
+
+    .step-row {
+      display: flex; align-items: flex-start; gap: 1.5rem;
+      padding: 1.8rem 0;
+      border-bottom: 1px solid #F0F0F0;
+      transition: background 0.2s;
+      border-radius: 8px;
+      padding-left: 0.5rem;
     }
+    .step-row:last-child { border-bottom: none; }
+    .step-row:hover { background: var(--sand); }
 
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .step {
-      text-align: center;
-      padding: 2rem 1rem;
-    }
-
-    .step-icon {
-      width: 64px; height: 64px;
-      background: rgba(255,255,255,0.12);
-      border: 2px solid rgba(255,255,255,0.25);
-      border-radius: 50%;
+    .step-num {
+      width: 44px; height: 44px; flex-shrink: 0;
+      background: var(--red); color: var(--white);
+      border-radius: 12px;
       display: flex; align-items: center; justify-content: center;
-      font-size: 1.6rem;
-      margin: 0 auto 1rem;
+      font-size: 1rem; font-weight: 800;
+    }
+    .step-body h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.35rem; }
+    .step-body p  { font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
+    .step-tag {
+      display: inline-block; margin-top: 0.6rem;
+      background: rgba(140,21,21,0.08); color: var(--red);
+      font-size: 0.72rem; font-weight: 700; border-radius: 100px;
+      padding: 0.2rem 0.65rem;
     }
 
-    .step h3 {
-      font-size: 1rem; font-weight: 700;
-      color: var(--white); margin-bottom: 0.5rem;
-    }
-
-    .step p {
-      font-size: 0.85rem; color: rgba(255,255,255,0.7);
-      line-height: 1.55;
-      font-family: 'Helvetica Neue', Arial, sans-serif;
-    }
-
-    /* connector dots between steps on wide screen */
-    .step:not(:last-child) { position: relative; }
-
-    /* ── CTA Banner ── */
-    .cta-banner {
+    /* ── Quest Preview ── */
+    .quest-section {
       background: var(--sand);
-      padding: 5rem 1.5rem;
+      padding: 5.5rem 1.5rem;
+    }
+    .quest-inner { max-width: 860px; margin: 0 auto; }
+    .quest-section h2 {
+      font-size: clamp(1.7rem, 4vw, 2.6rem);
+      font-weight: 800; line-height: 1.2; margin-bottom: 0.8rem;
+      letter-spacing: -0.01em;
+    }
+    .quest-desc { color: var(--muted); font-size: 1rem; line-height: 1.7; max-width: 500px; margin-bottom: 3rem; }
+
+    .quest-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.1rem; }
+
+    .quest-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      border: 1.5px solid transparent;
+      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+      position: relative; overflow: hidden;
+    }
+    .quest-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: var(--red);
+    }
+    .quest-card.locked::before { background: #CCCCCC; }
+    .quest-card:not(.locked):hover {
+      border-color: var(--red);
+      transform: translateY(-4px);
+      box-shadow: 0 10px 28px rgba(140,21,21,0.12);
+    }
+
+    .quest-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 0.9rem;
+    }
+    .quest-level {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--red);
+    }
+    .quest-card.locked .quest-level { color: #AAAAAA; }
+    .quest-status {
+      font-size: 0.75rem; font-weight: 600;
+      padding: 0.2rem 0.6rem; border-radius: 100px;
+    }
+    .status-done  { background: #DCFCE7; color: #16A34A; }
+    .status-now   { background: rgba(140,21,21,0.1); color: var(--red); }
+    .status-lock  { background: #F3F4F6; color: #9CA3AF; }
+
+    .quest-card h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.4rem; }
+    .quest-card p  { font-size: 0.82rem; color: var(--muted); line-height: 1.5; margin-bottom: 1rem; }
+
+    .quest-progress { height: 5px; background: #EBEBEB; border-radius: 100px; overflow: hidden; }
+    .quest-bar {
+      height: 100%; background: var(--red); border-radius: 100px;
+      width: var(--target);
+      animation: barFill 1.2s ease both;
+      animation-delay: 0.8s;
+    }
+    .quest-card.locked .quest-bar { background: #CCCCCC; }
+
+    /* reward callout */
+    .reward-box {
+      margin-top: 2.5rem;
+      background: var(--red);
+      border-radius: var(--radius);
+      padding: 1.6rem 1.8rem;
+      display: flex; align-items: center; gap: 1.2rem;
+      flex-wrap: wrap;
+    }
+    .reward-icon { font-size: 2rem; flex-shrink: 0; }
+    .reward-text h4 { color: var(--white); font-size: 1rem; font-weight: 700; margin-bottom: 0.3rem; }
+    .reward-text p  { color: rgba(255,255,255,0.75); font-size: 0.85rem; line-height: 1.5; }
+    .reward-badge {
+      margin-left: auto;
+      background: var(--gold); color: var(--red);
+      font-size: 0.78rem; font-weight: 800;
+      border-radius: 8px; padding: 0.45rem 1rem;
+      white-space: nowrap;
+    }
+
+    /* ── Moments ── */
+    .moments-section {
+      background: var(--white);
+      padding: 5.5rem 1.5rem;
+    }
+    .moments-inner { max-width: 860px; margin: 0 auto; }
+    .moments-section h2 {
+      font-size: clamp(1.7rem, 4vw, 2.6rem);
+      font-weight: 800; line-height: 1.2; margin-bottom: 0.8rem;
+      letter-spacing: -0.01em;
+    }
+    .moments-desc { color: var(--muted); font-size: 1rem; line-height: 1.7; max-width: 500px; margin-bottom: 3rem; }
+
+    .moment-list { display: flex; flex-direction: column; gap: 1.1rem; }
+
+    .moment-item {
+      display: flex; gap: 1.25rem; align-items: flex-start;
+      background: var(--light);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      border-left: 4px solid var(--red);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .moment-item:hover { transform: translateX(4px); box-shadow: 0 4px 18px rgba(0,0,0,0.07); }
+
+    .moment-time-badge {
+      flex-shrink: 0;
+      background: var(--red); color: var(--white);
+      font-size: 0.72rem; font-weight: 700;
+      border-radius: 8px; padding: 0.3rem 0.6rem;
+      white-space: nowrap; margin-top: 2px;
+    }
+
+    .moment-body h4 { font-size: 1rem; font-weight: 700; margin-bottom: 0.35rem; }
+    .moment-body p  { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+
+    /* ── Final CTA ── */
+    .final-cta {
+      background: var(--red);
+      padding: 6rem 1.5rem;
       text-align: center;
+      position: relative; overflow: hidden;
     }
-
-    .cta-banner h2 {
-      font-size: clamp(1.5rem, 4vw, 2.2rem);
-      color: var(--text); margin-bottom: 0.8rem;
+    .final-cta .blob-1 { animation-delay: 1s; }
+    .final-cta h2 {
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      color: var(--white); font-weight: 800;
+      line-height: 1.15; margin-bottom: 1rem;
+      letter-spacing: -0.02em;
     }
-
-    .cta-banner p {
-      color: var(--text-muted); font-size: 1rem;
-      max-width: 480px; margin: 0 auto 2.2rem;
-      line-height: 1.65;
-      font-family: 'Helvetica Neue', Arial, sans-serif;
+    .final-cta h2 .gold { color: var(--gold); }
+    .final-cta p {
+      color: rgba(255,255,255,0.72); font-size: 1.05rem; line-height: 1.7;
+      max-width: 480px; margin: 0 auto 2.5rem;
     }
-
-    .btn-cardinal {
-      background: var(--cardinal); color: var(--white);
-      border: none; border-radius: 8px;
-      padding: 0.9rem 2.2rem;
-      font-size: 1rem; font-weight: 700;
-      cursor: pointer; transition: background 0.2s, transform 0.15s;
-      font-family: 'Helvetica Neue', sans-serif;
+    .btn-gold {
+      background: var(--gold); color: var(--red);
+      border: none; border-radius: 10px;
+      padding: 1rem 2.4rem;
+      font-size: 1rem; font-weight: 800;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
     }
-    .btn-cardinal:hover { background: var(--cardinal-d); transform: translateY(-2px); }
+    .btn-gold:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(0,0,0,0.25); }
 
     /* ── Footer ── */
     footer {
-      background: var(--cool-grey);
-      color: rgba(255,255,255,0.55);
-      text-align: center;
-      padding: 1.5rem;
-      font-size: 0.78rem;
-      font-family: 'Helvetica Neue', Arial, sans-serif;
-      letter-spacing: 0.03em;
+      background: #111; color: rgba(255,255,255,0.4);
+      text-align: center; padding: 1.4rem;
+      font-size: 0.75rem; letter-spacing: 0.04em;
     }
 
-    /* ── Responsive tweaks ── */
-    @media (max-width: 480px) {
+    /* ── Responsive ── */
+    @media (max-width: 500px) {
       .hero-btns { flex-direction: column; align-items: center; }
-      .btn-primary, .btn-ghost { width: 100%; max-width: 300px; }
+      .btn-white, .btn-outline { width: 100%; max-width: 280px; }
+      .reward-box { flex-direction: column; }
+      .reward-badge { margin-left: 0; }
     }
   </style>
 </head>
 <body>
 
-  <!-- ── Navigation ── -->
+  <!-- Nav -->
   <nav>
     <a class="nav-logo" href="#">
       <div class="s-mark">S</div>
       <span class="nav-brand">GrowthTree</span>
     </a>
-    <button class="nav-cta">시작하기</button>
+    <button class="nav-cta">Get Started →</button>
   </nav>
 
-  <!-- ── Hero ── -->
+  <!-- Hero -->
   <section class="hero">
-    <span class="hero-tag">Stanford PhD Growth Platform</span>
-    <h1>
-      이미 그 길을 걸어간<br/>
-      <em>선배가 함께합니다</em>
-    </h1>
-    <p>
-      연구주제를 찾는 박사 1년차의 불안함,<br/>
-      혼자 감당하지 않아도 됩니다.<br/>
-      전문가가 설계한 퀘스트를 하나씩 해내며<br/>실제 선배와 대화할 기회를 얻으세요.
-    </p>
-    <div class="hero-btns">
-      <button class="btn-primary">내 성장 여정 시작하기</button>
-      <button class="btn-ghost">어떻게 작동하나요?</button>
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <div class="hero-badge anim-fadeup">
+      <span class="badge-dot"></span>
+      For Stanford PhD students
     </div>
-    <p class="hero-proof">스탠포드 석·박사 유학생을 위한 커리어 성장 플랫폼</p>
+
+    <h1 class="anim-fadeup delay-1">
+      Your next step.<br/>
+      <span class="gold">Already figured out.</span>
+    </h1>
+
+    <p class="hero-sub anim-fadeup delay-2">
+      Stop guessing what to do next in your PhD.<br/>
+      Experts who walked your path built the quests.<br/>
+      Complete them. Talk to them.
+    </p>
+
+    <div class="hero-btns anim-fadeup delay-3">
+      <button class="btn-white">Start My Journey</button>
+      <button class="btn-outline">See How It Works</button>
+    </div>
+
+    <div class="hero-stats anim-fadein delay-4">
+      <div class="stat-pill"><span>100+</span> Expert Mentors</div>
+      <div class="stat-pill"><span>1:1</span> Interview Rewards</div>
+      <div class="stat-pill"><span>PhD</span> Year 1 Ready</div>
+    </div>
   </section>
 
-  <!-- ── First 15-min Moments ── -->
-  <section class="section">
-    <div class="section-inner">
-      <span class="section-label">첫 15분의 경험</span>
-      <h2>처음 느껴야 할<br/>3가지 순간</h2>
-      <p class="section-sub">
-        GrowthTree는 정보를 주는 앱이 아닙니다.<br/>
-        불안함을 이해받고, 방향을 찾고, 가능성을 보는 감정의 여정입니다.
+  <!-- Pain Point -->
+  <section class="pain">
+    <div class="pain-inner">
+      <span class="section-chip reveal">Sound familiar?</span>
+      <h2 class="reveal">Year 1 hits different.</h2>
+      <p class="pain-desc reveal">
+        You're brilliant. You got into Stanford. But PhD Year 1 is a different kind of hard — and nobody talks about it enough.
       </p>
 
-      <div class="moments">
-        <div class="moment-card">
-          <div class="moment-num">Moment 01</div>
-          <div class="moment-title">"나를 정확히 알고 있구나"</div>
-          <div class="moment-desc">
-            내 상황이 화면에 그대로 반영되는 순간,
-            처음으로 누군가 내 고민을 이해했다는 느낌을 받습니다.
-          </div>
-          <span class="moment-time">약 2분차</span>
+      <div class="feelings">
+        <div class="feeling-card reveal delay-1">
+          <div class="feeling-emoji">🤯</div>
+          <h4>Too many directions</h4>
+          <p>Meeting five professors, exploring three labs — and still not sure which way to go.</p>
         </div>
-
-        <div class="moment-card">
-          <div class="moment-num">Moment 02</div>
-          <div class="moment-title">"내가 걷고 있는 길이 보인다"</div>
-          <div class="moment-desc">
-            지금의 불안이 성장 과정의 특정 단계이기 때문임을
-            시각적으로 확인하고 안도감을 느낍니다.
-          </div>
-          <span class="moment-time">약 7분차</span>
+        <div class="feeling-card reveal delay-2">
+          <div class="feeling-emoji">🤖</div>
+          <h4>AI is moving fast</h4>
+          <p>The research topic you picked last month might already be outdated. The pressure is real.</p>
         </div>
-
-        <div class="moment-card">
-          <div class="moment-num">Moment 03</div>
-          <div class="moment-title">"나도 저렇게 될 수 있겠다"</div>
-          <div class="moment-desc">
-            비슷한 상황에서 출발한 선배의 경로를 보며,
-            막연한 롤모델이 아닌 구체적인 나의 미래로 인식합니다.
-          </div>
-          <span class="moment-time">약 13분차</span>
+        <div class="feeling-card reveal delay-3">
+          <div class="feeling-emoji">🚪</div>
+          <h4>Limited advisor spots</h4>
+          <p>The professor you want has no room. Your backup plan doesn't feel like a plan.</p>
+        </div>
+        <div class="feeling-card reveal delay-4">
+          <div class="feeling-emoji">🌏</div>
+          <h4>Far from your network</h4>
+          <p>Your mentors are back home. Here, you're building from scratch — alone.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ── How It Works ── -->
+  <!-- How It Works -->
   <section class="how">
     <div class="how-inner">
-      <span class="section-label" style="color:rgba(255,255,255,0.6);">How It Works</span>
-      <h2>선배의 경험이<br/>퀘스트가 됩니다</h2>
-      <p class="how-sub">
-        이미 그 길을 걸어간 전문가가 다음 할 일을 알려주고,
-        해내면 그 선배와 직접 이야기할 수 있습니다.
+      <span class="section-chip reveal">How It Works</span>
+      <h2 class="reveal">Like a game.<br/>For your real life.</h2>
+      <p class="how-desc reveal">
+        No vague advice. No generic roadmaps. Just clear quests — designed by people who've been exactly where you are.
       </p>
 
       <div class="steps">
-        <div class="step">
-          <div class="step-icon">🎯</div>
-          <h3>목표 설정</h3>
-          <p>내 연구 방향과 현재 단계를 입력하면 나만의 성장 테크트리가 만들어집니다.</p>
+        <div class="step-row reveal">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <h3>Set your goal</h3>
+            <p>Tell us where you are and where you want to go. We build your personal growth tree.</p>
+            <span class="step-tag">~2 min onboarding</span>
+          </div>
         </div>
-        <div class="step">
-          <div class="step-icon">⚡</div>
-          <h3>전문가 퀘스트</h3>
-          <p>이미 그 길을 걸어간 선배·전문가가 설계한 단계별 퀘스트를 수행합니다.</p>
+        <div class="step-row reveal delay-1">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <h3>Get expert-designed quests</h3>
+            <p>Experts who made it map out your next concrete steps — no guessing, just doing.</p>
+            <span class="step-tag">Built by PhDs for PhDs</span>
+          </div>
         </div>
-        <div class="step">
-          <div class="step-icon">🏆</div>
-          <h3>인터뷰 리워드</h3>
-          <p>퀘스트를 달성하면 실제 선배와 1:1 인터뷰 기회가 리워드로 주어집니다.</p>
+        <div class="step-row reveal delay-2">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <h3>Complete &amp; unlock rewards</h3>
+            <p>Finish a quest → earn a 1:1 interview with the expert who designed it. Real talk, not fluff.</p>
+            <span class="step-tag">🏆 Interview reward</span>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ── CTA ── -->
-  <section class="cta-banner">
-    <h2>혼자 감당하지 않아도 됩니다</h2>
-    <p>
-      AI의 빠른 발전도, 제한된 교수 TO도,<br/>
-      먼저 걸어간 선배와 함께라면 다음 걸음이 보입니다.
-    </p>
-    <button class="btn-cardinal">내 성장 여정 시작하기 →</button>
+  <!-- Quest Preview -->
+  <section class="quest-section">
+    <div class="quest-inner">
+      <span class="section-chip reveal">Quest Preview</span>
+      <h2 class="reveal">Your tree, right now.</h2>
+      <p class="quest-desc reveal">Here's what the first stage of your PhD journey looks like — unlock each quest to grow.</p>
+
+      <div class="quest-cards">
+        <div class="quest-card reveal delay-1">
+          <div class="quest-header">
+            <span class="quest-level">Stage 1</span>
+            <span class="quest-status status-done">✓ Done</span>
+          </div>
+          <h4>Map your research landscape</h4>
+          <p>Read 5 papers from your target area and write a 1-page summary of open problems.</p>
+          <div class="quest-progress"><div class="quest-bar" style="--target:100%"></div></div>
+        </div>
+
+        <div class="quest-card reveal delay-2">
+          <div class="quest-header">
+            <span class="quest-level">Stage 2</span>
+            <span class="quest-status status-now">● In Progress</span>
+          </div>
+          <h4>Run your first lab meeting</h4>
+          <p>Present your paper summary to a lab group and collect feedback from at least 2 people.</p>
+          <div class="quest-progress"><div class="quest-bar" style="--target:40%"></div></div>
+        </div>
+
+        <div class="quest-card locked reveal delay-3">
+          <div class="quest-header">
+            <span class="quest-level">Stage 3</span>
+            <span class="quest-status status-lock">🔒 Locked</span>
+          </div>
+          <h4>Define your research question</h4>
+          <p>Write a one-sentence research question and get it validated by an expert mentor.</p>
+          <div class="quest-progress"><div class="quest-bar" style="--target:0%"></div></div>
+        </div>
+      </div>
+
+      <div class="reward-box reveal">
+        <div class="reward-icon">🎙️</div>
+        <div class="reward-text">
+          <h4>Complete Stage 2 → Unlock Expert Interview</h4>
+          <p>Talk directly with a Stanford alum who navigated the same crossroads. Real stories, real advice.</p>
+        </div>
+        <div class="reward-badge">Claim Reward</div>
+      </div>
+    </div>
   </section>
 
-  <!-- ── Footer ── -->
+  <!-- Moments -->
+  <section class="moments-section">
+    <div class="moments-inner">
+      <span class="section-chip reveal">Your First 15 Minutes</span>
+      <h2 class="reveal">Three moments<br/>that change everything.</h2>
+      <p class="moments-desc reveal">Most apps give you information. GrowthTree gives you the feeling that you're not alone — and that the path is real.</p>
+
+      <div class="moment-list">
+        <div class="moment-item reveal delay-1">
+          <span class="moment-time-badge">2 min</span>
+          <div class="moment-body">
+            <h4>"They actually get me."</h4>
+            <p>Your exact situation — AI pressure, limited spots, uncertainty — shows up on screen. For the first time, someone understands.</p>
+          </div>
+        </div>
+        <div class="moment-item reveal delay-2">
+          <span class="moment-time-badge">7 min</span>
+          <div class="moment-body">
+            <h4>"Oh — I'm not lost. I'm on a path."</h4>
+            <p>Your growth tree appears. The anxiety isn't a flaw — it's just what Stage 2 feels like. And Stage 3 is right there.</p>
+          </div>
+        </div>
+        <div class="moment-item reveal delay-3">
+          <span class="moment-time-badge">13 min</span>
+          <div class="moment-body">
+            <h4>"That could actually be me."</h4>
+            <p>You see a senior who started exactly where you are — and where they are now. Not an abstract role model. A concrete future.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="final-cta">
+    <div class="blob blob-1"></div>
+    <h2 class="reveal">
+      You don't have to<br/>
+      figure this out <span class="gold">alone.</span>
+    </h2>
+    <p class="reveal delay-1">
+      Experts who walked your exact path are waiting.<br/>
+      Your first quest takes 10 minutes. The clarity lasts way longer.
+    </p>
+    <button class="btn-gold reveal delay-2">Start My Journey →</button>
+  </section>
+
+  <!-- Footer -->
   <footer>
     GrowthTree · Stanford PhD Growth Platform · LG Team 3 Prototype
   </footer>
+
+  <!-- Scroll Reveal Script -->
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
 
 </body>
 </html>
