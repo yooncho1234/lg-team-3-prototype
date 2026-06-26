@@ -9,7 +9,6 @@
 
     :root {
       --bg: #fdf6ff;
-      --bg2: #f3eaff;
       --surface: #ffffff;
       --border: #e8d5f5;
       --purple: #9b6dff;
@@ -23,373 +22,208 @@
       --gold-pale: #fef3c7;
       --text: #3d2b5e;
       --muted: #9b89b4;
-      --white: #ffffff;
     }
-
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Nunito', 'Apple SD Gothic Neo', sans-serif;
-      min-height: 100vh;
-    }
+    body { background: var(--bg); color: var(--text); font-family: 'Nunito','Apple SD Gothic Neo',sans-serif; min-height: 100vh; overflow-x: hidden; }
 
     /* ── NAV ── */
     nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.9rem 2rem;
-      background: var(--white);
-      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.8rem 2rem;
+      background: var(--surface); border-bottom: 1px solid var(--border);
       box-shadow: 0 2px 12px rgba(155,109,255,0.07);
     }
-    .logo {
-      font-size: 1.25rem;
-      font-weight: 800;
-      background: linear-gradient(135deg, var(--purple), var(--pink));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      letter-spacing: 0.02em;
+    .logo { font-size: 1.2rem; font-weight: 800; background: linear-gradient(135deg,var(--purple),var(--pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .nav-right { display: flex; align-items: center; gap: 0.9rem; }
+    .star-badge { background: var(--gold-pale); border: 1.5px solid #fde68a; border-radius: 20px; padding: 0.28rem 0.85rem; font-size: 0.78rem; color: #92400e; font-weight: 700; }
+    .nav-avatar { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg,var(--purple),var(--pink)); display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 800; color: white; box-shadow: 0 2px 8px rgba(155,109,255,0.3); }
+
+    /* ── CAREER BANNER ── */
+    .career-banner {
+      background: linear-gradient(135deg,#f3eaff,#fce7f3,#fef3c7);
+      border-bottom: 1px solid var(--border);
+      padding: 0.85rem 2rem;
+      display: flex; align-items: center; gap: 2rem; flex-wrap: wrap;
     }
-    .nav-right { display: flex; align-items: center; gap: 1rem; }
-    .star-badge {
-      background: var(--gold-pale);
-      border: 1.5px solid #fde68a;
-      border-radius: 20px;
-      padding: 0.3rem 0.9rem;
-      font-size: 0.8rem;
-      color: #92400e;
-      font-weight: 700;
+    .banner-left { flex-shrink: 0; }
+    .banner-track-label { font-size: 0.62rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: var(--purple); margin-bottom: 2px; }
+    .banner-track-name { font-size: 1rem; font-weight: 800; color: var(--text); }
+    .banner-sep { width: 1px; height: 40px; background: var(--border); flex-shrink: 0; }
+    .journey-steps {
+      display: flex; align-items: center; gap: 0; flex: 1; min-width: 0; overflow-x: auto;
     }
-    .nav-avatar {
-      width: 36px; height: 36px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--purple), var(--pink));
+    .jstep {
+      display: flex; align-items: center; flex-shrink: 0;
+    }
+    .jstep-dot {
+      display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer;
+    }
+    .jstep-circle {
+      width: 28px; height: 28px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      font-size: 0.9rem; font-weight: 800; color: white;
-      box-shadow: 0 2px 8px rgba(155,109,255,0.35);
+      font-size: 0.65rem; font-weight: 800;
+      border: 2px solid var(--border);
+      background: var(--surface); color: var(--muted);
+      transition: all 0.2s;
+      position: relative;
     }
+    .jstep-circle.done { background: var(--purple); border-color: var(--purple); color: white; }
+    .jstep-circle.now  { background: var(--pink); border-color: var(--pink); color: white; box-shadow: 0 0 0 4px rgba(244,114,182,0.2); }
+    .jstep-label { font-size: 0.6rem; color: var(--muted); font-weight: 700; text-align: center; max-width: 52px; line-height: 1.2; }
+    .jstep-label.done { color: var(--purple); }
+    .jstep-label.now  { color: var(--pink); }
+    .jstep-line { width: 32px; height: 2px; background: var(--border); margin: 0 2px; margin-bottom: 18px; flex-shrink: 0; }
+    .jstep-line.done { background: var(--purple); }
+    .banner-right { flex-shrink: 0; text-align: right; }
+    .banner-next-label { font-size: 0.6rem; color: var(--muted); font-weight: 700; margin-bottom: 2px; }
+    .banner-next-val { font-size: 0.8rem; font-weight: 800; color: var(--text); }
 
     /* ── LAYOUT ── */
     .main {
       display: grid;
-      grid-template-columns: 290px 1fr 270px;
-      height: calc(100vh - 57px);
+      grid-template-columns: 285px 1fr 270px;
+      height: calc(100vh - 115px);
     }
 
     /* ── LEFT ── */
     .panel-left {
-      border-right: 1px solid var(--border);
-      padding: 1.4rem;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 1.3rem;
-      background: var(--white);
+      border-right: 1px solid var(--border); padding: 1.3rem;
+      overflow-y: auto; display: flex; flex-direction: column; gap: 1.2rem;
+      background: var(--surface);
     }
-
-    .sec-label {
-      font-size: 0.65rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--purple-light);
-      margin-bottom: 0.55rem;
-    }
+    .sec-label { font-size: 0.62rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: var(--purple-light); margin-bottom: 0.5rem; }
 
     /* profile */
-    .profile-card {
-      background: linear-gradient(135deg, #f3eaff, #fce7f3);
-      border-radius: 18px;
-      padding: 1.2rem;
-      border: 1.5px solid var(--border);
-      text-align: center;
-    }
-    .profile-ava {
-      width: 58px; height: 58px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--purple), var(--pink));
-      margin: 0 auto 0.7rem;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.4rem; font-weight: 800; color: white;
-      box-shadow: 0 4px 16px rgba(155,109,255,0.3);
-    }
-    .profile-name { font-size: 1rem; font-weight: 800; color: var(--text); }
-    .profile-sub { font-size: 0.72rem; color: var(--muted); margin-top: 2px; margin-bottom: 1rem; }
-    .growth-label {
-      display: flex; justify-content: space-between;
-      font-size: 0.7rem; color: var(--muted); margin-bottom: 4px;
-    }
-    .growth-bar {
-      height: 8px;
-      background: var(--border);
-      border-radius: 99px;
-      overflow: hidden;
-    }
-    .growth-fill {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, var(--purple), var(--pink));
-      border-radius: 99px;
-      transition: width 1.2s cubic-bezier(0.34,1.2,0.64,1);
-    }
-    .growth-msg { font-size: 0.68rem; color: var(--muted); margin-top: 5px; }
+    .profile-card { background: linear-gradient(135deg,#f3eaff,#fce7f3); border-radius: 16px; padding: 1.1rem; border: 1.5px solid var(--border); text-align: center; }
+    .profile-ava { width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg,var(--purple),var(--pink)); margin: 0 auto 0.6rem; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 800; color: white; box-shadow: 0 4px 14px rgba(155,109,255,0.28); }
+    .profile-name { font-size: 0.95rem; font-weight: 800; }
+    .profile-sub  { font-size: 0.7rem; color: var(--muted); margin-top: 2px; margin-bottom: 0.85rem; }
+    .growth-label { display: flex; justify-content: space-between; font-size: 0.68rem; color: var(--muted); margin-bottom: 3px; }
+    .growth-bar   { height: 7px; background: var(--border); border-radius: 99px; overflow: hidden; }
+    .growth-fill  { height: 100%; width: 0; background: linear-gradient(90deg,var(--purple),var(--pink)); border-radius: 99px; transition: width 1.2s cubic-bezier(0.34,1.2,0.64,1); }
+    .growth-msg   { font-size: 0.67rem; color: var(--muted); margin-top: 4px; }
 
     /* badges */
-    .badge-row {
-      display: flex; gap: 0.5rem; flex-wrap: wrap;
-    }
-    .badge {
-      background: var(--white);
-      border: 1.5px solid var(--border);
-      border-radius: 10px;
-      padding: 0.4rem 0.65rem;
-      font-size: 0.72rem;
-      color: var(--muted);
-      display: flex; align-items: center; gap: 0.3rem;
-    }
-    .badge.earned {
-      border-color: var(--purple-light);
-      background: var(--purple-pale);
-      color: var(--purple);
-      font-weight: 700;
-    }
+    .badge-row { display: flex; gap: 0.45rem; flex-wrap: wrap; }
+    .badge { background: var(--surface); border: 1.5px solid var(--border); border-radius: 9px; padding: 0.35rem 0.6rem; font-size: 0.7rem; color: var(--muted); }
+    .badge.earned { border-color: var(--purple-light); background: var(--purple-pale); color: var(--purple); font-weight: 700; }
 
-    /* today quest */
-    .quest-card {
-      background: var(--white);
-      border: 1.5px solid var(--purple-light);
-      border-radius: 16px;
-      padding: 1.1rem;
-      position: relative;
-      overflow: hidden;
-    }
-    .quest-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 3px;
-      background: linear-gradient(90deg, var(--purple), var(--pink));
-    }
-    .quest-chip {
-      display: inline-block;
-      background: var(--purple-pale);
-      color: var(--purple);
-      font-size: 0.63rem;
-      font-weight: 800;
-      border-radius: 6px;
-      padding: 2px 8px;
-      margin-bottom: 0.55rem;
-      letter-spacing: 0.05em;
-    }
-    .quest-title { font-size: 0.88rem; font-weight: 700; line-height: 1.4; margin-bottom: 0.35rem; }
-    .quest-desc { font-size: 0.73rem; color: var(--muted); line-height: 1.5; margin-bottom: 0.8rem; }
-    .quest-reward {
-      font-size: 0.7rem; color: #92400e;
-      background: var(--gold-pale);
-      border-radius: 8px;
-      padding: 0.35rem 0.7rem;
-      display: inline-flex; align-items: center; gap: 0.35rem;
-      margin-bottom: 0.8rem;
-      font-weight: 700;
-    }
-    .btn-quest {
-      width: 100%;
-      background: linear-gradient(135deg, var(--purple), var(--pink));
-      color: white;
-      border: none;
-      border-radius: 12px;
-      padding: 0.65rem;
-      font-size: 0.85rem;
-      font-weight: 800;
-      cursor: pointer;
-      font-family: inherit;
-      transition: transform 0.15s, box-shadow 0.15s;
-      box-shadow: 0 4px 14px rgba(155,109,255,0.3);
-    }
-    .btn-quest:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(155,109,255,0.4); }
-    .btn-quest:active { transform: translateY(0); }
+    /* quest */
+    .quest-card { background: var(--surface); border: 1.5px solid var(--purple-light); border-radius: 14px; padding: 1rem; position: relative; overflow: hidden; }
+    .quest-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: linear-gradient(90deg,var(--purple),var(--pink)); }
+    .quest-chip { display: inline-block; background: var(--purple-pale); color: var(--purple); font-size: 0.62rem; font-weight: 800; border-radius: 5px; padding: 2px 7px; margin-bottom: 0.5rem; }
+    .quest-title { font-size: 0.86rem; font-weight: 700; line-height: 1.4; margin-bottom: 0.3rem; }
+    .quest-desc  { font-size: 0.72rem; color: var(--muted); line-height: 1.5; margin-bottom: 0.7rem; }
+    .quest-reward { font-size: 0.68rem; color: #92400e; background: var(--gold-pale); border-radius: 7px; padding: 0.3rem 0.65rem; display: inline-flex; align-items: center; gap: 0.3rem; margin-bottom: 0.75rem; font-weight: 700; }
+    .btn-quest { width: 100%; background: linear-gradient(135deg,var(--purple),var(--pink)); color: white; border: none; border-radius: 10px; padding: 0.6rem; font-size: 0.82rem; font-weight: 800; cursor: pointer; font-family: inherit; transition: transform 0.15s, box-shadow 0.15s; box-shadow: 0 4px 12px rgba(155,109,255,0.28); }
+    .btn-quest:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(155,109,255,0.38); }
 
     /* route */
-    .route-list { display: flex; flex-direction: column; gap: 0.45rem; }
-    .route-item {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0.65rem 0.85rem;
-      border-radius: 12px;
-      border: 1.5px solid var(--border);
-      cursor: pointer;
-      font-size: 0.8rem; font-weight: 600;
-      transition: all 0.2s;
-      background: var(--white);
-    }
+    .route-list { display: flex; flex-direction: column; gap: 0.4rem; }
+    .route-item { display: flex; align-items: center; justify-content: space-between; padding: 0.6rem 0.8rem; border-radius: 11px; border: 1.5px solid var(--border); cursor: pointer; font-size: 0.79rem; font-weight: 600; transition: all 0.2s; background: var(--surface); }
     .route-item:hover { border-color: var(--purple-light); background: var(--purple-pale); }
     .route-item.active { border-color: var(--purple); background: var(--purple-pale); color: var(--purple); }
-    .route-pct { font-size: 0.68rem; color: var(--muted); font-weight: 600; }
+    .route-pct { font-size: 0.67rem; color: var(--muted); }
     .route-item.active .route-pct { color: var(--purple); }
 
+    /* rolemodel btn */
+    .btn-rolemodel { width: 100%; background: linear-gradient(135deg,#fce7f3,#ede0ff); color: var(--purple); border: 1.5px solid var(--border); border-radius: 11px; padding: 0.6rem; font-size: 0.82rem; font-weight: 800; cursor: pointer; font-family: inherit; transition: all 0.2s; }
+    .btn-rolemodel:hover { box-shadow: 0 4px 14px rgba(155,109,255,0.2); transform: translateY(-1px); }
+
     /* ── CENTER ── */
-    .panel-center {
-      overflow: auto;
-      padding: 2rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background: var(--bg);
-      position: relative;
-    }
-
-    /* soft bg stars */
-    .panel-center::before {
-      content: '✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧ ✦';
-      position: absolute;
-      top: 1rem; left: 50%;
-      transform: translateX(-50%);
-      font-size: 0.7rem;
-      color: var(--border);
-      letter-spacing: 1.2rem;
-      pointer-events: none;
-      white-space: nowrap;
-    }
-
-    .tree-header { text-align: center; margin-bottom: 1.8rem; }
-    .tree-header h2 { font-size: 1.15rem; font-weight: 800; color: var(--text); margin-bottom: 0.25rem; }
-    .tree-header p { font-size: 0.75rem; color: var(--muted); }
-
-    .tree-svg-wrap { width: 100%; max-width: 520px; }
-
+    .panel-center { overflow: auto; padding: 1.8rem 1.8rem 2rem; display: flex; flex-direction: column; align-items: center; background: var(--bg); position: relative; }
+    .panel-center::before { content: '✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧ ✦'; position: absolute; top: 0.8rem; left: 50%; transform: translateX(-50%); font-size: 0.65rem; color: var(--border); letter-spacing: 1.1rem; pointer-events: none; white-space: nowrap; }
+    .tree-header { text-align: center; margin-bottom: 1.5rem; }
+    .tree-header h2 { font-size: 1.1rem; font-weight: 800; margin-bottom: 0.2rem; }
+    .tree-header p { font-size: 0.73rem; color: var(--muted); }
+    .tree-svg-wrap { width: 100%; max-width: 500px; }
     svg.tree { width: 100%; height: auto; overflow: visible; }
-
-    /* milestones */
-    .milestone-strip {
-      display: flex; gap: 0.55rem; flex-wrap: wrap;
-      justify-content: center; max-width: 520px; margin-top: 1.8rem;
-    }
-    .ms {
-      background: var(--white);
-      border: 1.5px solid var(--border);
-      border-radius: 99px;
-      padding: 0.38rem 0.85rem;
-      font-size: 0.7rem;
-      color: var(--muted);
-      font-weight: 600;
-    }
+    .ms-strip { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; max-width: 500px; margin-top: 1.5rem; }
+    .ms { background: var(--surface); border: 1.5px solid var(--border); border-radius: 99px; padding: 0.35rem 0.8rem; font-size: 0.68rem; color: var(--muted); font-weight: 600; }
     .ms.done { border-color: var(--mint); color: #065f46; background: var(--mint-pale); }
     .ms.now  { border-color: var(--purple); color: var(--purple); background: var(--purple-pale); }
 
     /* ── RIGHT ── */
-    .panel-right {
-      border-left: 1px solid var(--border);
-      padding: 1.4rem;
-      overflow-y: auto;
-      display: flex; flex-direction: column; gap: 1.4rem;
-      background: var(--white);
-    }
+    .panel-right { border-left: 1px solid var(--border); padding: 1.3rem; overflow-y: auto; display: flex; flex-direction: column; gap: 1.3rem; background: var(--surface); }
 
-    /* future card */
-    .future-card {
-      background: linear-gradient(145deg, #f3eaff, #fce7f3);
-      border: 1.5px solid var(--border);
-      border-radius: 18px;
-      padding: 1.3rem;
-      position: relative;
-      overflow: hidden;
-    }
-    .future-deco {
-      position: absolute; top: 0.9rem; right: 1rem;
-      font-size: 1.4rem; opacity: 0.35;
-    }
-    .future-chip {
-      font-size: 0.62rem; font-weight: 800; letter-spacing: 0.08em;
-      background: var(--purple-pale); color: var(--purple);
-      border-radius: 6px; padding: 2px 8px;
-      display: inline-block; margin-bottom: 0.75rem;
-    }
-    .future-role { font-size: 1rem; font-weight: 800; color: var(--text); margin-bottom: 0.2rem; }
-    .future-org { font-size: 0.75rem; color: var(--muted); margin-bottom: 1rem; }
-
-    .prob-wrap { margin-bottom: 0.55rem; }
-    .prob-top { display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--muted); font-weight: 600; margin-bottom: 3px; }
-    .prob-bar { height: 7px; background: var(--border); border-radius: 99px; overflow: hidden; }
-    .prob-fill { height: 100%; border-radius: 99px; }
-
-    .future-tip {
-      margin-top: 0.9rem; padding-top: 0.9rem;
-      border-top: 1px solid var(--border);
-      font-size: 0.7rem; color: var(--muted); line-height: 1.6;
-    }
+    /* future */
+    .future-card { border-radius: 16px; padding: 1.2rem; border: 1.5px solid var(--border); position: relative; overflow: hidden; transition: all 0.4s; }
+    .future-deco { position: absolute; top: 0.8rem; right: 0.9rem; font-size: 1.3rem; opacity: 0.3; }
+    .future-chip { font-size: 0.6rem; font-weight: 800; letter-spacing: 0.08em; border-radius: 5px; padding: 2px 7px; display: inline-block; margin-bottom: 0.7rem; }
+    .future-role { font-size: 0.98rem; font-weight: 800; margin-bottom: 0.18rem; }
+    .future-org  { font-size: 0.73rem; color: var(--muted); margin-bottom: 0.9rem; }
+    .prob-wrap   { margin-bottom: 0.5rem; }
+    .prob-top    { display: flex; justify-content: space-between; font-size: 0.68rem; color: var(--muted); font-weight: 600; margin-bottom: 3px; }
+    .prob-bar    { height: 6px; background: var(--border); border-radius: 99px; overflow: hidden; }
+    .prob-fill   { height: 100%; border-radius: 99px; transition: width 0.5s ease; }
+    .future-tip  { margin-top: 0.85rem; padding-top: 0.85rem; border-top: 1px solid var(--border); font-size: 0.68rem; color: var(--muted); line-height: 1.6; }
     .future-tip strong { color: var(--purple); }
 
+    /* linkedin networking */
+    .linkedin-card { background: var(--bg); border: 1.5px solid var(--border); border-radius: 14px; padding: 1rem; }
+    .li-item { display: flex; align-items: flex-start; gap: 0.65rem; padding: 0.55rem 0; border-bottom: 1px solid var(--border); }
+    .li-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .li-ava { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 800; color: white; flex-shrink: 0; }
+    .li-name { font-size: 0.76rem; font-weight: 700; margin-bottom: 1px; }
+    .li-role { font-size: 0.65rem; color: var(--muted); line-height: 1.3; margin-bottom: 3px; }
+    .li-why  { font-size: 0.62rem; color: var(--purple); font-weight: 700; background: var(--purple-pale); border-radius: 5px; padding: 1px 6px; display: inline-block; }
+    .btn-li  { font-size: 0.65rem; color: #0077b5; font-weight: 700; background: #e8f4fd; border: none; border-radius: 6px; padding: 2px 8px; cursor: pointer; font-family: inherit; margin-top: 3px; display: inline-block; }
+
     /* alumni */
-    .alumni-list { display: flex; flex-direction: column; gap: 0.55rem; }
-    .alumni-item {
-      display: flex; align-items: center; gap: 0.75rem;
-      padding: 0.65rem 0.85rem;
-      background: var(--bg);
-      border: 1.5px solid var(--border);
-      border-radius: 14px;
-    }
-    .alumni-ava {
-      width: 34px; height: 34px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.78rem; font-weight: 800; color: white; flex-shrink: 0;
-    }
-    .alumni-name { font-size: 0.78rem; font-weight: 700; margin-bottom: 2px; }
-    .alumni-desc { font-size: 0.67rem; color: var(--muted); line-height: 1.4; }
+    .alumni-list { display: flex; flex-direction: column; gap: 0.5rem; }
+    .alumni-item { display: flex; align-items: center; gap: 0.7rem; padding: 0.6rem 0.8rem; background: var(--bg); border: 1.5px solid var(--border); border-radius: 12px; }
+    .alumni-ava  { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 800; color: white; flex-shrink: 0; }
+    .alumni-name { font-size: 0.76rem; font-weight: 700; margin-bottom: 1px; }
+    .alumni-desc { font-size: 0.65rem; color: var(--muted); line-height: 1.35; }
 
-    /* expert locked */
-    .expert-card {
-      background: var(--gold-pale);
-      border: 1.5px dashed #fde68a;
-      border-radius: 16px;
-      padding: 1.1rem;
-      position: relative;
-    }
-    .lock-tag {
-      position: absolute; top: 0.85rem; right: 0.85rem;
-      font-size: 0.65rem; background: #fef3c7; color: #92400e;
-      border-radius: 6px; padding: 2px 7px; font-weight: 700;
-    }
-    .expert-title { font-size: 0.84rem; font-weight: 700; color: #92400e; margin-bottom: 0.3rem; }
-    .expert-desc { font-size: 0.72rem; color: #b45309; line-height: 1.5; }
+    /* expert */
+    .expert-card { background: var(--gold-pale); border: 1.5px dashed #fde68a; border-radius: 14px; padding: 1rem; position: relative; }
+    .lock-tag    { position: absolute; top: 0.8rem; right: 0.8rem; font-size: 0.62rem; background: #fef3c7; color: #92400e; border-radius: 5px; padding: 2px 6px; font-weight: 700; }
+    .expert-title { font-size: 0.82rem; font-weight: 700; color: #92400e; margin-bottom: 0.28rem; }
+    .expert-desc  { font-size: 0.7rem; color: #b45309; line-height: 1.5; }
 
-    /* tooltip */
-    .tooltip {
-      display: none;
-      position: fixed;
-      background: var(--white);
-      border: 1.5px solid var(--purple-light);
-      border-radius: 14px;
-      padding: 0.85rem 1rem;
-      font-size: 0.78rem;
-      max-width: 210px;
-      z-index: 100;
-      box-shadow: 0 8px 30px rgba(155,109,255,0.18);
-      pointer-events: none;
-    }
-    .tooltip h4 { font-size: 0.85rem; font-weight: 800; color: var(--purple); margin-bottom: 0.3rem; }
-    .tooltip p { color: var(--muted); line-height: 1.5; }
-    .tooltip .t-st { margin-top: 0.45rem; font-size: 0.68rem; font-weight: 700; color: var(--mint); }
+    /* ── TOOLTIP ── */
+    .tooltip { display: none; position: fixed; background: var(--surface); border: 1.5px solid var(--purple-light); border-radius: 13px; padding: 0.8rem 1rem; font-size: 0.76rem; max-width: 240px; z-index: 100; box-shadow: 0 8px 28px rgba(155,109,255,0.16); pointer-events: none; }
+    .tooltip h4 { font-size: 0.83rem; font-weight: 800; color: var(--purple); margin-bottom: 0.25rem; }
+    .tooltip p  { color: var(--muted); line-height: 1.5; }
+    .tooltip .t-li { margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid var(--border); }
+    .tooltip .t-li-label { font-size: 0.62rem; font-weight: 800; color: #0077b5; margin-bottom: 0.25rem; }
+    .tooltip .t-li-item  { font-size: 0.65rem; color: var(--muted); padding: 2px 0; }
+    .t-st { margin-top: 0.4rem; font-size: 0.65rem; font-weight: 700; color: var(--mint); }
 
-    /* notif */
-    .notif {
-      position: fixed; bottom: 2rem; right: 2rem;
-      background: var(--white);
-      border: 1.5px solid var(--mint);
-      border-radius: 16px;
-      padding: 1rem 1.3rem;
-      display: flex; align-items: center; gap: 0.8rem;
-      box-shadow: 0 8px 30px rgba(52,211,153,0.2);
-      transform: translateY(120px); opacity: 0;
-      transition: all 0.45s cubic-bezier(0.34,1.56,0.64,1);
-      z-index: 200;
-    }
+    /* ── ROLE MODEL MODAL ── */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(61,43,94,0.4); backdrop-filter: blur(4px); z-index: 300; align-items: center; justify-content: center; }
+    .modal-overlay.open { display: flex; }
+    .modal { background: var(--surface); border-radius: 22px; padding: 2rem; max-width: 580px; width: 90%; max-height: 85vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(155,109,255,0.2); position: relative; }
+    .modal-close { position: absolute; top: 1.1rem; right: 1.3rem; background: var(--bg); border: 1.5px solid var(--border); border-radius: 8px; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.85rem; color: var(--muted); font-weight: 700; }
+    .modal-close:hover { background: var(--purple-pale); color: var(--purple); }
+    .modal h2 { font-size: 1.1rem; font-weight: 800; margin-bottom: 0.3rem; }
+    .modal .modal-sub { font-size: 0.75rem; color: var(--muted); margin-bottom: 1.3rem; }
+    .rm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; }
+    .rm-card { border: 1.5px solid var(--border); border-radius: 14px; padding: 1.1rem; cursor: pointer; transition: all 0.2s; }
+    .rm-card:hover, .rm-card.sel { border-color: var(--purple); background: var(--purple-pale); }
+    .rm-head { display: flex; align-items: center; gap: 0.7rem; margin-bottom: 0.7rem; }
+    .rm-ava  { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: 800; color: white; flex-shrink: 0; }
+    .rm-name { font-size: 0.88rem; font-weight: 800; }
+    .rm-title { font-size: 0.68rem; color: var(--muted); }
+    .rm-path { display: flex; flex-direction: column; gap: 0.3rem; }
+    .rm-step { display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.7rem; color: var(--muted); line-height: 1.4; }
+    .rm-step-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 3px; }
+    .rm-step.highlight .rm-step-dot { background: var(--purple); }
+    .rm-step.highlight { color: var(--text); font-weight: 700; }
+    .rm-tag  { display: inline-block; margin-top: 0.6rem; font-size: 0.62rem; font-weight: 800; background: var(--purple-pale); color: var(--purple); border-radius: 5px; padding: 2px 7px; }
+    .rm-detail { margin-top: 1.3rem; background: linear-gradient(135deg,#f3eaff,#fce7f3); border-radius: 14px; padding: 1.1rem; display: none; }
+    .rm-detail.open { display: block; }
+    .rm-detail h3 { font-size: 0.9rem; font-weight: 800; margin-bottom: 0.5rem; }
+    .rm-detail-body { font-size: 0.75rem; color: var(--muted); line-height: 1.7; }
+    .rm-detail-body strong { color: var(--text); }
+
+    /* ── NOTIF ── */
+    .notif { position: fixed; bottom: 2rem; right: 2rem; background: var(--surface); border: 1.5px solid var(--mint); border-radius: 14px; padding: 0.9rem 1.2rem; display: flex; align-items: center; gap: 0.75rem; box-shadow: 0 8px 28px rgba(52,211,153,0.2); transform: translateY(120px); opacity: 0; transition: all 0.45s cubic-bezier(0.34,1.56,0.64,1); z-index: 200; }
     .notif.show { transform: translateY(0); opacity: 1; }
-    .notif-icon { font-size: 1.5rem; }
-    .notif-strong { font-size: 0.85rem; font-weight: 800; color: #065f46; }
-    .notif-sub { font-size: 0.72rem; color: var(--muted); }
+    .notif-icon { font-size: 1.4rem; }
+    .notif-strong { font-size: 0.83rem; font-weight: 800; color: #065f46; }
+    .notif-sub    { font-size: 0.7rem; color: var(--muted); }
   </style>
 </head>
 <body>
@@ -398,16 +232,33 @@
 <nav>
   <div class="logo">✦ Stello</div>
   <div class="nav-right">
-    <div class="star-badge">⭐ 1,240 별</div>
+    <div class="star-badge" id="starBadge">⭐ 1,240 별</div>
     <div class="nav-avatar">J</div>
   </div>
 </nav>
 
+<!-- CAREER BANNER -->
+<div class="career-banner">
+  <div class="banner-left">
+    <div class="banner-track-label">현재 커리어 방향</div>
+    <div class="banner-track-name" id="bannerTrack">🎓 교수 트랙</div>
+  </div>
+  <div class="banner-sep"></div>
+  <div class="journey-steps" id="journeySteps">
+    <!-- rendered by JS -->
+  </div>
+  <div class="banner-sep"></div>
+  <div class="banner-right">
+    <div class="banner-next-label">다음 목표</div>
+    <div class="banner-next-val">📄 첫 논문 제출</div>
+  </div>
+</div>
+
+<!-- MAIN -->
 <div class="main">
 
   <!-- LEFT -->
   <aside class="panel-left">
-
     <div class="profile-card">
       <div class="profile-ava">J</div>
       <div class="profile-name">Jiyeon Kim</div>
@@ -441,144 +292,123 @@
     <div>
       <div class="sec-label">내 루트 선택</div>
       <div class="route-list">
-        <div class="route-item active" onclick="setRoute(this)">
-          <span>🎓 교수 트랙</span>
-          <span class="route-pct">23% 달성</span>
+        <div class="route-item active" onclick="setRoute(this,'🎓 교수 트랙','prof')">
+          <span>🎓 교수 트랙</span><span class="route-pct">23% 달성</span>
         </div>
-        <div class="route-item" onclick="setRoute(this)">
-          <span>🏢 테크 기업 연구소</span>
-          <span class="route-pct">—</span>
+        <div class="route-item" onclick="setRoute(this,'🏢 테크 기업 연구소','tech')">
+          <span>🏢 테크 기업 연구소</span><span class="route-pct">—</span>
         </div>
-        <div class="route-item" onclick="setRoute(this)">
-          <span>🚀 스타트업 창업</span>
-          <span class="route-pct">—</span>
+        <div class="route-item" onclick="setRoute(this,'🚀 스타트업 창업','startup')">
+          <span>🚀 스타트업 창업</span><span class="route-pct">—</span>
         </div>
       </div>
     </div>
 
+    <div>
+      <div class="sec-label">롤모델 커리어패스</div>
+      <button class="btn-rolemodel" onclick="openModal()">🌟 롤모델 커리어 보기</button>
+    </div>
   </aside>
 
-  <!-- CENTER -->
+  <!-- CENTER: TECH TREE -->
   <main class="panel-center">
     <div class="tree-header">
       <h2>✦ 나의 커리어 별자리</h2>
-      <p>별을 클릭하면 세부 내용을 볼 수 있어요</p>
+      <p>별을 클릭하면 세부 내용과 링크드인 추천 인맥을 볼 수 있어요</p>
     </div>
 
     <div class="tree-svg-wrap">
-      <svg class="tree" viewBox="0 0 520 480" xmlns="http://www.w3.org/2000/svg">
+      <svg class="tree" viewBox="0 0 500 480" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <radialGradient id="gDone" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#a78bfa"/>
-            <stop offset="100%" stop-color="#7c3aed"/>
-          </radialGradient>
-          <radialGradient id="gActive" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#f472b6"/>
-            <stop offset="100%" stop-color="#db2777"/>
-          </radialGradient>
-          <radialGradient id="gLock" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#e8d5f5"/>
-            <stop offset="100%" stop-color="#d4b8f0"/>
-          </radialGradient>
-          <radialGradient id="gGold" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#fde68a"/>
-            <stop offset="100%" stop-color="#f59e0b"/>
-          </radialGradient>
-          <filter id="soft">
-            <feGaussianBlur stdDeviation="4" result="b"/>
-            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-          </filter>
-          <filter id="softGold">
-            <feGaussianBlur stdDeviation="5" result="b"/>
-            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-          </filter>
+          <radialGradient id="gDone" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#a78bfa"/><stop offset="100%" stop-color="#7c3aed"/></radialGradient>
+          <radialGradient id="gActive" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#f472b6"/><stop offset="100%" stop-color="#db2777"/></radialGradient>
+          <radialGradient id="gLock" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#e8d5f5"/><stop offset="100%" stop-color="#d4b8f0"/></radialGradient>
+          <radialGradient id="gGold" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#fde68a"/><stop offset="100%" stop-color="#f59e0b"/></radialGradient>
+          <filter id="soft"><feGaussianBlur stdDeviation="3.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="softG"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
         </defs>
 
-        <!-- constellation lines -->
-        <line x1="260" y1="58" x2="260" y2="138" stroke="#e8d5f5" stroke-width="1.5"/>
-        <line x1="260" y1="175" x2="120" y2="245" stroke="#e8d5f5" stroke-width="1.5"/>
-        <line x1="260" y1="175" x2="260" y2="245" stroke="#c4a0ff" stroke-width="1.5" stroke-dasharray="5,4"/>
-        <line x1="260" y1="175" x2="400" y2="245" stroke="#e8d5f5" stroke-width="1.5"/>
-        <line x1="260" y1="282" x2="185" y2="352" stroke="#c4a0ff" stroke-width="1.2" stroke-dasharray="4,4"/>
-        <line x1="260" y1="282" x2="335" y2="352" stroke="#e8d5f5" stroke-width="1.2"/>
-        <line x1="185" y1="390" x2="260" y2="448" stroke="#fde68a" stroke-width="1.2" stroke-dasharray="4,4"/>
-        <line x1="335" y1="390" x2="260" y2="448" stroke="#e8d5f5" stroke-width="1.2"/>
+        <!-- lines -->
+        <line x1="250" y1="58" x2="250" y2="134" stroke="#e8d5f5" stroke-width="1.5"/>
+        <line x1="250" y1="170" x2="115" y2="242" stroke="#e8d5f5" stroke-width="1.5"/>
+        <line x1="250" y1="170" x2="250" y2="242" stroke="#c4a0ff" stroke-width="1.5" stroke-dasharray="5,4"/>
+        <line x1="250" y1="170" x2="385" y2="242" stroke="#e8d5f5" stroke-width="1.5"/>
+        <line x1="250" y1="278" x2="180" y2="346" stroke="#c4a0ff" stroke-width="1.2" stroke-dasharray="4,4"/>
+        <line x1="250" y1="278" x2="320" y2="346" stroke="#e8d5f5" stroke-width="1.2"/>
+        <line x1="180" y1="382" x2="250" y2="445" stroke="#fde68a" stroke-width="1.2" stroke-dasharray="4,4"/>
+        <line x1="320" y1="382" x2="250" y2="445" stroke="#e8d5f5" stroke-width="1.2"/>
 
-        <!-- tiny sparkles -->
-        <text x="80" y="130" font-size="10" fill="#c4a0ff" opacity="0.6">✦</text>
-        <text x="420" y="180" font-size="8" fill="#f9a8d4" opacity="0.5">✧</text>
-        <text x="60" y="310" font-size="7" fill="#c4a0ff" opacity="0.4">✦</text>
-        <text x="440" y="360" font-size="9" fill="#fde68a" opacity="0.4">✦</text>
-        <text x="150" y="460" font-size="7" fill="#c4a0ff" opacity="0.35">✧</text>
+        <!-- sparkles -->
+        <text x="70"  y="120" font-size="9"  fill="#c4a0ff" opacity="0.5">✦</text>
+        <text x="408" y="170" font-size="7"  fill="#f9a8d4" opacity="0.45">✧</text>
+        <text x="55"  y="300" font-size="7"  fill="#c4a0ff" opacity="0.35">✦</text>
+        <text x="420" y="350" font-size="9"  fill="#fde68a" opacity="0.38">✦</text>
 
-        <!-- NODE: 입학 (done) -->
-        <g class="n" style="cursor:pointer" onclick="tip(event,'🎓 입학','Stanford PhD 입학을 축하해요! 여정이 시작됩니다.','✅ 완료')">
-          <circle cx="260" cy="40" r="24" fill="url(#gDone)" filter="url(#soft)"/>
-          <text x="260" y="35" text-anchor="middle" font-size="11" fill="white" font-weight="800">🎓</text>
-          <text x="260" y="48" text-anchor="middle" font-size="9" fill="white" font-weight="700">입학</text>
+        <!-- 입학 -->
+        <g style="cursor:pointer" onclick="tip(event,'🎓 입학','Stanford PhD 합격! 여정이 시작됩니다.','✅ 완료',null)">
+          <circle cx="250" cy="40" r="22" fill="url(#gDone)" filter="url(#soft)"/>
+          <text x="250" y="35" text-anchor="middle" font-size="11" fill="white" font-weight="800">🎓</text>
+          <text x="250" y="47" text-anchor="middle" font-size="9" fill="white" font-weight="700">입학</text>
         </g>
 
-        <!-- NODE: 연구실 탐색 (done) -->
-        <g class="n" style="cursor:pointer" onclick="tip(event,'🔭 연구실 탐색','여러 교수님과 미팅하며 핏을 확인했어요.','✅ 완료')">
-          <circle cx="260" cy="157" r="28" fill="url(#gDone)" filter="url(#soft)"/>
-          <text x="260" y="151" text-anchor="middle" font-size="12" fill="white">🔭</text>
-          <text x="260" y="163" text-anchor="middle" font-size="9" fill="white" font-weight="700">연구실 탐색</text>
+        <!-- 연구실 탐색 -->
+        <g style="cursor:pointer" onclick="tip(event,'🔭 연구실 탐색','교수님들과 미팅하며 랩 핏을 확인했어요.','✅ 완료',['Prof. Chris Manning (NLP)', 'Prof. Chelsea Finn (ML)'])">
+          <circle cx="250" cy="152" r="26" fill="url(#gDone)" filter="url(#soft)"/>
+          <text x="250" y="146" text-anchor="middle" font-size="11" fill="white">🔭</text>
+          <text x="250" y="157" text-anchor="middle" font-size="9" fill="white" font-weight="700">연구실 탐색</text>
         </g>
 
-        <!-- NODE: 랩 조인 (locked) -->
-        <g class="n" style="cursor:pointer" onclick="tip(event,'🏠 랩 조인','자신에게 맞는 연구실을 최종 선택해요.','🔒 진행 중 완료 후 해금')">
-          <circle cx="120" cy="263" r="22" fill="url(#gLock)"/>
-          <text x="120" y="257" text-anchor="middle" font-size="11" fill="#9b6dff">🏠</text>
-          <text x="120" y="269" text-anchor="middle" font-size="9" fill="#9b89b4" font-weight="700">랩 조인</text>
+        <!-- 랩 조인 -->
+        <g style="cursor:pointer" onclick="tip(event,'🏠 랩 조인','연구실을 최종 선택하는 단계예요.','🔒 진행 중 완료 후 해금',['랩 선배 PhD 학생들', '해당 분야 포닥'])">
+          <circle cx="115" cy="260" r="21" fill="url(#gLock)"/>
+          <text x="115" y="254" text-anchor="middle" font-size="11" fill="#9b6dff">🏠</text>
+          <text x="115" y="265" text-anchor="middle" font-size="9" fill="#9b89b4" font-weight="700">랩 조인</text>
         </g>
 
-        <!-- NODE: 연구 주제 구체화 (ACTIVE) -->
-        <g class="n" style="cursor:pointer" onclick="tip(event,'💡 연구 주제 구체화','관심사, 교수 TO, AI 트렌드를 교차해 주제를 좁혀가는 단계예요.','🌸 현재 진행 중')">
-          <circle cx="260" cy="263" r="30" fill="url(#gActive)" filter="url(#soft)"/>
-          <text x="260" y="257" text-anchor="middle" font-size="13" fill="white">💡</text>
-          <text x="260" y="269" text-anchor="middle" font-size="9" fill="white" font-weight="800">연구 주제</text>
-          <text x="260" y="279" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.85)" font-weight="600">구체화</text>
-          <!-- pulse ring -->
-          <circle cx="260" cy="263" r="36" fill="none" stroke="#f472b6" stroke-width="1.5" opacity="0.5" stroke-dasharray="4,3">
-            <animate attributeName="r" values="36;42;36" dur="2.2s" repeatCount="indefinite"/>
+        <!-- 연구 주제 구체화 (ACTIVE) -->
+        <g style="cursor:pointer" onclick="tip(event,'💡 연구 주제 구체화','관심사, 교수 TO, AI 트렌드를 교차해 주제를 좁혀가는 단계예요.','🌸 현재 진행 중',['같은 분야 PhD 2~3년차', 'NeurIPS/ICML 저자'])">
+          <circle cx="250" cy="260" r="28" fill="url(#gActive)" filter="url(#soft)"/>
+          <text x="250" y="254" text-anchor="middle" font-size="12" fill="white">💡</text>
+          <text x="250" y="265" text-anchor="middle" font-size="9" fill="white" font-weight="800">연구 주제</text>
+          <text x="250" y="275" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.85)">구체화</text>
+          <circle cx="250" cy="260" r="34" fill="none" stroke="#f472b6" stroke-width="1.5" opacity="0.5" stroke-dasharray="4,3">
+            <animate attributeName="r" values="34;40;34" dur="2.2s" repeatCount="indefinite"/>
             <animate attributeName="opacity" values="0.5;0.1;0.5" dur="2.2s" repeatCount="indefinite"/>
           </circle>
         </g>
+        <text x="286" y="228" font-size="8.5" fill="#f472b6" font-weight="800">← 현재 위치</text>
 
-        <!-- label: 현재 위치 -->
-        <text x="298" y="230" font-size="9" fill="#f472b6" font-weight="800">← 현재 위치</text>
-
-        <!-- NODE: 학회 네트워크 (locked) -->
-        <g class="n" style="cursor:pointer" onclick="tip(event,'🌐 학회 네트워크','학회 참석 및 동료 연구자 연결.','🔒 잠금')">
-          <circle cx="400" cy="263" r="22" fill="url(#gLock)"/>
-          <text x="400" y="257" text-anchor="middle" font-size="11" fill="#9b6dff">🌐</text>
-          <text x="400" y="269" text-anchor="middle" font-size="9" fill="#9b89b4" font-weight="700">학회 네트워크</text>
+        <!-- 학회 네트워크 -->
+        <g style="cursor:pointer" onclick="tip(event,'🌐 학회 네트워크','NeurIPS, ICML 등 학회 참석 및 연구자 연결.','🔒 잠금',['학회 발표자', '동일 세션 연구자'])">
+          <circle cx="385" cy="260" r="21" fill="url(#gLock)"/>
+          <text x="385" y="254" text-anchor="middle" font-size="11" fill="#9b6dff">🌐</text>
+          <text x="385" y="265" text-anchor="middle" font-size="9" fill="#9b89b4" font-weight="700">학회 네트워크</text>
         </g>
 
-        <!-- NODE: 첫 논문 (semi) -->
-        <g class="n" style="cursor:pointer" onclick="tip(event,'📄 첫 논문 제출','연구 주제를 논문으로 정리해 submit해요.','🔒 연구 주제 구체화 후 해금')">
-          <circle cx="185" cy="370" r="22" fill="url(#gLock)" stroke="#c4a0ff" stroke-width="1.5"/>
-          <text x="185" y="364" text-anchor="middle" font-size="11" fill="#9b6dff">📄</text>
-          <text x="185" y="376" text-anchor="middle" font-size="9" fill="#9b89b4" font-weight="700">첫 논문</text>
+        <!-- 첫 논문 -->
+        <g style="cursor:pointer" onclick="tip(event,'📄 첫 논문 제출','연구 주제를 논문으로 정리해 submit해요.','🔒 연구 주제 구체화 후 해금',['공동저자 후보 연구자', '리뷰어 경험자 PhD'])">
+          <circle cx="180" cy="364" r="21" fill="url(#gLock)" stroke="#c4a0ff" stroke-width="1.5"/>
+          <text x="180" y="358" text-anchor="middle" font-size="11" fill="#9b6dff">📄</text>
+          <text x="180" y="369" text-anchor="middle" font-size="9" fill="#9b89b4" font-weight="700">첫 논문</text>
         </g>
 
-        <!-- NODE: 인턴/협업 (locked) -->
-        <g class="n" style="cursor:pointer" onclick="tip(event,'💼 인턴·산학협력','구글, OpenAI 등 산업 인턴 또는 공동연구.','🔒 잠금')">
-          <circle cx="335" cy="370" r="22" fill="url(#gLock)"/>
-          <text x="335" y="364" text-anchor="middle" font-size="11" fill="#9b6dff">💼</text>
-          <text x="335" y="376" text-anchor="middle" font-size="9" fill="#9b89b4" font-weight="700">인턴·협업</text>
+        <!-- 인턴·협업 -->
+        <g style="cursor:pointer" onclick="tip(event,'💼 인턴·산학협력','구글, OpenAI 등 산업 인턴 또는 공동연구.','🔒 잠금',['구글 리서치 인턴 경험자', 'OpenAI 리서처'])">
+          <circle cx="320" cy="364" r="21" fill="url(#gLock)"/>
+          <text x="320" y="358" text-anchor="middle" font-size="11" fill="#9b6dff">💼</text>
+          <text x="320" y="369" text-anchor="middle" font-size="9" fill="#9b89b4" font-weight="700">인턴·협업</text>
         </g>
 
-        <!-- NODE: 전문가 인터뷰 (gold) -->
-        <g class="n" style="cursor:pointer" onclick="tip(event,'🏆 전문가 인터뷰','퀘스트 완료 시 해당 분야 전문가와 1:1 인터뷰 기회!','✨ 퀘스트 달성 리워드')">
-          <circle cx="260" cy="450" r="26" fill="url(#gGold)" filter="url(#softGold)"/>
-          <text x="260" y="444" text-anchor="middle" font-size="13" fill="white">🏆</text>
-          <text x="260" y="457" text-anchor="middle" font-size="9" fill="white" font-weight="800">전문가 인터뷰</text>
+        <!-- 전문가 인터뷰 -->
+        <g style="cursor:pointer" onclick="tip(event,'🏆 전문가 인터뷰','퀘스트 완료 시 해당 분야 전문가와 1:1 인터뷰!','✨ 퀘스트 달성 리워드',null)">
+          <circle cx="250" cy="448" r="24" fill="url(#gGold)" filter="url(#softG)"/>
+          <text x="250" y="442" text-anchor="middle" font-size="12" fill="white">🏆</text>
+          <text x="250" y="454" text-anchor="middle" font-size="9" fill="white" font-weight="800">전문가 인터뷰</text>
         </g>
       </svg>
     </div>
 
-    <div class="milestone-strip">
+    <div class="ms-strip">
       <div class="ms done">✅ 교수 미팅 3회</div>
       <div class="ms done">✅ 연구실 탐색 완료</div>
       <div class="ms now">🌸 연구 주제 탐색 중</div>
@@ -590,60 +420,75 @@
   <!-- RIGHT -->
   <aside class="panel-right">
 
+    <!-- future self (track-synced) -->
     <div>
       <div class="sec-label">✨ 미래의 내 모습</div>
-      <div class="future-card">
+      <div class="future-card" id="futureCard">
         <div class="future-deco">🔮</div>
-        <div class="future-chip">3년 후 시뮬레이션</div>
-        <div class="future-role">AI 연구 과학자</div>
-        <div class="future-org">Google DeepMind · 또는 조교수</div>
-
-        <div class="prob-wrap">
-          <div class="prob-top"><span>🏢 테크 기업 연구소</span><span>62%</span></div>
-          <div class="prob-bar"><div class="prob-fill" style="width:62%;background:linear-gradient(90deg,#9b6dff,#c4a0ff)"></div></div>
-        </div>
-        <div class="prob-wrap">
-          <div class="prob-top"><span>🎓 교수 트랙</span><span>28%</span></div>
-          <div class="prob-bar"><div class="prob-fill" style="width:28%;background:linear-gradient(90deg,#f472b6,#fca5a5)"></div></div>
-        </div>
-        <div class="prob-wrap">
-          <div class="prob-top"><span>🚀 스타트업 창업</span><span>10%</span></div>
-          <div class="prob-bar"><div class="prob-fill" style="width:10%;background:linear-gradient(90deg,#f59e0b,#fde68a)"></div></div>
-        </div>
-
-        <div class="future-tip">
-          퀘스트 <strong>2개</strong>를 더 완료하면 교수 트랙 확률이 <strong>+15%</strong> 올라가요 🌟
+        <div class="future-chip" id="futureChip">3년 후 시뮬레이션</div>
+        <div class="future-role" id="futureRole">조교수 / 교수 트랙</div>
+        <div class="future-org"  id="futureOrg">Stanford · KAIST · 국내외 대학</div>
+        <div id="futureProbs"></div>
+        <div class="future-tip" id="futureTip">
+          퀘스트 <strong>2개</strong>를 더 완료하면 이 트랙 달성 확률이 <strong>+15%</strong> 올라가요 🌟
         </div>
       </div>
     </div>
 
+    <!-- linkedin -->
+    <div>
+      <div class="sec-label">🔗 지금 단계 링크드인 추천 인맥</div>
+      <div class="linkedin-card">
+        <div class="li-item">
+          <div class="li-ava" style="background:linear-gradient(135deg,#9b6dff,#c4a0ff)">S</div>
+          <div>
+            <div class="li-name">Sarah Chen</div>
+            <div class="li-role">PhD 3년차 · Stanford AI Lab<br>연구 주제: NLP + 교육</div>
+            <div class="li-why">같은 탐색 단계 경험자</div>
+            <button class="btn-li">LinkedIn 보기 →</button>
+          </div>
+        </div>
+        <div class="li-item">
+          <div class="li-ava" style="background:linear-gradient(135deg,#f472b6,#db2777)">M</div>
+          <div>
+            <div class="li-name">Min-jun Oh</div>
+            <div class="li-role">포닥 · MIT CSAIL<br>연구 분야: ML Systems</div>
+            <div class="li-why">주제 구체화 조언 가능</div>
+            <button class="btn-li">LinkedIn 보기 →</button>
+          </div>
+        </div>
+        <div class="li-item">
+          <div class="li-ava" style="background:linear-gradient(135deg,#34d399,#059669)">A</div>
+          <div>
+            <div class="li-name">Aisha Patel</div>
+            <div class="li-role">Research Scientist · Google Brain<br>Stanford PhD 졸업</div>
+            <div class="li-why">산업 전환 경험 공유 가능</div>
+            <button class="btn-li">LinkedIn 보기 →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- alumni -->
     <div>
       <div class="sec-label">💌 비슷한 길을 걸은 선배</div>
       <div class="alumni-list">
         <div class="alumni-item">
           <div class="alumni-ava" style="background:linear-gradient(135deg,#9b6dff,#c4a0ff)">P</div>
-          <div>
-            <div class="alumni-name">Park S. · PhD 4년차</div>
-            <div class="alumni-desc">같은 주제 탐색 → NeurIPS 논문 → OpenAI 입사</div>
-          </div>
+          <div><div class="alumni-name">Park S. · PhD 4년차</div><div class="alumni-desc">같은 주제 탐색 → NeurIPS → OpenAI</div></div>
         </div>
         <div class="alumni-item">
           <div class="alumni-ava" style="background:linear-gradient(135deg,#34d399,#059669)">L</div>
-          <div>
-            <div class="alumni-name">Lee J. · 졸업</div>
-            <div class="alumni-desc">교수 TO 없음 → 조기 졸업 → 스타트업 CTO</div>
-          </div>
+          <div><div class="alumni-name">Lee J. · 졸업</div><div class="alumni-desc">교수 TO 없음 → 조기 졸업 → 스타트업 CTO</div></div>
         </div>
         <div class="alumni-item">
           <div class="alumni-ava" style="background:linear-gradient(135deg,#f472b6,#db2777)">K</div>
-          <div>
-            <div class="alumni-name">Kim H. · PhD 3년차</div>
-            <div class="alumni-desc">연구 주제 전환 → CMU 교수 트랙 진입</div>
-          </div>
+          <div><div class="alumni-name">Kim H. · PhD 3년차</div><div class="alumni-desc">연구 주제 전환 → CMU 교수 트랙</div></div>
         </div>
       </div>
     </div>
 
+    <!-- expert locked -->
     <div>
       <div class="sec-label">🌟 전문가 퀘스트</div>
       <div class="expert-card" id="expertCard">
@@ -660,7 +505,82 @@
 <div class="tooltip" id="tooltip">
   <h4 id="tip-t"></h4>
   <p id="tip-d"></p>
+  <div class="t-li" id="tip-li" style="display:none">
+    <div class="t-li-label">🔗 이 단계 링크드인 추천</div>
+    <div id="tip-li-items"></div>
+  </div>
   <div class="t-st" id="tip-s"></div>
+</div>
+
+<!-- ROLE MODEL MODAL -->
+<div class="modal-overlay" id="rmModal" onclick="closeModalOutside(event)">
+  <div class="modal">
+    <div class="modal-close" onclick="closeModal()">✕</div>
+    <h2>🌟 롤모델 커리어패스</h2>
+    <div class="modal-sub">클릭해서 나와 비슷한 여정을 걸은 롤모델을 살펴보세요</div>
+    <div class="rm-grid">
+      <div class="rm-card" onclick="selectRM(this,0)">
+        <div class="rm-head">
+          <div class="rm-ava" style="background:linear-gradient(135deg,#9b6dff,#c4a0ff)">AN</div>
+          <div><div class="rm-name">Andrew Ng</div><div class="rm-title">Coursera 창업자 · Stanford 교수</div></div>
+        </div>
+        <div class="rm-path">
+          <div class="rm-step highlight"><span class="rm-step-dot" style="background:var(--purple)"></span>MIT 학부 → UC Berkeley PhD</div>
+          <div class="rm-step"><span class="rm-step-dot" style="background:var(--border)"></span>Stanford 교수 부임</div>
+          <div class="rm-step"><span class="rm-step-dot" style="background:var(--border)"></span>Google Brain 창설</div>
+          <div class="rm-step"><span class="rm-step-dot" style="background:var(--border)"></span>Coursera 창업 · AI Fund</div>
+        </div>
+        <span class="rm-tag">교수 + 창업 트랙</span>
+      </div>
+
+      <div class="rm-card" onclick="selectRM(this,1)">
+        <div class="rm-head">
+          <div class="rm-ava" style="background:linear-gradient(135deg,#f472b6,#db2777)">FL</div>
+          <div><div class="rm-name">Fei-Fei Li</div><div class="rm-title">Stanford HAI 공동 소장</div></div>
+        </div>
+        <div class="rm-path">
+          <div class="rm-step highlight"><span class="rm-step-dot" style="background:var(--pink)"></span>Caltech 물리 → Princeton PhD</div>
+          <div class="rm-step"><span class="rm-step-dot" style="background:var(--border)"></span>Stanford 교수 · ImageNet 창시</div>
+          <div class="rm-step"><span class="rm-step-dot" style="background:var(--border)"></span>Google Cloud AI Chief Scientist</div>
+          <div class="rm-step"><span class="rm-step-dot" style="background:var(--border)"></span>Stanford HAI 공동 창립</div>
+        </div>
+        <span class="rm-tag">교수 트랙</span>
+      </div>
+
+      <div class="rm-card" onclick="selectRM(this,2)">
+        <div class="rm-head">
+          <div class="rm-ava" style="background:linear-gradient(135deg,#34d399,#059669)">AK</div>
+          <div><div class="rm-name">Andrej Karpathy</div><div class="rm-title">전 Tesla AI 총괄</div></div>
+        </div>
+        <div class="rm-path">
+          <div class="rm-step highlight"><span class="rm-step-dot" style="background:var(--mint)"></span>Toronto 학부 → Stanford PhD</div>
+          <div class="rm-step"><span class="rm-step-dot" style="background:var(--border)"></span>OpenAI 공동창업 멤버</div>
+          <div class="rm-step"><span class="rm-step-dot" style="background:var(--border)"></span>Tesla Autopilot AI 총괄</div>
+          <div class="rm-step"><span class="rm-step-dot" style="background:var(--border)"></span>독립 연구자 · 교육 콘텐츠</div>
+        </div>
+        <span class="rm-tag">테크 기업 트랙</span>
+      </div>
+
+      <div class="rm-card" onclick="selectRM(this,3)">
+        <div class="rm-head">
+          <div class="rm-ava" style="background:linear-gradient(135deg,#f59e0b,#b45309)">IJ</div>
+          <div><div class="rm-name">Ilya Sutskever</div><div class="rm-title">OpenAI 공동창업자</div></div>
+        </div>
+        <div class="rm-path">
+          <div class="rm-step highlight"><span class="rm-step-dot" style="background:var(--gold)"></span>U of Toronto PhD (Hinton 랩)</div>
+          <div class="rm-step"><span class="rm-step-dot" style="background:var(--border)"></span>Google Brain 리서처</div>
+          <div class="rm-step"><span class="rm-step-dot" style="background:var(--border)"></span>OpenAI 공동창업 · Chief Scientist</div>
+          <div class="rm-step"><span class="rm-step-dot" style="background:var(--border)"></span>SSI 창업 (2024)</div>
+        </div>
+        <span class="rm-tag">연구소 + 창업 트랙</span>
+      </div>
+    </div>
+
+    <div class="rm-detail" id="rmDetail">
+      <h3 id="rmDetailName"></h3>
+      <div class="rm-detail-body" id="rmDetailBody"></div>
+    </div>
+  </div>
 </div>
 
 <!-- NOTIF -->
@@ -673,43 +593,195 @@
 </div>
 
 <script>
-  window.addEventListener('load', () => {
-    setTimeout(() => { document.getElementById('gFill').style.width = '38%'; }, 400);
+  /* ── JOURNEY STEPS ── */
+  const steps = [
+    { label: '입학', done: true },
+    { label: '연구실\n탐색', done: true },
+    { label: '연구 주제\n구체화', now: true },
+    { label: '첫 논문\n제출', done: false },
+    { label: '학회\n발표', done: false },
+    { label: '전문가\n인터뷰', done: false },
+  ];
+  const wrap = document.getElementById('journeySteps');
+  steps.forEach((s, i) => {
+    const div = document.createElement('div');
+    div.className = 'jstep';
+    const cls = s.done ? 'done' : s.now ? 'now' : '';
+    div.innerHTML = `<div class="jstep-dot">
+      <div class="jstep-circle ${cls}">${s.done ? '✓' : s.now ? '★' : i+1}</div>
+      <div class="jstep-label ${cls}">${s.label.replace('\n','<br>')}</div>
+    </div>`;
+    wrap.appendChild(div);
+    if (i < steps.length - 1) {
+      const line = document.createElement('div');
+      line.className = 'jstep-line' + (s.done ? ' done' : '');
+      wrap.appendChild(line);
+    }
   });
 
-  function setRoute(el) {
+  /* ── TRACK DATA ── */
+  const trackData = {
+    prof: {
+      name: '🎓 교수 트랙',
+      role: '조교수 / 테뉴어 교수',
+      org:  'Stanford · KAIST · 국내외 대학',
+      chip: '3년 후 시뮬레이션',
+      chipBg: 'background:var(--purple-pale);color:var(--purple)',
+      cardBg: 'background:linear-gradient(145deg,#f3eaff,#fce7f3)',
+      probs: [
+        { label:'🎓 교수 부임 (조교수)', pct:52, bar:'linear-gradient(90deg,#9b6dff,#c4a0ff)' },
+        { label:'🏢 산업계 연구소', pct:35, bar:'linear-gradient(90deg,#f472b6,#fca5a5)' },
+        { label:'🚀 창업·독립 연구', pct:13, bar:'linear-gradient(90deg,#f59e0b,#fde68a)' },
+      ],
+      tip: '퀘스트 <strong>2개</strong>를 더 완료하면 교수 트랙 달성 확률이 <strong>+15%</strong> 올라가요 🌟',
+    },
+    tech: {
+      name: '🏢 테크 기업 연구소',
+      role: 'Research Scientist',
+      org:  'Google DeepMind · OpenAI · Meta AI',
+      chip: '3년 후 시뮬레이션',
+      chipBg: 'background:#d1fae5;color:#065f46',
+      cardBg: 'background:linear-gradient(145deg,#d1fae5,#fce7f3)',
+      probs: [
+        { label:'🏢 테크 기업 리서처', pct:65, bar:'linear-gradient(90deg,#34d399,#a7f3d0)' },
+        { label:'🎓 겸직 교수·강의',  pct:22, bar:'linear-gradient(90deg,#9b6dff,#c4a0ff)' },
+        { label:'🚀 스핀오프 창업',   pct:13, bar:'linear-gradient(90deg,#f59e0b,#fde68a)' },
+      ],
+      tip: '인턴 퀘스트를 완료하면 기업 리서처 트랙 확률이 <strong>+20%</strong> 올라가요 🌟',
+    },
+    startup: {
+      name: '🚀 스타트업 창업',
+      role: '창업자 / CTO',
+      org:  'AI 스타트업 · 딥테크 창업',
+      chip: '3년 후 시뮬레이션',
+      chipBg: 'background:var(--gold-pale);color:#92400e',
+      cardBg: 'background:linear-gradient(145deg,#fef3c7,#fce7f3)',
+      probs: [
+        { label:'🚀 창업 성공·시리즈A', pct:38, bar:'linear-gradient(90deg,#f59e0b,#fde68a)' },
+        { label:'🏢 테크 기업 합류',    pct:42, bar:'linear-gradient(90deg,#34d399,#a7f3d0)' },
+        { label:'🎓 교수 트랙 복귀',    pct:20, bar:'linear-gradient(90deg,#9b6dff,#c4a0ff)' },
+      ],
+      tip: '네트워킹 퀘스트를 완료하면 창업 성공 확률이 <strong>+12%</strong> 올라가요 🌟',
+    },
+  };
+
+  let currentTrack = 'prof';
+
+  function renderFuture(key) {
+    const d = trackData[key];
+    document.getElementById('futureCard').style.cssText = d.cardBg + ';border-radius:16px;padding:1.2rem;border:1.5px solid var(--border);position:relative;overflow:hidden;transition:all 0.4s;';
+    document.getElementById('futureChip').style.cssText = d.chipBg + ';font-size:0.6rem;font-weight:800;letter-spacing:0.08em;border-radius:5px;padding:2px 7px;display:inline-block;margin-bottom:0.7rem;';
+    document.getElementById('futureChip').textContent = d.chip;
+    document.getElementById('futureRole').textContent = d.role;
+    document.getElementById('futureOrg').textContent  = d.org;
+    document.getElementById('futureTip').innerHTML = d.tip;
+    const pb = document.getElementById('futureProbs');
+    pb.innerHTML = d.probs.map(p => `
+      <div class="prob-wrap">
+        <div class="prob-top"><span>${p.label}</span><span>${p.pct}%</span></div>
+        <div class="prob-bar"><div class="prob-fill" style="width:${p.pct}%;background:${p.bar}"></div></div>
+      </div>`).join('');
+  }
+  renderFuture('prof');
+
+  function setRoute(el, name, key) {
     document.querySelectorAll('.route-item').forEach(r => r.classList.remove('active'));
     el.classList.add('active');
+    document.getElementById('bannerTrack').textContent = name;
+    currentTrack = key;
+    renderFuture(key);
   }
 
+  /* ── QUEST ── */
   function completeQuest() {
     const btn = document.getElementById('questBtn');
     btn.textContent = '✅ 완료했어요!';
     btn.style.background = 'linear-gradient(135deg,#34d399,#059669)';
-    btn.style.boxShadow = '0 4px 14px rgba(52,211,153,0.35)';
-    document.querySelector('.star-badge').textContent = '⭐ 1,440 별';
-    document.getElementById('expertCard').style.opacity = '1';
-    document.getElementById('lockTag').textContent = '✨ 해금!';
-    document.getElementById('lockTag').style.background = '#d1fae5';
-    document.getElementById('lockTag').style.color = '#065f46';
+    btn.style.boxShadow = '0 4px 12px rgba(52,211,153,0.32)';
+    document.getElementById('starBadge').textContent = '⭐ 1,440 별';
+    const lt = document.getElementById('lockTag');
+    lt.textContent = '✨ 해금!';
+    lt.style.background = '#d1fae5';
+    lt.style.color = '#065f46';
     const n = document.getElementById('notif');
     n.classList.add('show');
     setTimeout(() => n.classList.remove('show'), 3500);
   }
 
-  function tip(e, title, desc, status) {
+  /* ── TOOLTIP ── */
+  function tip(e, title, desc, status, li) {
     const t = document.getElementById('tooltip');
     document.getElementById('tip-t').textContent = title;
     document.getElementById('tip-d').textContent = desc;
     document.getElementById('tip-s').textContent = status;
+    const liWrap = document.getElementById('tip-li');
+    const liItems = document.getElementById('tip-li-items');
+    if (li && li.length) {
+      liWrap.style.display = 'block';
+      liItems.innerHTML = li.map(x => `<div class="t-li-item">• ${x}</div>`).join('');
+    } else {
+      liWrap.style.display = 'none';
+    }
     t.style.display = 'block';
     t.style.left = (e.clientX + 14) + 'px';
     t.style.top  = (e.clientY - 12) + 'px';
   }
-
-  document.addEventListener('click', e => {
-    if (!e.target.closest('.n') && !e.target.closest('#tooltip'))
+  document.addEventListener('click', ev => {
+    if (!ev.target.closest('[onclick^="tip"]') && !ev.target.closest('#tooltip'))
       document.getElementById('tooltip').style.display = 'none';
+  });
+
+  /* ── ROLE MODEL MODAL ── */
+  const rmDetails = [
+    {
+      name: 'Andrew Ng의 커리어패스',
+      body: `<strong>PhD 시절:</strong> UC Berkeley에서 강화학습·신경망 연구. 지도교수와의 긴밀한 협업으로 첫 논문 2편 출판.<br><br>
+<strong>교수 → 산업:</strong> Stanford 교수 재직 중 Google Brain을 창설해 딥러닝 인프라를 구축. 교수직을 유지하면서도 산업 임팩트를 동시에 추구.<br><br>
+<strong>창업:</strong> Coursera, deeplearning.ai, AI Fund 등을 통해 AI 교육과 벤처 생태계를 함께 키워나감.<br><br>
+<strong>핵심 인사이트:</strong> "교수 TO가 부족하다고 느낀다면, 산업과 교육을 연결하는 새로운 역할을 만들 수 있다."`,
+    },
+    {
+      name: 'Fei-Fei Li의 커리어패스',
+      body: `<strong>PhD 시절:</strong> Princeton에서 시각 인지 연구. 데이터셋의 중요성에 주목해 ImageNet을 직접 구축.<br><br>
+<strong>교수 트랙:</strong> Stanford 교수로 컴퓨터 비전 분야를 개척. 단순 기술이 아닌 인간 중심 AI를 강조.<br><br>
+<strong>산업 경험:</strong> Google Cloud AI 수석 과학자로 2년간 근무 후 학계로 복귀. 두 세계를 모두 경험.<br><br>
+<strong>핵심 인사이트:</strong> "연구 방향이 바뀌는 건 실패가 아니라 성장이다. 나도 물리학에서 AI로 완전히 전환했다."`,
+    },
+    {
+      name: 'Andrej Karpathy의 커리어패스',
+      body: `<strong>PhD 시절:</strong> Stanford에서 Fei-Fei Li 지도 아래 이미지 캡셔닝 연구. 블로그·오픈소스로 지식 공유 시작.<br><br>
+<strong>산업 진출:</strong> OpenAI 창업 멤버로 합류 후 Tesla로 이동해 자율주행 AI 총괄.<br><br>
+<strong>독립 연구자:</strong> Tesla 퇴직 후 독립 연구자·교육자로 전환. 유튜브 강의로 수백만 명에게 영향.<br><br>
+<strong>핵심 인사이트:</strong> "교수가 되지 않아도 된다. 산업에서 가장 어려운 문제를 풀면서 학계보다 빠르게 성장할 수 있다."`,
+    },
+    {
+      name: 'Ilya Sutskever의 커리어패스',
+      body: `<strong>PhD 시절:</strong> U of Toronto에서 Geoffrey Hinton 지도 아래 딥러닝 핵심 연구. AlexNet 공동 저자.<br><br>
+<strong>산업 진출:</strong> Google Brain 합류 후 OpenAI 공동창업. 7년간 Chief Scientist로 GPT 시리즈 총괄.<br><br>
+<strong>재창업:</strong> 2024년 SSI(Safe Superintelligence Inc.) 창업. 안전 AI에 집중.<br><br>
+<strong>핵심 인사이트:</strong> "지도교수 선택이 전부다. TO가 없다고 느낀다면 분야를 넓혀라 — AGI 시대엔 새로운 TO가 계속 생긴다."`,
+    },
+  ];
+
+  function openModal() { document.getElementById('rmModal').classList.add('open'); }
+  function closeModal() {
+    document.getElementById('rmModal').classList.remove('open');
+    document.querySelectorAll('.rm-card').forEach(c => c.classList.remove('sel'));
+    document.getElementById('rmDetail').classList.remove('open');
+  }
+  function closeModalOutside(e) { if (e.target === document.getElementById('rmModal')) closeModal(); }
+  function selectRM(el, idx) {
+    document.querySelectorAll('.rm-card').forEach(c => c.classList.remove('sel'));
+    el.classList.add('sel');
+    const d = rmDetails[idx];
+    document.getElementById('rmDetailName').textContent = d.name;
+    document.getElementById('rmDetailBody').innerHTML = d.body;
+    document.getElementById('rmDetail').classList.add('open');
+  }
+
+  /* ── INIT ── */
+  window.addEventListener('load', () => {
+    setTimeout(() => { document.getElementById('gFill').style.width = '38%'; }, 400);
   });
 </script>
 </body>
