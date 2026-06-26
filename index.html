@@ -55,10 +55,10 @@
 
     /* SIDE PANELS — transparent over unified bg */
     .panel-left,.panel-right{overflow:hidden;transition:width 0.38s cubic-bezier(0.4,0,0.2,1),min-width 0.38s,padding 0.38s,opacity 0.25s;display:flex;flex-direction:column;gap:1.1rem;}
-    .panel-left{width:270px;min-width:270px;padding:1.2rem;border:none;background:transparent;overflow-y:auto;}
-    .panel-right{width:262px;min-width:262px;padding:1.2rem;border:none;background:transparent;overflow-y:auto;}
-    .panel-left.hidden{width:0;min-width:0;padding:0;opacity:0;border:none;}
-    .panel-right.hidden{width:0;min-width:0;padding:0;opacity:0;border:none;}
+    .panel-left{width:20vw;min-width:20vw;padding:1.2rem;border:none;background:rgba(3,0,18,0.55);backdrop-filter:blur(18px);overflow-y:auto;}
+    .panel-right{width:20vw;min-width:20vw;padding:1.2rem;border:none;background:rgba(3,0,18,0.55);backdrop-filter:blur(18px);overflow-y:auto;}
+    .panel-left.hidden{width:0 !important;min-width:0 !important;padding:0;opacity:0;border:none;}
+    .panel-right.hidden{width:0 !important;min-width:0 !important;padding:0;opacity:0;border:none;}
 
     /* TOGGLE TABS on center panel edges */
     .panel-center{flex:1;overflow-y:auto;overflow-x:hidden;position:relative;background:transparent;scrollbar-width:thin;scrollbar-color:rgba(155,109,255,0.35) transparent;}
